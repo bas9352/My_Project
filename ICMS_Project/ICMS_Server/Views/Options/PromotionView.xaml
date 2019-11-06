@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="ICMS_Server.PromotionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ICMS_Server"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal" 
+             TextOptions.TextRenderingMode="Auto">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="IconDeviceTemp">
+            <materialDesign:PackIcon Kind="CursorDefault"
+                                     HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding  Command="{Binding btn_delSelected}"
+                     Key="Delete"/>
+        <KeyBinding Command="{Binding btn_saveFileAs}"
+                    Key="S"
+                    Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding btn_openFile}"
+                    Key="O"
+                    Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
+
+    <Grid>
+        <GroupBox Margin="25,25,25,85"
+                  Header="{lex:Loc Key=promotion}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <DockPanel HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="0,0,0,10">
+
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        Command="{Binding btn_add}"
+                        ToolTip="{lex:Loc Key=add}"
+                        Content="{lex:Loc Key=add}">
+                    </Button>
+                    <Separator Margin="5, 0, 0, 0" />
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        Command="{Binding btn_edit}"
+                            IsEnabled="{Binding edit}"
+                        ToolTip="{lex:Loc Key=edit}"
+                        Content="{lex:Loc Key=edit}">
+                    </Button>
+                    <Separator Margin="5, 0, 0, 0" />
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                            IsEnabled="{Binding del}"
+                        Command="{Binding btn_del}"
+                        ToolTip="{lex:Loc Key=delete}"
+                        Content="{lex:Loc Key=delete}">
+                    </Button>
+                </DockPanel>
+
+                <DataGrid Grid.Row="1" x:Name="promo_data"
+                          CellStyle="{StaticResource DataGridCell}"
+                          Style="{StaticResource MaterialDesignDataGrid}"
+                          CanUserAddRows="False"
+                          CanUserResizeColumns="False" 
+                          CanUserResizeRows="False" 
+                          CanUserDeleteRows="True"
+                          AutoGenerateColumns="False"
+                          SelectionMode="Single"
+                          ScrollViewer.CanContentScroll="True" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Loaded">
+                            <i:InvokeCommandAction Command="{Binding item_promo}"
+                                               CommandParameter="{Binding ElementName=promo_data}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger  EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding item_promo_change}"
+                                               CommandParameter="{Binding ElementName=promo_data}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn 
+                                Visibility="Collapsed" 
+                                Binding="{Binding Path=promo_id}" 
+                                Header="{lex:Loc Key=promo_id}" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding promo_name}" 
+                                Header="{lex:Loc Key=promo_name}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding promo_rate_point}" 
+                                Header="{lex:Loc Key=promo_rate_point}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding promo_rate}" 
+                                Header="{lex:Loc Key=promo_rate}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

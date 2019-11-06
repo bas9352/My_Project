@@ -1,0 +1,159 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj",
+        "projectName": "ICMS_Client",
+        "projectPath": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj",
+        "packagesPath": "C:\\Users\\Thornthan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "C:\\Users\\Thornthan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "ControlzEx": {
+              "target": "Package",
+              "version": "[3.0.2.4, )"
+            },
+            "FireSharp": {
+              "target": "Package",
+              "version": "[2.0.4, )"
+            },
+            "Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "LocalStorage": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "MahApps.Metro": {
+              "target": "Package",
+              "version": "[1.6.5, )"
+            },
+            "MaterialDesignColors": {
+              "target": "Package",
+              "version": "[1.1.3, )"
+            },
+            "MaterialDesignThemes": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            },
+            "MaterialDesignThemes.MahApps": {
+              "target": "Package",
+              "version": "[0.0.12, )"
+            },
+            "Microsoft.AspNet.SignalR": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Bcl": {
+              "target": "Package",
+              "version": "[1.1.10, )"
+            },
+            "Microsoft.Bcl.Async": {
+              "target": "Package",
+              "version": "[1.0.168, )"
+            },
+            "Microsoft.Bcl.Build": {
+              "target": "Package",
+              "version": "[1.0.21, )"
+            },
+            "Microsoft.Net.Http": {
+              "target": "Package",
+              "version": "[2.2.29, )"
+            },
+            "Microsoft.Owin": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Microsoft.Owin.Hosting": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.17, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            },
+            "Ninject": {
+              "target": "Package",
+              "version": "[4.0.0-beta-0134, )"
+            },
+            "Owin": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "PropertyChanged.Fody": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "ReactiveUI": {
+              "target": "Package",
+              "version": "[10.5.7, )"
+            },
+            "System.Reactive": {
+              "target": "Package",
+              "version": "[4.1.5, )"
+            },
+            "WPFLocalizeExtension": {
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "WpfAnimatedGif": {
+              "target": "Package",
+              "version": "[1.4.18, )"
+            },
+            "XAMLMarkupExtensions": {
+              "target": "Package",
+              "version": "[1.5.1, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

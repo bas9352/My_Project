@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="ICMS_Client.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ICMS_Client"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal" 
+             TextOptions.TextRenderingMode="Auto">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="IconDeviceTemp">
+            <materialDesign:PackIcon Kind="CursorDefault"
+                                     HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding online_status}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <UserControl.InputBindings>
+        <KeyBinding  Command="{Binding btn_delSelected}"
+                     Key="Delete"/>
+        <KeyBinding Command="{Binding btn_saveFileAs}"
+                    Key="S"
+                    Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding btn_openFile}"
+                    Key="O"
+                    Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <DockPanel>
+                <StackPanel>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=start_datetime}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=all_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=u_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=l_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=c_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=b_time}"></Label>
+                </StackPanel>
+                <StackPanel Margin="30,0,0,0">
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding txt_start_datetime}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding txt_all_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding txt_use_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding txt_remaining_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding txt_group_rate}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding txt_bonus}"></Label>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Margin="20">
+                <DockPanel  HorizontalAlignment="Center">
+                    <StackPanel Margin="0,0,20,0" IsEnabled="{Binding account_check}">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Width="55"
+                                Height="55"
+                                Command="{Binding btn_account}">
+                            <StackPanel>
+                                <Image Source="/Res/logo/user_group.png"
+                                       Stretch="UniformToFill"></Image>
+                            </StackPanel>
+                        </Button>
+                        <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=account}"
+                                HorizontalAlignment="Center"></Label>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,20,0" IsEnabled="{Binding promotion_check}">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Width="55"
+                                Height="55" Command="{Binding btn_promotion}">
+                            <StackPanel>
+                                <Image Source="/Res/logo/r_coupon.png"
+                                       Stretch="UniformToFill"></Image>
+                            </StackPanel>
+                        </Button>
+                        <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=promotion}"
+                                HorizontalAlignment="Center"></Label>
+                    </StackPanel>
+                    <StackPanel  IsEnabled="{Binding log_history_check}">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Width="55"
+                                Height="55">
+                            <StackPanel>
+                                <Image Source="/Res/logo/report_m.png"
+                                       Stretch="UniformToFill"></Image>
+                            </StackPanel>
+                        </Button>
+                        <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=log_history}"
+                                HorizontalAlignment="Center"></Label>
+                    </StackPanel>
+                </DockPanel>
+                
+                <DockPanel>
+                    <DockPanel  HorizontalAlignment="Center">
+                        <StackPanel>
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Width="55"
+                                Height="55">
+                                <StackPanel>
+                                    <Image Source="/Res/logo/password.png"
+                                       Stretch="UniformToFill"></Image>
+                                </StackPanel>
+                            </Button>
+                            <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=lock}"
+                                HorizontalAlignment="Center"></Label>
+                        </StackPanel>
+                        <StackPanel>
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Width="55"
+                                Height="55">
+                                <StackPanel>
+                                    <Image Source="/Res/logo/icon_login.png"
+                                       Stretch="UniformToFill"></Image>
+                                </StackPanel>
+                            </Button>
+                            <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=logout}"
+                                HorizontalAlignment="Center"></Label>
+                        </StackPanel>
+
+                    </DockPanel>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

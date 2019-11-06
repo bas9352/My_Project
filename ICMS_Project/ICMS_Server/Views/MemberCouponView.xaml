@@ -1,0 +1,206 @@
+﻿<UserControl x:Class="ICMS_Server.MemberCouponView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ICMS_Server"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal" 
+             TextOptions.TextRenderingMode="Auto">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="IconDeviceTemp">
+            <materialDesign:PackIcon Kind="CursorDefault"
+                                     HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding  Command="{Binding btn_delSelected}"
+                     Key="Delete"/>
+        <KeyBinding Command="{Binding btn_saveFileAs}"
+                    Key="S"
+                    Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding btn_openFile}"
+                    Key="O"
+                    Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Width="220">
+            <DockPanel
+                   HorizontalAlignment="Center">
+                <Label Style="{StaticResource MaterialDesignLabel}" Content="{lex:Loc Key=user_info}"></Label>
+            </DockPanel>
+
+            <ComboBox x:Name="item_search" 
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  VerticalAlignment="Stretch"
+                                  IsEnabled="{Binding search_help}"
+                                  Width="auto"
+                                  Height="auto"
+                                  materialDesign:HintAssist.Hint="{lex:Loc Key=search_help}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger  EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding item_search}"
+                                               CommandParameter="{Binding ElementName=item_search}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger  EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding item_search_changed}"
+                                               CommandParameter="{Binding ElementName=item_search}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+
+            <DockPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="txt_search" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=search}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                         Text="{Binding txt_search_null}"
+                     TextWrapping="Wrap"
+                     Width="auto">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger  EventName="TextChanged">
+                                <i:InvokeCommandAction Command="{Binding txt_search_changed}"
+                                               CommandParameter="{Binding ElementName=txt_search}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                    <Button Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8">
+                        <materialDesign:PackIcon Width="20" Height="20" Kind="AccountSearch" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                    </Button>
+                </Grid>
+            </DockPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_top_up}"
+                        ToolTip="{lex:Loc Key=top_up}"
+                        Content="{lex:Loc Key=top_up}">
+                </Button>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_free_top_up}"
+                        ToolTip="{lex:Loc Key=free_top_up}"
+                        Content="{lex:Loc Key=free_top_up}">
+                </Button>
+                <Button Visibility="Collapsed" Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_lend}"
+                        ToolTip="{lex:Loc Key=lend}"
+                        Content="{lex:Loc Key=lend}">
+                </Button>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_debt}"
+                        ToolTip="{lex:Loc Key=debt}"
+                        Content="{lex:Loc Key=debt}">
+                </Button>
+            </StackPanel>
+
+            <DockPanel
+                   HorizontalAlignment="Center">
+                <Label Style="{StaticResource MaterialDesignLabel}" Content="{lex:Loc Key=user_history}"></Label>
+            </DockPanel>
+            <StackPanel Margin="0,10,0,0">
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_pc_history}"
+                        ToolTip="{lex:Loc Key=pc_history}"
+                        Content="{lex:Loc Key=pc_history}">
+                </Button>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_money_history}"
+                        ToolTip="{lex:Loc Key=money_history}"
+                        Content="{lex:Loc Key=money_history}">
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <DockPanel>
+                <DockPanel HorizontalAlignment="Left">
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        Command="{Binding btn_member}"
+                        ToolTip="{lex:Loc Key=member}"
+                        Content="{lex:Loc Key=member}">
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        Command="{Binding btn_coupon}"
+                        ToolTip="{lex:Loc Key=coupon}"
+                        Content="{lex:Loc Key=coupon}">
+                    </Button>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Left"
+                                                       Margin="20,0,0,0">
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_add}"
+                        ToolTip="{lex:Loc Key=add}">
+                        <materialDesign:PackIcon Kind="PlusCircle" Width="20" Height="20" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"                                
+                        Command="{Binding btn_edit}"
+                        ToolTip="{lex:Loc Key=edit}">
+                        <materialDesign:PackIcon Kind="Edit" Width="20" Height="20" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                            Command="{Binding btn_del}"
+                        ToolTip="{lex:Loc Key=del}">
+                        <materialDesign:PackIcon Kind="Delete" Width="20" Height="20" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8">
+                        <materialDesign:PackIcon Kind="Refresh" Width="20" Height="20" VerticalAlignment="Center"></materialDesign:PackIcon>
+                    </Button>
+                </DockPanel>
+            </DockPanel>
+
+            <Grid Grid.Row="1" Margin="10">
+                <ContentControl BorderThickness="0"
+                            Content="{Binding CurrPage,Converter={local:AppPageValueConverter}}"
+                        SnapsToDevicePixels="True">
+
+                </ContentControl>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

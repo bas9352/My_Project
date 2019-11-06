@@ -1,0 +1,177 @@
+﻿<UserControl x:Class="ICMS_Server.ControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ICMS_Server"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal" 
+             TextOptions.TextRenderingMode="Auto">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="IconDeviceTemp">
+            <materialDesign:PackIcon Kind="CursorDefault"
+                                     HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding  Command="{Binding btn_delSelected}"
+                     Key="Delete"/>
+        <KeyBinding Command="{Binding btn_saveFileAs}"
+                    Key="S"
+                    Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding btn_openFile}"
+                    Key="O"
+                    Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Width="220">
+            <DockPanel
+                   HorizontalAlignment="Center">
+                <Label Style="{StaticResource MaterialDesignLabel}" Content="{lex:Loc Key=pc_info}"></Label>
+            </DockPanel>
+
+            <DockPanel>
+                <StackPanel>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=username}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=start_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=use_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=remaining_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{lex:Loc Key=hr_money}"></Label>
+                </StackPanel>
+                <StackPanel>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding lab_username,Mode=TwoWay}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding lab_start_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding lab_use_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding lab_remaining_time}"></Label>
+                    <Label Style="{StaticResource MaterialDesignLabel}"
+                           Content="{Binding lab_group_rate}"></Label>
+                </StackPanel>
+            </DockPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_top_up}"
+                        ToolTip="{lex:Loc Key=top_up}"
+                        Content="{lex:Loc Key=top_up}">
+                </Button>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_free_top_up}"
+                        ToolTip="{lex:Loc Key=free_top_up}"
+                        Content="{lex:Loc Key=free_top_up}">
+                </Button>
+                <Button Visibility="Collapsed" Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_lend}"
+                        ToolTip="{lex:Loc Key=lend}"
+                        Content="{lex:Loc Key=lend}">
+                </Button>
+                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Command="{Binding btn_debt}"
+                        ToolTip="{lex:Loc Key=debt}"
+                        Content="{lex:Loc Key=debt}">
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1" Margin="10">
+                <DataGrid x:Name="online_data" Foreground="Black"
+                          CellStyle="{StaticResource DataGridCell}"
+                          Style="{StaticResource MaterialDesignDataGrid}"
+                          CanUserAddRows="False"
+                          CanUserResizeColumns="False" 
+                          CanUserResizeRows="False" 
+                          CanUserDeleteRows="True"
+                          AutoGenerateColumns="False"
+                          SelectionMode="Single"
+                          ScrollViewer.CanContentScroll="True" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Loaded">
+                            <i:InvokeCommandAction Command="{Binding item_online}"
+                                               CommandParameter="{Binding ElementName=online_data}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger  EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding item_online_changed}"
+                                               CommandParameter="{Binding ElementName=online_data}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = v_pc_name}" 
+                                Header="{lex:Loc Key=pc_name}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = v_online_status}" 
+                                Header="{lex:Loc Key=pc_status}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = v_all_username}" 
+                                Header="{lex:Loc Key=username}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = v_online_s_time}" 
+                                Header="{lex:Loc Key=online_s_datetime}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = v_all_use_remaining_time}" 
+                                Header="{lex:Loc Key=online_use_time}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = v_all_remaining_time}" 
+                                Header="{lex:Loc Key=online_remaining_time}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn 
+                                Binding="{Binding Path = new_v_group_rate}" 
+                                Header="{lex:Loc Key=group_rate}" 
+                        Width="auto" 
+                                IsReadOnly="True"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

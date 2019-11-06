@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="ICMS_Server.DebtView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ICMS_Server"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal" 
+             TextOptions.TextRenderingMode="Auto">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="IconDeviceTemp">
+            <materialDesign:PackIcon Kind="CursorDefault"
+                                     HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding  Command="{Binding btn_delSelected}"
+                     Key="Delete"/>
+        <KeyBinding Command="{Binding btn_saveFileAs}"
+                    Key="S"
+                    Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding btn_openFile}"
+                    Key="O"
+                    Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
+
+    <Grid Width="auto" Height="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <materialDesign:ColorZone Mode="Standard"
+                                      Height="Auto"
+                                      materialDesign:ShadowAssist.ShadowEdges="Bottom"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <Grid>
+                <DockPanel>
+                    <Menu>
+                        <MenuItem
+                                  Command="{Binding btn_lend}" Width="200">
+                            <MenuItem.Header>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="{lex:Loc Key=lend}"></Label>
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem 
+                                  Command="{Binding btn_pay_debt}" Width="200">
+                            <MenuItem.Header>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="{lex:Loc Key=pay_debt}"></Label>
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                    </Menu>
+                </DockPanel>
+
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <Grid Grid.Row="1">
+            <ContentControl BorderThickness="0"
+                        Grid.Row="2"
+                            Content="{Binding CurrPage,Converter={local:AppPageValueConverter}}"
+                        SnapsToDevicePixels="True">
+            </ContentControl>
+        </Grid>
+    </Grid>
+
+</UserControl>

@@ -1,0 +1,789 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="add" xml:space="preserve">
+    <value>เพิ่ม</value>
+  </data>
+  <data name="additional" xml:space="preserve">
+    <value>เพิ่มเติม</value>
+  </data>
+  <data name="address" xml:space="preserve">
+    <value>ที่อยู่</value>
+  </data>
+  <data name="add_coupon" xml:space="preserve">
+    <value>เพิ่มข้อมูลคูปอง</value>
+  </data>
+  <data name="add_edit_bonus" xml:space="preserve">
+    <value>เพิ่ม /แก้ไข ข้อมูลโบนัส</value>
+  </data>
+  <data name="add_edit_coupon" xml:space="preserve">
+    <value>เพิ่ม / แก้ไข ข้อมูลคูปอง</value>
+  </data>
+  <data name="add_edit_group" xml:space="preserve">
+    <value>เพิ่ม / แก้ไข ข้อมูลกลุ่มผู้ใช้</value>
+  </data>
+  <data name="add_edit_member" xml:space="preserve">
+    <value>เพิ่ม /แก้ไข ข้อมูลสมาชิก</value>
+  </data>
+  <data name="add_edit_promo" xml:space="preserve">
+    <value>เพิ่ม /แก้ไข ข้อมูลโปรโมชั่น</value>
+  </data>
+  <data name="add_edit_staff" xml:space="preserve">
+    <value>เพิ่ม / แก้ไข ข้อมูลพนักงาน</value>
+  </data>
+  <data name="add_hh" xml:space="preserve">
+    <value>ชั่วโมง</value>
+  </data>
+  <data name="add_member" xml:space="preserve">
+    <value>เพิ่มข้อมูลสมาชิก</value>
+  </data>
+  <data name="add_mm" xml:space="preserve">
+    <value>นาที</value>
+  </data>
+  <data name="add_money" xml:space="preserve">
+    <value>เพิ่มเงิน</value>
+  </data>
+  <data name="add_remove_programe" xml:space="preserve">
+    <value>Hide Add or remove programe</value>
+  </data>
+  <data name="add_success" xml:space="preserve">
+    <value>เพิ่มข้อมูลสำเร็จ</value>
+  </data>
+  <data name="add_unsuccess" xml:space="preserve">
+    <value>เพิ่มข้อมูลล้มเหลว</value>
+  </data>
+  <data name="admin" xml:space="preserve">
+    <value>แอดมิน</value>
+  </data>
+  <data name="administrative_tool" xml:space="preserve">
+    <value>Hide Administrative tool</value>
+  </data>
+  <data name="after_use" xml:space="preserve">
+    <value>วันหลังเปิดใช้งาน</value>
+  </data>
+  <data name="baht" xml:space="preserve">
+    <value>บาท</value>
+  </data>
+  <data name="birthday" xml:space="preserve">
+    <value>วันเกิด วัน เดือน ปี (ค.ศ.)</value>
+  </data>
+  <data name="bonus" xml:space="preserve">
+    <value>ใช้งานโบนัสเติมเงิน</value>
+  </data>
+  <data name="bonus_point" xml:space="preserve">
+    <value>แต้มโบนัส</value>
+  </data>
+  <data name="bonus_topup_unsuccess" xml:space="preserve">
+    <value>มียอดเงินนี้แล้ว</value>
+  </data>
+  <data name="bonus_top_up" xml:space="preserve">
+    <value>เติมเงิน</value>
+  </data>
+  <data name="bonus_unsuccess" xml:space="preserve">
+    <value>มีแต้มโบนัสนี้แล้ว</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+  </data>
+  <data name="cancel_confirm" xml:space="preserve">
+    <value>ต้องการปิดโปรแกรมแน่หรือไม่?</value>
+  </data>
+  <data name="cant_del" xml:space="preserve">
+    <value>ไม่สามารถลบข้อมูลนี้ได้</value>
+  </data>
+  <data name="cant_edit" xml:space="preserve">
+    <value>ไม่สามารถแก้ไขข้อมูลนี่ได้</value>
+  </data>
+  <data name="cant_edit_bonus" xml:space="preserve">
+    <value>โบนัสนี้กำลังถูกใช้ ไม่มามารถแก้ไขแต้มโบนัสได้</value>
+  </data>
+  <data name="cant_edit_promo" xml:space="preserve">
+    <value>โปรโมชั่นนี้กำลังถูกใช้ ไม่สามารถแก้ไขยอดเติมเงิน หรือแต้มโบนัสได้</value>
+  </data>
+  <data name="cant_edit_rate" xml:space="preserve">
+    <value>กลุ่มนี้กำลังถูกใช้ ไม่สามารถแก้ไขค่าบริการได้</value>
+  </data>
+  <data name="cd_rom" xml:space="preserve">
+    <value>Disable CD-Rom</value>
+  </data>
+  <data name="client_shutdown" xml:space="preserve">
+    <value>Client Shutdown</value>
+  </data>
+  <data name="close_cafe" xml:space="preserve">
+    <value>Close Cafe</value>
+  </data>
+  <data name="close_client" xml:space="preserve">
+    <value>Close Client</value>
+  </data>
+  <data name="confirm_password" xml:space="preserve">
+    <value>ยืนยันรหัสผ่าน</value>
+  </data>
+  <data name="conn_unsuccess" xml:space="preserve">
+    <value>การเชื่อมต่อผิดพลาด</value>
+  </data>
+  <data name="content_on_off" xml:space="preserve">
+    <value>Automatically shutdown all client at (HH:mm)</value>
+  </data>
+  <data name="content_title" xml:space="preserve">
+    <value>Turn on / off the timer</value>
+  </data>
+  <data name="control" xml:space="preserve">
+    <value>ควบคุม</value>
+  </data>
+  <data name="control_panel" xml:space="preserve">
+    <value>Control Panel</value>
+  </data>
+  <data name="coupon" xml:space="preserve">
+    <value>คูปอง</value>
+  </data>
+  <data name="coupon_exp" xml:space="preserve">
+    <value>วันหมดอายุ</value>
+  </data>
+  <data name="coupon_name" xml:space="preserve">
+    <value>ชื่อคูปอง</value>
+  </data>
+  <data name="coupon_name_s" xml:space="preserve">
+    <value>ชื่อขึ้นต้นคูปอง</value>
+  </data>
+  <data name="coupon_name_unsuccess" xml:space="preserve">
+    <value>มีชื่อคูปองนี้แล้ว</value>
+  </data>
+  <data name="coupon_password" xml:space="preserve">
+    <value>รหัสผ่าน</value>
+  </data>
+  <data name="coupon_price" xml:space="preserve">
+    <value>ราคา</value>
+  </data>
+  <data name="coupon_report" xml:space="preserve">
+    <value>รายงานคูปอง</value>
+  </data>
+  <data name="coupon_time" xml:space="preserve">
+    <value>เวลา</value>
+  </data>
+  <data name="coupon_total_amount" xml:space="preserve">
+    <value>เงินคงเหลือ</value>
+  </data>
+  <data name="coupon_username" xml:space="preserve">
+    <value>ชื่อผู้ใช้</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>โปรดระบุจำนวนที่ต้องการสร้าง</value>
+  </data>
+  <data name="create_amount" xml:space="preserve">
+    <value>จำนวนที่สร้าง</value>
+  </data>
+  <data name="create_coupon" xml:space="preserve">
+    <value>สร้างคูปอง</value>
+  </data>
+  <data name="create_date" xml:space="preserve">
+    <value>วันที่สร้าง</value>
+  </data>
+  <data name="create_end" xml:space="preserve">
+    <value>วันที่สร้าง ถึง วัน เดือน ปี(ค.ศ.)</value>
+  </data>
+  <data name="create_start" xml:space="preserve">
+    <value>วันที่สร้าง ตั้งแต่ วัน เดือน ปี(ค.ศ.)</value>
+  </data>
+  <data name="credit_limit" xml:space="preserve">
+    <value>จำกัดเงินยืม</value>
+  </data>
+  <data name="database" xml:space="preserve">
+    <value>ฐานข้อมูล</value>
+  </data>
+  <data name="date_time" xml:space="preserve">
+    <value>Hide Date and Time</value>
+  </data>
+  <data name="debt" xml:space="preserve">
+    <value>หนี้</value>
+  </data>
+  <data name="debt_check" xml:space="preserve">
+    <value>มีหนี้ (บาท)</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
+  <data name="del_confirm" xml:space="preserve">
+    <value>ต้องการลบข้อมูลแน่หรือไม่</value>
+  </data>
+  <data name="del_coupon" xml:space="preserve">
+    <value>ลบคูปอง</value>
+  </data>
+  <data name="del_false" xml:space="preserve">
+    <value>ลบข้อมูลล้มเหลว</value>
+  </data>
+  <data name="del_false_in_use" xml:space="preserve">
+    <value>กลุ่มผู้ใช้กำลังถูกใช้งาน</value>
+  </data>
+  <data name="del_member" xml:space="preserve">
+    <value>ลบสมาชิก</value>
+  </data>
+  <data name="del_success" xml:space="preserve">
+    <value>ลบข้อมูลสำเร็จ</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>แก้ไข</value>
+  </data>
+  <data name="edit_coupon" xml:space="preserve">
+    <value>แก้ไขข้อมูลคูปอง</value>
+  </data>
+  <data name="edit_member" xml:space="preserve">
+    <value>แก้ไขข้อมูลสมาชิก</value>
+  </data>
+  <data name="edit_success" xml:space="preserve">
+    <value>แก้ไขข้อมูลสำเร็จ</value>
+  </data>
+  <data name="edit_unsuccess" xml:space="preserve">
+    <value>แก้ไขข้อมูลล้มเหลว</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>อีเมล</value>
+  </data>
+  <data name="end_date" xml:space="preserve">
+    <value>ถึง วัน เดือน ปี (ค.ศ.)</value>
+  </data>
+  <data name="enter_info" xml:space="preserve">
+    <value>โปรดระบุข้อมูล</value>
+  </data>
+  <data name="enter_match" xml:space="preserve">
+    <value>รหัสผ่านไม่ตรงกับฐานข้อมูล</value>
+  </data>
+  <data name="enter_match_pass" xml:space="preserve">
+    <value>รหัสผ่านใหม่ไม่ตรงกัน</value>
+  </data>
+  <data name="enter_user_pass" xml:space="preserve">
+    <value>โปรดระบุชื่อผู้ใช้ และรหัสผ่าน</value>
+  </data>
+  <data name="exp_date" xml:space="preserve">
+    <value>หมดอายุภายใน</value>
+  </data>
+  <data name="exp_end" xml:space="preserve">
+    <value>วันหมมดอายุ ถึง วัน เดือน ปี(ค.ศ.)</value>
+  </data>
+  <data name="exp_start" xml:space="preserve">
+    <value>วันหมดอายุ ตั้งแต่ วัน เดือน ปี(ค.ศ.)</value>
+  </data>
+  <data name="e_date" xml:space="preserve">
+    <value>วันที่สิ้นสุด วัน เดือน ปี (ค.ศ.)</value>
+  </data>
+  <data name="free_money" xml:space="preserve">
+    <value>เงินฟรี(บาท)</value>
+  </data>
+  <data name="free_top_up" xml:space="preserve">
+    <value>เติมเงินฟรี</value>
+  </data>
+  <data name="group" xml:space="preserve">
+    <value>กลุ่มผู้ใช้</value>
+  </data>
+  <data name="group_name" xml:space="preserve">
+    <value>ชื่อกลุ่ม</value>
+  </data>
+  <data name="group_name_unsuccess" xml:space="preserve">
+    <value>มีชื่อกลุ่มนี่แล้ว</value>
+  </data>
+  <data name="group_rate" xml:space="preserve">
+    <value>ค่าบริการต่อชั่วโมง</value>
+  </data>
+  <data name="hour" xml:space="preserve">
+    <value>ชั่วโมง</value>
+  </data>
+  <data name="hr" xml:space="preserve">
+    <value>ซม.</value>
+  </data>
+  <data name="hr_money" xml:space="preserve">
+    <value>ค่าบริการต่อชั่วโมง</value>
+  </data>
+  <data name="hr_price" xml:space="preserve">
+    <value>ราคา(บาท)</value>
+  </data>
+  <data name="hr_rate" xml:space="preserve">
+    <value>ค่าบริการต่อชั่วโมง(บาท)</value>
+  </data>
+  <data name="id_card" xml:space="preserve">
+    <value>รหัสบัตรประชาชน</value>
+  </data>
+  <data name="inactive_after" xml:space="preserve">
+    <value>ไม่ใช้งานตั้งแต่ วัน เดือน ปี (ค.ศ.)</value>
+  </data>
+  <data name="income" xml:space="preserve">
+    <value>รายได้</value>
+  </data>
+  <data name="income_report" xml:space="preserve">
+    <value>รายงานรายได้</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="lastname" xml:space="preserve">
+    <value>นามสกุล</value>
+  </data>
+  <data name="lend" xml:space="preserve">
+    <value>ยืมเงิน</value>
+  </data>
+  <data name="lock_pc" xml:space="preserve">
+    <value>Disable Lock PC</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>เข้าสู่ระบบ</value>
+  </data>
+  <data name="login_with" xml:space="preserve">
+    <value>ล็อกอินโดย</value>
+  </data>
+  <data name="logoff_pc" xml:space="preserve">
+    <value>Disable Lock off PC</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>ออกจากระบบ</value>
+  </data>
+  <data name="log_history" xml:space="preserve">
+    <value>การใช้งาน</value>
+  </data>
+  <data name="main" xml:space="preserve">
+    <value>หน้าหลัก</value>
+  </data>
+  <data name="maximum_balance" xml:space="preserve">
+    <value>มียอดเงินไม่เกิน (บาท)</value>
+  </data>
+  <data name="max_credit" xml:space="preserve">
+    <value>จำนวนเงินยืมเกินจำนวนที่จำกัด</value>
+  </data>
+  <data name="max_debt" xml:space="preserve">
+    <value>จำนวนที่ชำระเกินจำนวนหนี้ที่มี</value>
+  </data>
+  <data name="member" xml:space="preserve">
+    <value>สมาชิก</value>
+  </data>
+  <data name="member_coupon" xml:space="preserve">
+    <value>สมาชิก / คูปอง</value>
+  </data>
+  <data name="member_lastname" xml:space="preserve">
+    <value>นามสกุล</value>
+  </data>
+  <data name="member_name" xml:space="preserve">
+    <value>ชื่อ</value>
+  </data>
+  <data name="member_name_unsuccess" xml:space="preserve">
+    <value>มีชื่อสมาชิกนี้แล้ว</value>
+  </data>
+  <data name="member_report" xml:space="preserve">
+    <value>รายงานสมาชิก</value>
+  </data>
+  <data name="member_rr_amount" xml:space="preserve">
+    <value>เงินคงเหลือ</value>
+  </data>
+  <data name="member_total_amount" xml:space="preserve">
+    <value>เงินคงเหลือ</value>
+  </data>
+  <data name="member_username" xml:space="preserve">
+    <value>ชื่อผู้ใช้</value>
+  </data>
+  <data name="mn" xml:space="preserve">
+    <value>น.</value>
+  </data>
+  <data name="money_history" xml:space="preserve">
+    <value>ประวัติการใช้เงิน</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>ชื่อ</value>
+  </data>
+  <data name="network_conn" xml:space="preserve">
+    <value>Hide Network connection</value>
+  </data>
+  <data name="new_password" xml:space="preserve">
+    <value>รหัสผ่านใหม่</value>
+  </data>
+  <data name="nickname" xml:space="preserve">
+    <value>ชื่อเล่น</value>
+  </data>
+  <data name="not_group_can_top_up" xml:space="preserve">
+    <value>ไม่ได้อยู่ในกลุ่มที่เติมเงินได้</value>
+  </data>
+  <data name="no_data" xml:space="preserve">
+    <value>ไม่มีข้อมูล</value>
+  </data>
+  <data name="no_info" xml:space="preserve">
+    <value>ไม่มีข้อมูล</value>
+  </data>
+  <data name="number" xml:space="preserve">
+    <value>ลำดับ</value>
+  </data>
+  <data name="officer" xml:space="preserve">
+    <value>พนักงาน</value>
+  </data>
+  <data name="ok" xml:space="preserve">
+    <value>ตกลง</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>รหัสผ่านเดิม</value>
+  </data>
+  <data name="online_history_report" xml:space="preserve">
+    <value>รายงานการใช้งาน</value>
+  </data>
+  <data name="online_remaining_time" xml:space="preserve">
+    <value>เวลาคงเหลือ</value>
+  </data>
+  <data name="online_s_date" xml:space="preserve">
+    <value>วันที่</value>
+  </data>
+  <data name="online_s_datetime" xml:space="preserve">
+    <value>เวลาเริ่ม</value>
+  </data>
+  <data name="online_s_time" xml:space="preserve">
+    <value>เวลา</value>
+  </data>
+  <data name="online_use_time" xml:space="preserve">
+    <value>เวลาที่ใช้ไป</value>
+  </data>
+  <data name="option" xml:space="preserve">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="option_coupon" xml:space="preserve">
+    <value>ตั้งค่าคูปอง</value>
+  </data>
+  <data name="op_c_name" xml:space="preserve">
+    <value>ชื่อคูปอง</value>
+  </data>
+  <data name="op_c_s_date" xml:space="preserve">
+    <value>วันที่เริ่มต้น</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>รหัสผ่าน</value>
+  </data>
+  <data name="password_change" xml:space="preserve">
+    <value>เปลี่ยนรหัสผ่าน</value>
+  </data>
+  <data name="pay_debt" xml:space="preserve">
+    <value>ชำระหนี้</value>
+  </data>
+  <data name="pc_history" xml:space="preserve">
+    <value>ประวัติการใช้ PC</value>
+  </data>
+  <data name="pc_info" xml:space="preserve">
+    <value>ข้อมูล PC</value>
+  </data>
+  <data name="pc_name" xml:space="preserve">
+    <value>ชื่อเครื่อง</value>
+  </data>
+  <data name="pc_status" xml:space="preserve">
+    <value>สถานะเครื่อง</value>
+  </data>
+  <data name="permission" xml:space="preserve">
+    <value>Permission</value>
+  </data>
+  <data name="power_management" xml:space="preserve">
+    <value>Power Management</value>
+  </data>
+  <data name="price" xml:space="preserve">
+    <value>ราคา</value>
+  </data>
+  <data name="pricing" xml:space="preserve">
+    <value>Pricing</value>
+  </data>
+  <data name="promo" xml:space="preserve">
+    <value>เปิดใช้งานสิทธิพิเศษ</value>
+  </data>
+  <data name="promotion" xml:space="preserve">
+    <value>โปรโมชั่น</value>
+  </data>
+  <data name="promo_name" xml:space="preserve">
+    <value>ชื่อโปรโปรชั่น</value>
+  </data>
+  <data name="promo_name_unsuccess" xml:space="preserve">
+    <value>มีชื่อโปรโมชั่นนี้แล้ว</value>
+  </data>
+  <data name="promo_rate" xml:space="preserve">
+    <value>เงินโบนัส</value>
+  </data>
+  <data name="promo_rate_point" xml:space="preserve">
+    <value>แต้มโบนัส</value>
+  </data>
+  <data name="regional_language_setting" xml:space="preserve">
+    <value>Hide Regional and language setting</value>
+  </data>
+  <data name="registry_editor" xml:space="preserve">
+    <value>Disable registry editor</value>
+  </data>
+  <data name="remaining_amount" xml:space="preserve">
+    <value>เงินจริงคงเหลือ</value>
+  </data>
+  <data name="remaining_free_amount" xml:space="preserve">
+    <value>เงินฟรีคงเหลือ</value>
+  </data>
+  <data name="remaining_hh" xml:space="preserve">
+    <value>ชั่วโมงคงเหลือ</value>
+  </data>
+  <data name="remaining_mm" xml:space="preserve">
+    <value>นาทีคงเหลือ</value>
+  </data>
+  <data name="remaining_money" xml:space="preserve">
+    <value>เงินคงเหลือ</value>
+  </data>
+  <data name="remaining_point" xml:space="preserve">
+    <value>แต้มคงเหลือ</value>
+  </data>
+  <data name="remaining_time" xml:space="preserve">
+    <value>เวลาคงเหลือ</value>
+  </data>
+  <data name="report" xml:space="preserve">
+    <value>รายงาน</value>
+  </data>
+  <data name="return" xml:space="preserve">
+    <value>ย้อนกลับ</value>
+  </data>
+  <data name="rounding" xml:space="preserve">
+    <value>Rounding</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>ค้นหา</value>
+  </data>
+  <data name="search_help" xml:space="preserve">
+    <value>ตัวเลือกการค้นหา</value>
+  </data>
+  <data name="security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="select_check" xml:space="preserve">
+    <value>เลือกทั้งหมด</value>
+  </data>
+  <data name="select_info" xml:space="preserve">
+    <value>เลือกข้อมูลที่ต้องการลบ</value>
+  </data>
+  <data name="shutdown_restart" xml:space="preserve">
+    <value>Disable Shutdown and Restart</value>
+  </data>
+  <data name="staff" xml:space="preserve">
+    <value>พนักงาน</value>
+  </data>
+  <data name="staff_lastname" xml:space="preserve">
+    <value>นามสกุล</value>
+  </data>
+  <data name="staff_name" xml:space="preserve">
+    <value>ชื่อ</value>
+  </data>
+  <data name="staff_name_unsuccess" xml:space="preserve">
+    <value>มีชื่อผู้ใช้นี้แล้ว</value>
+  </data>
+  <data name="staff_nickname" xml:space="preserve">
+    <value>ชื่อเล่น</value>
+  </data>
+  <data name="start_create_date" xml:space="preserve">
+    <value>นับจากวันที่ถูกสร้าง</value>
+  </data>
+  <data name="start_date" xml:space="preserve">
+    <value>ตั้งแต่ วัน เดือน ปี (ค.ศ.)</value>
+  </data>
+  <data name="start_first_use" xml:space="preserve">
+    <value>นับจากวันที่ถูกใช้งาน</value>
+  </data>
+  <data name="start_time" xml:space="preserve">
+    <value>เวลาเริ่ม</value>
+  </data>
+  <data name="status" xml:space="preserve">
+    <value>ใช้งานกลุ่มผู้ใช้</value>
+  </data>
+  <data name="swicth_user" xml:space="preserve">
+    <value>Disable Swicth User</value>
+  </data>
+  <data name="system" xml:space="preserve">
+    <value>Hide System panel applet</value>
+  </data>
+  <data name="s_date" xml:space="preserve">
+    <value>วันที่เริ่มต้น วัน เดือน ปี (ค.ศ.)</value>
+  </data>
+  <data name="task_manager" xml:space="preserve">
+    <value>Disable task manager</value>
+  </data>
+  <data name="tel" xml:space="preserve">
+    <value>โทร</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>เวลา</value>
+  </data>
+  <data name="title_confirm" xml:space="preserve">
+    <value>แน่ใจหรือไม่?</value>
+  </data>
+  <data name="title_false" xml:space="preserve">
+    <value>ไม่สำเร็จ</value>
+  </data>
+  <data name="title_success" xml:space="preserve">
+    <value>สำเร็จ</value>
+  </data>
+  <data name="top_up" xml:space="preserve">
+    <value>เติมเงิน</value>
+  </data>
+  <data name="top_up_amount" xml:space="preserve">
+    <value>เงินที่เติม</value>
+  </data>
+  <data name="top_up_report" xml:space="preserve">
+    <value>รายงานการเติมเงิน</value>
+  </data>
+  <data name="total_amount" xml:space="preserve">
+    <value>เงินทั้งหมด(บาท)</value>
+  </data>
+  <data name="total_free_amount" xml:space="preserve">
+    <value>เงินฟรีทั้งหมด</value>
+  </data>
+  <data name="total_hh" xml:space="preserve">
+    <value>ชั่วโมง</value>
+  </data>
+  <data name="total_mm" xml:space="preserve">
+    <value>นาที</value>
+  </data>
+  <data name="transfer" xml:space="preserve">
+    <value>โอนเงิน</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>ประเภทผู้ใช้</value>
+  </data>
+  <data name="type_name" xml:space="preserve">
+    <value>ประเภท</value>
+  </data>
+  <data name="unsuccess" xml:space="preserve">
+    <value>ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>ชื่อผู้ใช้</value>
+  </data>
+  <data name="user_account" xml:space="preserve">
+    <value>Hide User acount</value>
+  </data>
+  <data name="user_expire" xml:space="preserve">
+    <value>ชื่อผู้ใช้นี้ หมดอายุการใช้งาน</value>
+  </data>
+  <data name="user_group" xml:space="preserve">
+    <value>กลุ่มผู้ใช้</value>
+  </data>
+  <data name="user_history" xml:space="preserve">
+    <value>ประวัติการใช้งาน</value>
+  </data>
+  <data name="user_info" xml:space="preserve">
+    <value>ข้อมูลผู้ใช้</value>
+  </data>
+  <data name="use_amount" xml:space="preserve">
+    <value>เงินที่ใช้ไป</value>
+  </data>
+  <data name="use_time" xml:space="preserve">
+    <value>เวลาที่ใช้ไป</value>
+  </data>
+  <data name="wait_pls" xml:space="preserve">
+    <value>โปรดรอ</value>
+  </data>
+</root>

@@ -1,0 +1,383 @@
+﻿<UserControl x:Class="ICMS_Server.AddEditOptionCouponView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:ICMS_Server"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal" 
+             TextOptions.TextRenderingMode="Auto">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <DataTemplate x:Key="IconDeviceTemp">
+            <materialDesign:PackIcon Kind="CursorDefault"
+                                     HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding  Command="{Binding btn_delSelected}"
+                     Key="Delete"/>
+        <KeyBinding Command="{Binding btn_saveFileAs}"
+                    Key="S"
+                    Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding btn_openFile}"
+                    Key="O"
+                    Modifiers="Ctrl"/>
+    </UserControl.InputBindings>
+
+    <Grid Width="500" Height="auto"
+          IsEnabled="{Binding add_edit_coupon_check}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Margin="25">
+            <StackPanel>
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=username}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_username,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                        </TextBox>
+
+                        <ComboBox x:Name="item_group" 
+                                  Grid.Column="1"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  VerticalAlignment="Stretch" 
+                                  ItemsSource="{Binding group_item}" 
+                                  Width="auto"
+                                  Height="auto"
+                                  materialDesign:HintAssist.Hint="{lex:Loc Key=group}"
+                                  IsEnabled="{Binding group}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:InvokeCommandAction Command="{Binding item_group}"
+                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger  EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding item_group_change}"
+                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=hr_rate}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                             IsEnabled="False"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_hr_rate,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                        </TextBox>
+
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Name="price" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=hr_price}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_hr_price,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding price}"
+                                               CommandParameter="{Binding ElementName=price}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="74*"></ColumnDefinition>
+                            <ColumnDefinition Width="151*"/>
+                            <ColumnDefinition Width="225*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="free_money" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=free_money}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_free_money,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto" Grid.ColumnSpan="2">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding free_money}"
+                                               CommandParameter="{Binding ElementName=free_money}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="total_amount" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=total_amount}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                             IsEnabled="False"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_total_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding total_amount}"
+                                               CommandParameter="{Binding ElementName=total_amount}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="remaining_hh" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=add_hh}"
+                     VerticalAlignment="Stretch"
+                     Height="auto" 
+                                     IsEnabled="False"
+                     Margin="0,0,5,0"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_add_hh,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+                            <TextBox Grid.Column="1" x:Name="add_mm" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=add_mm}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                                     IsEnabled="False"
+                                     Margin="5,0,0,0"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_add_mm,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+                        </Grid>
+
+                    </Grid>
+                </DockPanel>
+
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=exp_date}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_exp_date,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                        </TextBox>
+
+
+
+                    </Grid>
+                </DockPanel>
+
+                <StackPanel Margin="0,10,0,0">
+                    <RadioButton Style="{StaticResource MaterialDesignRadioButton}"
+                                 VerticalContentAlignment="Center"
+                                 IsChecked="{Binding start_create_date}"
+                             Content="{lex:Loc Key=start_create_date}"></RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignRadioButton}"
+                                 VerticalContentAlignment="Center"
+                                 IsChecked="{Binding start_first_use}"
+                             Content="{lex:Loc Key=start_first_use}"></RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <DockPanel Grid.Row="1" HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Margin="0,0,25,25">
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        Command="{Binding btn_ok}"
+                        ToolTip="{lex:Loc Key=ok}"
+                        Content="{lex:Loc Key=ok}">
+            </Button>
+            <Separator Margin="5, 0, 0, 0" />
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                     Command="{Binding btn_cancel}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        ToolTip="{lex:Loc Key=cancel}"
+                        Content="{lex:Loc Key=cancel}">
+            </Button>
+        </DockPanel>
+    </Grid>
+
+    <!--<Grid Width="400" Height="auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Margin="25">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <StackPanel>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=username}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_username,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                    </TextBox>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=hr_rate}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_hr_rate,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                    </TextBox>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=hr_price}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_hr_price,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                    </TextBox>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=free_money}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_free_money,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                    </TextBox>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=total_amount}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_total_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                    </TextBox>
+                    <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=exp_date}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_exp_date,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                    </TextBox>
+                    <RadioButton Style="{StaticResource MaterialDesignLightRadioButton}"
+                                 Content="{lex:Loc Key=start_create_date}"
+                                 VerticalAlignment="Stretch"
+                                 VerticalContentAlignment="Center"></RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignLightRadioButton}"
+                                 Content="{lex:Loc Key=start_first_use}"
+                                 VerticalAlignment="Stretch"
+                                 VerticalContentAlignment="Center"></RadioButton>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1">
+                <StackPanel>
+                    <ComboBox x:Name="item_group" 
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  VerticalAlignment="Stretch" 
+                                  ItemsSource="{Binding group_item}" 
+                                  Width="auto"
+                                  Height="auto"
+                                  materialDesign:HintAssist.Hint="{lex:Loc Key=group}"
+                                  IsEnabled="{Binding group}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Loaded">
+                                <i:InvokeCommandAction Command="{Binding item_group}"
+                                               CommandParameter="{Binding ElementName=item_group}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger  EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding item_group_change}"
+                                               CommandParameter="{Binding ElementName=item_group}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>                  
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <DockPanel Grid.Row="1" HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Margin="0,0,25,25">
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        Command="{Binding btn_ok}"
+                        ToolTip="{lex:Loc Key=ok}"
+                        Content="{lex:Loc Key=ok}">
+            </Button>
+            <Separator Margin="5, 0, 0, 0" />
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                     Command="{Binding btn_cancel}"
+                        Padding="8"
+                        Width="100"
+                        Height="35"
+                        ToolTip="{lex:Loc Key=cancel}"
+                        Content="{lex:Loc Key=cancel}">
+            </Button>
+        </DockPanel>
+    </Grid>-->
+</UserControl>
