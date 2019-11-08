@@ -10,12 +10,23 @@ namespace ICMS_Server
 {
     public class Database
     {
-        public MySqlConnection conn = new MySqlConnection();
+        public MySqlConnection conn { get; set; }
         public Database()
         {
-            MessageBox.Show($"{"7"}");
-            string Strconn = "server='127.0.0.1'; username='root'; password=''; database='icms'; sslmode='none'; CharSet='utf8'; convertzerodatetime=true; Connection Timeout=5;";
-            conn = new MySqlConnection(Strconn);
+            MySqlConnectionStringBuilder conn_string = new MySqlConnectionStringBuilder();
+            conn_string.Server = "127.0.0.1";
+            conn_string.UserID = "root";
+            conn_string.Password = "";
+            conn_string.Database = "icms";
+            conn_string.SslMode = MySqlSslMode.None;
+            conn_string.CharacterSet = "utf8";
+            conn_string.ConvertZeroDateTime = true;
+            conn_string.ConnectionReset = false;
+            conn_string.Pooling = true;
+            conn_string.MinimumPoolSize = 10;
+            conn_string.MaximumPoolSize = 50;
+
+            conn = new MySqlConnection(conn_string.ToString());
         }
     }
 }

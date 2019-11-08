@@ -1,22 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj": {}
+    "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj": {
+    "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj",
+        "projectUniqueName": "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj",
         "projectName": "ICMS_Server",
-        "projectPath": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj",
-        "packagesPath": "C:\\Users\\Thornthan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\obj\\",
+        "projectPath": "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ICMS_Server.csproj",
+        "packagesPath": "C:\\Users\\ธรณ์ธันย์\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Thornthan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\ธรณ์ธันย์\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net48"

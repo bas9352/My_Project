@@ -4213,7 +4213,7 @@
       ]
     },
     "System.ValueTuple/4.5.0": {
-      "sha512": "CsPyB9xo1rx0yfQmL2IMCu+4E657nZPxDUs2ZDZa87++GlWGcG8PE9TB9l5+IkPa81zqCz2/J+5jnmF2WKa49Q==",
+      "sha512": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
       "type": "package",
       "path": "system.valuetuple/4.5.0",
       "files": [
@@ -4338,21 +4338,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Thornthan\\.nuget\\packages\\": {}
+    "C:\\Users\\ธรณ์ธันย์\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj",
+      "projectUniqueName": "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj",
       "projectName": "ICMS_Client",
-      "projectPath": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj",
-      "packagesPath": "C:\\Users\\Thornthan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Thornthan\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\obj\\",
+      "projectPath": "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\ICMS_Client.csproj",
+      "packagesPath": "C:\\Users\\ธรณ์ธันย์\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Client\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Thornthan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ธรณ์ธันย์\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net48"
