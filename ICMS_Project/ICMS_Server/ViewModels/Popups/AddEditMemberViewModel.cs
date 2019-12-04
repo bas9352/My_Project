@@ -36,13 +36,14 @@ namespace ICMS_Server
 
         public bool grid_add_edit_m_check { get; set; } = true;
 
-        private int conn_number;
-
         public bool group { get; set; } = true;
         public bool create_date { get; set; } = false;
         public bool start_date { get; set; } = false;
         public bool end_date { get; set; } = false;
         public bool IsCheck { get; set; } = false;
+
+        public bool member_add { get; set; } = false;
+        public bool member_edit { get; set; } = false;
         public DataTable data { get; set; }
         public DataRowView group_item { get; set; }
 

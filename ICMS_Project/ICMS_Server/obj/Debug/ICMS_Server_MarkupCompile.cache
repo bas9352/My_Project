@@ -16,5 +16,5 @@ C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server
 190-1040629627
 MainWindow.xaml;Styles\Fonts.xaml;Styles\ScrollBars.xaml;Views\Popups\AddEditCouponView.xaml;Views\Popups\AddEditOptionCouponView.xaml;Views\Popups\DebtView.xaml;Views\Popups\AddEditMemberView.xaml;Views\MemberView.xaml;Views\Popups\OptionCouponView.xaml;Views\Popups\AddEditBonusView.xaml;Views\Popups\AddEditGroupView.xaml;Views\Popups\AddEditPromotionView.xaml;Views\Popups\AddEditStaffView.xaml;Views\Options\AdminView.xaml;Views\ControlView.xaml;Views\CouponView.xaml;Views\Options\DatabaseView.xaml;Views\IncomeView.xaml;Views\LogHistoryView.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\MemberCouponView.xaml;Views\Options\DelCouponView.xaml;Views\Options\DelMemberView.xaml;Views\Options\OptionView.xaml;Views\Options\PromotionView.xaml;Views\Popups\ConfirmView.xaml;Views\Popups\FreeTopUpView.xaml;Views\Popups\GenerateCouponView.xaml;Views\Popups\LendView.xaml;Views\Popups\PayDebtView.xaml;Views\Popups\ProgessBarView.xaml;Views\Popups\TopUpView.xaml;Views\Popups\UserHistoryView.xaml;Views\Popups\UserTopUpHistoryView.xaml;Views\Popups\WarningView.xaml;Views\Reports\MemberReportView.xaml;Views\ReportView.xaml;Views\Options\StaffView.xaml;Views\Options\UserGroupView.xaml;
 
-False
+True
 

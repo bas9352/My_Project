@@ -49,39 +49,41 @@
 
         <GroupBox Margin="25"
                   Header="{Binding title}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Grid 
+                    Visibility="{Binding member_add,Converter={local:BooleanToVisiblityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                <Grid Margin="0,0,5,0">
-                    <StackPanel>
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    <Grid Margin="0,0,5,0">
+                        <StackPanel>
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=username}"
                      VerticalAlignment="Stretch"
                      Height="auto"
                      TextWrapping="Wrap"
                      Text="{Binding txt_username,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <PasswordBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                            <PasswordBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=password}"
                      VerticalAlignment="Stretch"
                                      MaxLength="16"
                      Height="auto"
                      Width="auto">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="PasswordChanged">
-                                    <i:InvokeCommandAction Command="{Binding pass}"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PasswordChanged">
+                                        <i:InvokeCommandAction Command="{Binding pass}"
                                                CommandParameter="{Binding ElementName=password}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </PasswordBox>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </PasswordBox>
 
-                        <!--<TextBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <!--<TextBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=password}"
                      VerticalAlignment="Stretch"
                      Height="auto"
@@ -90,7 +92,7 @@
                      Width="auto">
                         </TextBox>-->
 
-                        <ComboBox x:Name="item_group" 
+                            <ComboBox x:Name="item_group" 
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                   VerticalAlignment="Stretch" 
                                   ItemsSource="{Binding group_item}" 
@@ -98,43 +100,43 @@
                                   Height="auto"
                                   materialDesign:HintAssist.Hint="{lex:Loc Key=group}"
                                   IsEnabled="{Binding group}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                    <i:InvokeCommandAction Command="{Binding item_group}"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Loaded">
+                                        <i:InvokeCommandAction Command="{Binding item_group}"
                                                CommandParameter="{Binding ElementName=item_group}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger  EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding item_group_change}"
+                                    </i:EventTrigger>
+                                    <i:EventTrigger  EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding item_group_change}"
                                                CommandParameter="{Binding ElementName=item_group}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ComboBox>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
 
-                        <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                     Text="{Binding txt_c_date, Mode=TwoWay}"
                                     IsEnabled="{Binding create_date}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=create_date}"
                                     Width="auto"
                                     Height="auto">
-                        </DatePicker>
+                            </DatePicker>
 
-                        <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                     Text="{Binding txt_s_date, Mode=TwoWay}"
                                     IsEnabled="{Binding start_date}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=s_date}"
                                     Width="auto"
                                     Height="auto">
-                        </DatePicker>
+                            </DatePicker>
 
-                        <DockPanel>
-                            <CheckBox Style="{StaticResource MaterialDesignCheckBox}" 
+                            <DockPanel>
+                                <CheckBox Style="{StaticResource MaterialDesignCheckBox}" 
                                       IsChecked="{Binding IsCheck}"
                                       Command="{Binding btn_check_box}"
                                       Margin="0,10,0,0">
-                            </CheckBox>
-                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                </CheckBox>
+                                <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                         DisplayDateStart="{Binding s_put_date}"
                                     IsEnabled="{Binding end_date}"
@@ -142,50 +144,50 @@
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=e_date}"
                                     Width="auto"
                                     Height="auto">
-                            </DatePicker>
-                        </DockPanel>
-                    </StackPanel>
-                </Grid>
+                                </DatePicker>
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
 
-                <Grid Grid.Column="1"
+                    <Grid Grid.Column="1"
                       Margin="5,0,5,0">
-                    <StackPanel>
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        <StackPanel>
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=name}"
                      VerticalAlignment="Stretch"
                      Height="auto"
                      TextWrapping="Wrap"
                      Text="{Binding txt_name,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=nickname}"
                      VerticalAlignment="Stretch"
                      Height="auto"
                      TextWrapping="Wrap"
                      Text="{Binding txt_nickname,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=lastname}"
                      VerticalAlignment="Stretch"
                      Height="auto"
                      TextWrapping="Wrap"
                      Text="{Binding txt_lastname,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                     Text="{Binding txt_birthday, Mode=TwoWay}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=birthday}"
                                     Width="auto"
                                     Height="auto">
-                        </DatePicker>
+                            </DatePicker>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=tel}"
                      VerticalAlignment="Stretch"
                                  PreviewTextInput="NumberValidationTextBox"
@@ -194,27 +196,27 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_tel,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=email}"
                      VerticalAlignment="Stretch"
                      Height="auto"
                      TextWrapping="Wrap"
                      Text="{Binding txt_email,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=address}"
                      VerticalAlignment="Stretch"
                      Height="auto"
                      TextWrapping="Wrap"
                      Text="{Binding txt_address,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=id_card}"
                      VerticalAlignment="Stretch"
                                  PreviewTextInput="NumberValidationTextBox"
@@ -223,15 +225,15 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_id_card,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
-                    </StackPanel>
-                </Grid>
-                
-                <Grid Grid.Column="2"
+                            </TextBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Column="2"
                       Margin="5,0,0,0">
-                    <StackPanel>
-                        <DockPanel>
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        <StackPanel>
+                            <DockPanel>
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=debt}"
                      VerticalAlignment="Stretch"
                      Height="auto"
@@ -239,18 +241,18 @@
                                      IsEnabled="False"
                      Text="{Binding txt_debt,UpdateSourceTrigger=PropertyChanged}"
                      Width="200">
-                            </TextBox>
-                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                </TextBox>
+                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
                         Padding="8"
                                     Command="{Binding btn_is_debt}"
                                     IsEnabled="{Binding is_debt}">
-                                <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
-                            </Button>
-                        </DockPanel>
+                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                                </Button>
+                            </DockPanel>
 
-                        
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=top_up_amount}"
                      VerticalAlignment="Stretch"
                      Height="auto"
@@ -258,9 +260,9 @@
                                  IsEnabled="False"
                      Text="{Binding txt_total_real_amount,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=use_amount}"
                      VerticalAlignment="Stretch"
                                  IsEnabled="False"
@@ -268,10 +270,10 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_use_real_free_amount,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
+                            </TextBox>
 
-                        <DockPanel>
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <DockPanel>
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_amount}"
                      VerticalAlignment="Stretch"
                      Height="auto"
@@ -279,18 +281,18 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_remaining_real_amount,UpdateSourceTrigger=PropertyChanged}"
                      Width="200">
-                            </TextBox>
-                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                </TextBox>
+                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
                         Padding="8"
                                     Command="{Binding btn_is_remaining_amount}"
                                     IsEnabled="{Binding is_remaining_amount}">
-                                <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
-                            </Button>
-                        </DockPanel>
+                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                                </Button>
+                            </DockPanel>
 
-                        
 
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=total_free_amount}"
                      VerticalAlignment="Stretch"
                      Height="auto"
@@ -298,9 +300,9 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_total_free_amount,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
-                        <DockPanel>
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            </TextBox>
+                            <DockPanel>
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_free_amount}"
                      VerticalAlignment="Stretch"
                                      IsEnabled="False"
@@ -309,16 +311,16 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_remaining_free_amount,UpdateSourceTrigger=PropertyChanged}"
                      Width="200">
-                            </TextBox>
-                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                </TextBox>
+                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
                         Padding="8" 
                                     Command="{Binding btn_is_remaining_free_amount}"                                   
                                     IsEnabled="{Binding is_remaining_free_amount}">
-                                <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
-                            </Button>
-                        </DockPanel>
-                        
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                                </Button>
+                            </DockPanel>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_point}"
                      VerticalAlignment="Stretch"
                                  MaxLength="13"
@@ -327,10 +329,294 @@
                      TextWrapping="Wrap"
                      Text="{Binding txt_remaining_point,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
-                        </TextBox>
-                    </StackPanel>
+                            </TextBox>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
-            </Grid>
+                <Grid 
+                    Visibility="{Binding member_add,Converter={local:BooleanToVisiblityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Margin="0,0,5,0">
+                        <StackPanel>
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=username}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_username,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <PasswordBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=password}"
+                     VerticalAlignment="Stretch"
+                                     MaxLength="16"
+                     Height="auto"
+                     Width="auto">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PasswordChanged">
+                                        <i:InvokeCommandAction Command="{Binding pass}"
+                                               CommandParameter="{Binding ElementName=password}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </PasswordBox>
+
+                            <!--<TextBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=password}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding convertpass, Converter={local:TextToPasswordCharConverter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
+                     Width="auto">
+                        </TextBox>-->
+
+                            <ComboBox x:Name="item_group" 
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  VerticalAlignment="Stretch" 
+                                  ItemsSource="{Binding group_item}" 
+                                  Width="auto"
+                                  Height="auto"
+                                  materialDesign:HintAssist.Hint="{lex:Loc Key=group}"
+                                  IsEnabled="{Binding group}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Loaded">
+                                        <i:InvokeCommandAction Command="{Binding item_group}"
+                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger  EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding item_group_change}"
+                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+
+                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                    Text="{Binding txt_c_date, Mode=TwoWay}"
+                                    IsEnabled="{Binding create_date}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=create_date}"
+                                    Width="auto"
+                                    Height="auto">
+                            </DatePicker>
+
+                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                    Text="{Binding txt_s_date, Mode=TwoWay}"
+                                    IsEnabled="{Binding start_date}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=s_date}"
+                                    Width="auto"
+                                    Height="auto">
+                            </DatePicker>
+
+                            <DockPanel>
+                                <CheckBox Style="{StaticResource MaterialDesignCheckBox}" 
+                                      IsChecked="{Binding IsCheck}"
+                                      Command="{Binding btn_check_box}"
+                                      Margin="0,10,0,0">
+                                </CheckBox>
+                                <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                        DisplayDateStart="{Binding s_put_date}"
+                                    IsEnabled="{Binding end_date}"
+                                    Text="{Binding txt_e_date, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=e_date}"
+                                    Width="auto"
+                                    Height="auto">
+                                </DatePicker>
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Column="1"
+                      Margin="5,0,5,0">
+                        <StackPanel>
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=name}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_name,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=nickname}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_nickname,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=lastname}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_lastname,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                    Text="{Binding txt_birthday, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=birthday}"
+                                    Width="auto"
+                                    Height="auto">
+                            </DatePicker>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=tel}"
+                     VerticalAlignment="Stretch"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 MaxLength="10"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_tel,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=email}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_email,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=address}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_address,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=id_card}"
+                     VerticalAlignment="Stretch"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 MaxLength="13"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_id_card,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Column="2"
+                      Margin="5,0,0,0">
+                        <StackPanel>
+                            <DockPanel>
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=debt}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                                     IsEnabled="False"
+                     Text="{Binding txt_debt,UpdateSourceTrigger=PropertyChanged}"
+                     Width="200">
+                                </TextBox>
+                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                                    Command="{Binding btn_is_debt}"
+                                    IsEnabled="{Binding is_debt}">
+                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                                </Button>
+                            </DockPanel>
+
+
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=top_up_amount}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                                 IsEnabled="False"
+                     Text="{Binding txt_total_real_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=use_amount}"
+                     VerticalAlignment="Stretch"
+                                 IsEnabled="False"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_use_real_free_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
+                            <DockPanel>
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_amount}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                                     IsEnabled="False"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_remaining_real_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="200">
+                                </TextBox>
+                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                                    Command="{Binding btn_is_remaining_amount}"
+                                    IsEnabled="{Binding is_remaining_amount}">
+                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                                </Button>
+                            </DockPanel>
+
+
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=total_free_amount}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                                 IsEnabled="False"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_total_free_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+                            <DockPanel>
+                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_free_amount}"
+                     VerticalAlignment="Stretch"
+                                     IsEnabled="False"
+                                 MaxLength="13"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_remaining_free_amount,UpdateSourceTrigger=PropertyChanged}"
+                     Width="200">
+                                </TextBox>
+                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8" 
+                                    Command="{Binding btn_is_remaining_free_amount}"                                   
+                                    IsEnabled="{Binding is_remaining_free_amount}">
+                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
+                                </Button>
+                            </DockPanel>
+
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_point}"
+                     VerticalAlignment="Stretch"
+                                 MaxLength="13"
+                     Height="auto"
+                                 IsEnabled="False"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_remaining_point,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </StackPanel>
         </GroupBox>
         <DockPanel Grid.Row="1" HorizontalAlignment="Right"
                    VerticalAlignment="Top"
