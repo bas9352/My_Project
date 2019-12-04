@@ -33,8 +33,6 @@ namespace ICMS_Server
         public string txt_debt { get; set; }
         public string member_id { get; set; }
         public string txt_pay_debt { get; set; }
-
-        private int conn_number;
         public int ordinal { get; set; }
         #endregion
 
@@ -52,7 +50,7 @@ namespace ICMS_Server
                 if (txt_pay_debt == null || txt_pay_debt == "")
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_user_pass");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                 }
                 else
@@ -72,7 +70,6 @@ namespace ICMS_Server
                             DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                         }
                     }
-                    //MessageBox.Show($"{group_bonus}");
 
                 }
             });
@@ -84,10 +81,16 @@ namespace ICMS_Server
             });
         }
 
+        #endregion
+
+        #region Other method
         private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
             {
+                grid_p_check = true;
+                IoC.Application.DialogHostMain = false;
+                IsClear();
                 if (IoC.MainView.CurrPage == ApplicationPage.Control)
                 {
                     IoC.ControlView.item_online.Execute(IoC.ControlView.online_data);
@@ -96,12 +99,6 @@ namespace ICMS_Server
                 {
                     IoC.MemberView.item_member.Execute(IoC.MemberView.member_data);
                 }
-                grid_p_check = true;
-                IoC.Application.DialogHostMain = false;
-                IsClear();
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Reset;
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Member;
-                //IoC.StaffView.IsSelect();
             }
         }
 
@@ -123,8 +120,6 @@ namespace ICMS_Server
 
         public bool IsInsert()
         {
-            //ordinal = int.Parse(IoC.MemberView.mt_data["ordinal"].ToString());
-            var remaining_debt = float.Parse(txt_debt) - float.Parse(txt_pay_debt);
             string query = $"insert into member_top_up set " +
                            $"mt_member_id = '{member_id}', " +
                            $"mt_by = '{IoC.LoginView.login_id}', " +
@@ -154,14 +149,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -183,14 +176,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");

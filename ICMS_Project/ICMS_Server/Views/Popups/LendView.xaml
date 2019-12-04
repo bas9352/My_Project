@@ -179,7 +179,7 @@
                      Height="auto"
                              IsEnabled="False"
                      TextWrapping="Wrap"
-                     Text="{Binding txt_remaining_money,UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding txt_total_remaining_amount,UpdateSourceTrigger=PropertyChanged}"
                      Width="auto">
                 </TextBox>
             </StackPanel>

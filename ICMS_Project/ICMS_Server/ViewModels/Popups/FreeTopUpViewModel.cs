@@ -27,30 +27,30 @@ namespace ICMS_Server
     public class FreeTopUpViewModel : BaseView
     {
         #region Properties
-        public bool grid_add_free_amount { get; set; } = true;
         Database Sconn = new Database();
-        DataTable data { get; set; }
-        public string member_id { get; set; }
-        public string coupon_id { get; set; }
-        public string txt_username { get; set; }
+
+        public bool grid_add_free_check { get; set; } = true;
+
+        public string member_id { get; set; } = null;
+        public string coupon_id { get; set; } = null;
+        public string txt_username { get; set; } = null;
         public string txt_add_hh { get; set; } = "0 h";
         public string txt_add_mm { get; set; } = "0 m";
 
-        private int conn_number;
-
-        public string txt_add_money { get; set; }
-        public string txt_remaining_hh { get; set; }
-        public string txt_remaining_mm { get; set; }
-        public string txt_total_remaining_amount { get; set; }
-        public string remaining_money { get; set; }
-        public string total_free_amount { get; set; }
-        public string seconds { get; set; }
-        public string new_seconds { get; set; }
-        public string group_rate { get; set; }
-        public string member_bonus { get; set; }
-        public string group_bonus { get; set; }
-        public string remaining_free_money { get; set; }
+        public string txt_add_money { get; set; } = null;
+        public string txt_remaining_hh { get; set; } = null;
+        public string txt_remaining_mm { get; set; } = null;
+        public string txt_total_remaining_amount { get; set; } = null;
+        public string remaining_money { get; set; } = null;
+        public string total_free_amount { get; set; } = null;
+        public string seconds { get; set; } = null;
+        public string new_seconds { get; set; } = null;
+        public string group_rate { get; set; } = null;
+        public string member_bonus { get; set; } = null;
+        public string group_bonus { get; set; } = null;
+        public string remaining_free_money { get; set; } = null;
         public int ordinal { get; set; }
+
         private string hr, min;
 
 
@@ -79,16 +79,16 @@ namespace ICMS_Server
 
             btn_ok = new RelayCommand(p =>
             {
-                grid_add_free_amount = false;
+                grid_add_free_check = false;
+
                 if (txt_add_money == null || txt_add_money == "")
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_user_pass");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                 }
                 else
                 {
-                    //MessageBox.Show($"{group_bonus}");
                     if (IsInsert() == true)
                     {
                         IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
@@ -97,6 +97,7 @@ namespace ICMS_Server
                     }
                 }
             });
+
             btn_cancel = new RelayCommand(p=>
             {
                 IoC.Application.DialogHostMain = false;
@@ -104,6 +105,9 @@ namespace ICMS_Server
             });
         }
 
+        #endregion
+
+        #region other method
         public void IsClear()
         {
             txt_username = null;
@@ -119,7 +123,7 @@ namespace ICMS_Server
         {
             if ((bool)eventArgs.Parameter == true)
             {
-                grid_add_free_amount = true;
+                grid_add_free_check = true;
                 IoC.Application.DialogHostMain = false;
                 IsClear();
                 if (IoC.MainView.CurrPage == ApplicationPage.Control)
@@ -137,14 +141,13 @@ namespace ICMS_Server
                         IoC.CouponView.item_coupon.Execute(IoC.CouponView.coupon_data);
                     }
                 }
-                //IoC.StaffView.IsSelect();
             }
         }
         private void ConfirmClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
             {
-                grid_add_free_amount = true;
+                grid_add_free_check = true;
             }
         }
 
@@ -193,14 +196,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -214,78 +215,86 @@ namespace ICMS_Server
         {
             var item = p as TextBox;
 
-            if (txt_add_mm == "" || txt_add_mm == null)
+            if (item.IsFocused)
             {
-                min = "0";
-            }
-            else
-            {
-                string[] add_min = txt_add_mm.Split(" m".ToCharArray());
-                min = add_min[0];
-            }
+                if (txt_add_mm == "" || txt_add_mm == null)
+                {
+                    min = "0";
+                }
+                else
+                {
+                    string[] add_min = txt_add_mm.Split(" m".ToCharArray());
+                    min = add_min[0];
+                }
 
-            if (txt_add_hh == "" || txt_add_hh == null)
-            {
-                hr = "0";
-            }
-            else
-            {
-                string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
-                hr = add_hr[0];
-            }
-
-            txt_add_hh = string.Format("{0:0}" + " h", hr);
-            txt_add_mm = string.Format("{0:0}" + " m", min);
-
-            if (txt_add_hh != "" && txt_add_mm != "")
-            {
-                if (hr == "")
+                if (txt_add_hh == "" || txt_add_hh == null)
                 {
                     hr = "0";
                 }
-                new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
-                txt_add_money = (float.Parse(new_seconds) / float.Parse(group_rate)).ToString();
+                else
+                {
+                    string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
+                    hr = add_hr[0];
+                }
+
+                txt_add_hh = string.Format("{0:0}" + " h", hr);
+                txt_add_mm = string.Format("{0:0}" + " m", min);
+
+                if (txt_add_hh != "" && txt_add_mm != "")
+                {
+                    if (hr == "")
+                    {
+                        hr = "0";
+                    }
+                    new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
+                    txt_add_money = (float.Parse(new_seconds) / float.Parse(group_rate)).ToString();
+                }
+                IsChanged();
             }
-            IsChanged();
+            
         }
 
         public void GoAddMMChanged(object p)
         {
             var item = p as TextBox;
 
-            if (txt_add_mm == "" || txt_add_mm == null)
+            if (item.IsFocused)
             {
-                min = "0";
-            }
-            else
-            {
-                string[] add_min = txt_add_mm.Split(" m".ToCharArray());
-                min = add_min[0];
-            }
-
-            if (txt_add_hh == "" || txt_add_hh == null)
-            {
-                hr = "0";
-            }
-            else
-            {
-                string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
-                hr = add_hr[0];
-            }
-
-            txt_add_hh = string.Format("{0:0}" + " h", hr);
-            txt_add_mm = string.Format("{0:0}" + " m", min);
-
-            if (txt_add_hh != "" && txt_add_mm != "")
-            {
-                if (min == "")
+                if (txt_add_mm == "" || txt_add_mm == null)
                 {
                     min = "0";
                 }
-                new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
-                txt_add_money = (float.Parse(new_seconds) / float.Parse(group_rate)).ToString();
+                else
+                {
+                    string[] add_min = txt_add_mm.Split(" m".ToCharArray());
+                    min = add_min[0];
+                }
+
+                if (txt_add_hh == "" || txt_add_hh == null)
+                {
+                    hr = "0";
+                }
+                else
+                {
+                    string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
+                    hr = add_hr[0];
+                }
+
+                txt_add_hh = string.Format("{0:0}" + " h", hr);
+                txt_add_mm = string.Format("{0:0}" + " m", min);
+
+                if (txt_add_hh != "" && txt_add_mm != "")
+                {
+                    if (min == "")
+                    {
+                        min = "0";
+                    }
+                    new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
+                    txt_add_money = (float.Parse(new_seconds) / float.Parse(group_rate)).ToString();
+                }
+                IsChanged();
             }
-            IsChanged();
+            
         }
 
         public void GoAddMoneyChanged(object p)
@@ -309,7 +318,6 @@ namespace ICMS_Server
 
         public void IsChanged()
         {
-            //MessageBox.Show($"{member_new_seconds},{member_seconds},{txt_remaining_hh}");
             var member_total_seconds = float.Parse(new_seconds) + float.Parse(seconds);
             txt_remaining_hh = string.Format("{0:0}" + " h", Math.Floor(member_total_seconds / 3600));
             txt_remaining_mm = string.Format("{0:0}" + " m", Math.Round((member_total_seconds / 60) % 60));
@@ -321,7 +329,6 @@ namespace ICMS_Server
             else
             {
                 txt_total_remaining_amount = string.Format("{0:#,##0.##}", float.Parse(remaining_money) + float.Parse(txt_add_money));
-                //MessageBox.Show("{}");
             }
         }
 
@@ -337,14 +344,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");

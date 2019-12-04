@@ -37,7 +37,7 @@
     </UserControl.InputBindings>
 
     <Grid Width="400" Height="auto"
-          IsEnabled="{Binding grid_add_free_amount}">
+          IsEnabled="{Binding grid_add_free_check}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

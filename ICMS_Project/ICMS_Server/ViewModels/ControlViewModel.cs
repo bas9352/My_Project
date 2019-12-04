@@ -164,16 +164,16 @@ namespace ICMS_Server
                         IoC.LendView.remaining_money = online_item["v_all_remaining_amount"].ToString();//เงินคงเหลือ รวมจากเงินจริงและฟรี
                         IoC.LendView.txt_credit_limit = online_item["v_member_credit_limit"].ToString();//ยืมได้ไม่เกิน
                         IoC.LendView.txt_username = online_item["v_all_username"].ToString();
-                        IoC.LendView.txt_debt = online_item["v_member_total_debt_remaining_amount"].ToString();
+                        IoC.LendView.txt_debt = online_item["v_all_remaining_debt"].ToString();
                         IoC.LendView.member_seconds = (double.Parse(IoC.LendView.group_rate) * double.Parse(IoC.LendView.remaining_money)).ToString();
                         IoC.LendView.txt_remaining_hh = string.Format("{0:0}" + " h", Math.Floor(double.Parse(IoC.LendView.member_seconds) / 3600));
                         IoC.LendView.txt_remaining_mm = string.Format("{0:0}" + " m", Math.Round((double.Parse(IoC.LendView.member_seconds) / 60) % 60));
-                        IoC.LendView.ordinal = int.Parse(online_item["v_all_ordinal"].ToString());
-                        //ชำระหนี้
+                        IoC.LendView.ordinal = int.Parse(online_item["v_all_ordinal_last"].ToString());
+                        ////ชำระหนี้
                         IoC.PayDebtView.member_id = online_item["v_online_member_id"].ToString();
                         IoC.PayDebtView.txt_username = online_item["v_all_username"].ToString();
-                        IoC.PayDebtView.txt_debt = online_item["v_member_total_debt_remaining_amount"].ToString();
-                        IoC.PayDebtView.ordinal = int.Parse(online_item["v_all_ordinal"].ToString());
+                        IoC.PayDebtView.txt_debt = online_item["v_all_remaining_debt"].ToString();
+                        IoC.PayDebtView.ordinal = int.Parse(online_item["v_all_ordinal_last"].ToString());
                         DialogHost.Show(new DebtView(), "Main");
                     }
                     else

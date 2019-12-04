@@ -68,12 +68,12 @@ namespace ICMS_Server
         #endregion
 
         #region Constructor
-
         public MemberCouponViewModel()
         {
             item_search = new RelayCommand(p => GoItemSearch(p));
             item_search_changed = new RelayCommand(p => GoItemSearchChanged(p));
             txt_search_changed = new RelayCommand(p => GoTxtSearchChanged(p));
+
             btn_member = new RelayCommand(p =>
             {
                 txt_search_null = null;
@@ -102,7 +102,6 @@ namespace ICMS_Server
                 }
                 else if (CurrPage == ApplicationPage.Coupon)
                 {
-                    //IoC.AddEditCouponView.title = GetLocalizedValue<string>("add_coupon");
                     DialogHost.Show(new GenerateCouponView(), "Main");
                 }
             });
@@ -390,7 +389,6 @@ namespace ICMS_Server
                 
             });
         }
-
         #endregion
 
         #region Orther Mathod
@@ -401,7 +399,6 @@ namespace ICMS_Server
                 Task.Factory.StartNew(() =>
                 {
                 }).ContinueWith((previousTask) => {
-                    //MessageBox.Show("1");
                     if (CurrPage == ApplicationPage.Member)
                     {
                         query = $"delete from member " +
@@ -416,10 +413,8 @@ namespace ICMS_Server
 
                     try
                     {
-                        //MessageBox.Show("2");
                         if (OpenConnection() == true)
                         {
-                            //MessageBox.Show("3");
                             MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
                             MySqlDataReader reader = cmd.ExecuteReader();
 
@@ -434,8 +429,6 @@ namespace ICMS_Server
                             {
                                 IoC.CouponView.item_coupon.Execute(IoC.CouponView.coupon_data);
                             }
-                            //MessageBox.Show("4");
-                            //item_staff.Execute(staff_data);
                         }
                         else
                         {
@@ -446,21 +439,18 @@ namespace ICMS_Server
                     {
                         if (ex.Number == 1451)
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
                         else if (ex.Number == 0)
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
                         else
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
                             DialogHost.Show(new WarningView(), "Msg");
@@ -527,14 +517,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -542,7 +530,6 @@ namespace ICMS_Server
                 return false;
             }
         }
-
 
         public static T GetLocalizedValue<T>(string key)
         {

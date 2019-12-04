@@ -29,23 +29,24 @@ namespace ICMS_Server
         #region Properties
         Database Sconn = new Database();
         public bool grid_l_check { get; set; } = true;
-        public string member_id {get;set;}
-        public string txt_username { get; set; }
-        public string txt_debt { get; set; }
-        public string txt_credit_limit { get; set; }
+
+        public string member_id { get; set; } = null;
+        public string txt_username { get; set; } = null;
+        public string txt_debt { get; set; } = null;
+        public string txt_credit_limit { get; set; } = null;
         public string txt_add_hh { get; set; } = "0 h";
         public string txt_add_mm { get; set; } = "0 m";
-        public string txt_lend { get; set; }
-        public string txt_remaining_hh { get; set; }
-        public string txt_remaining_mm { get; set; }
-        public string txt_total_remaining_amount { get; set; }
-        public string remaining_money { get; set; }
-        public string member_seconds { get; set; }
-        public string member_new_seconds { get; set; }
-        public string group_rate { get; set; }
+        public string txt_lend { get; set; } = null;
+        public string txt_remaining_hh { get; set; } = null;
+        public string txt_remaining_mm { get; set; } = null;
+        public string txt_total_remaining_amount { get; set; } = null;
+        public string remaining_money { get; set; } = null;
+        public string member_seconds { get; set; } = null;
+        public string member_new_seconds { get; set; } = null;
+        public string group_rate { get; set; } = null;
 
-        private int conn_number;
         public int ordinal { get; set; }
+
         private string hr, min;
 
         #endregion
@@ -73,6 +74,7 @@ namespace ICMS_Server
             btn_ok = new RelayCommand(p =>
             {
                 grid_l_check = false;
+
                 if (txt_lend == null || txt_lend == "" || txt_credit_limit == null || txt_credit_limit == "")
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -81,7 +83,7 @@ namespace ICMS_Server
                 }
                 else
                 {
-                    if (float.Parse(txt_lend) > (float.Parse(txt_credit_limit)-float.Parse(txt_debt)))
+                    if (double.Parse(txt_lend) > (double.Parse(txt_credit_limit)- double.Parse(txt_debt)))
                     {
                         IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                         IoC.WarningView.msg_text = GetLocalizedValue<string>("max_credit");
@@ -105,6 +107,9 @@ namespace ICMS_Server
             });
         }
 
+        #endregion
+
+        #region other method
         public void IsClear()
         {
             member_id = null;
@@ -121,6 +126,9 @@ namespace ICMS_Server
         {
             if ((bool)eventArgs.Parameter == true)
             {
+                grid_l_check = true;
+                IoC.Application.DialogHostMain = false;
+                IsClear();
                 if (IoC.MainView.CurrPage == ApplicationPage.Control)
                 {
                     IoC.ControlView.item_online.Execute(IoC.ControlView.online_data);
@@ -129,9 +137,6 @@ namespace ICMS_Server
                 {
                     IoC.MemberView.item_member.Execute(IoC.MemberView.member_data);
                 }
-                grid_l_check = true;
-                IoC.Application.DialogHostMain = false;
-                IsClear();
             }
         }
         private void ConfirmClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
@@ -176,14 +181,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -196,78 +199,87 @@ namespace ICMS_Server
         public void GoAddHHChanged(object p)
         {
             var item = p as TextBox;
-            if (txt_add_mm == "" || txt_add_mm == null)
-            {
-                min = "0";
-            }
-            else
-            {
-                string[] add_min = txt_add_mm.Split(" m".ToCharArray());
-                min = add_min[0];
-            }
 
-            if (txt_add_hh == "" || txt_add_hh == null)
+            if (item.IsFocused)
             {
-                hr = "0";
-            }
-            else
-            {
-                string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
-                hr = add_hr[0];
-            }
+                if (txt_add_mm == "" || txt_add_mm == null)
+                {
+                    min = "0";
+                }
+                else
+                {
+                    string[] add_min = txt_add_mm.Split(" m".ToCharArray());
+                    min = add_min[0];
+                }
 
-            txt_add_hh = string.Format("{0:0}" + " h", hr);
-            txt_add_mm = string.Format("{0:0}" + " m", min);
-
-            if (txt_add_hh != "" && txt_add_mm != "")
-            {
-                if (hr == "")
+                if (txt_add_hh == "" || txt_add_hh == null)
                 {
                     hr = "0";
                 }
-                member_new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
-                txt_lend = (float.Parse(member_new_seconds) / float.Parse(group_rate)).ToString();
+                else
+                {
+                    string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
+                    hr = add_hr[0];
+                }
+
+                txt_add_hh = string.Format("{0:0}" + " h", hr);
+                txt_add_mm = string.Format("{0:0}" + " m", min);
+
+                if (txt_add_hh != "" && txt_add_mm != "")
+                {
+                    if (hr == "")
+                    {
+                        hr = "0";
+                    }
+                    member_new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
+                    txt_lend = (float.Parse(member_new_seconds) / float.Parse(group_rate)).ToString();
+                }
+                IsChanged();
             }
-            IsChanged();
+            
         }
 
         public void GoAddMMChanged(object p)
         {
             var item = p as TextBox;
 
-            if (txt_add_mm == "" || txt_add_mm == null)
+            if (item.IsFocused)
             {
-                min = "0";
-            }
-            else
-            {
-                string[] add_min = txt_add_mm.Split(" m".ToCharArray());
-                min = add_min[0];
-            }
-
-            if (txt_add_hh == "" || txt_add_hh == null)
-            {
-                hr = "0";
-            }
-            else
-            {
-                string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
-                hr = add_hr[0];
-            }
-
-            txt_add_hh = string.Format("{0:0}" + " h", hr);
-            txt_add_mm = string.Format("{0:0}" + " m", min);
-
-            if (txt_add_hh != "" && txt_add_mm != "")
-            {
-                if (min == "")
+                if (txt_add_mm == "" || txt_add_mm == null)
                 {
                     min = "0";
                 }
-                member_new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
-                txt_lend = (float.Parse(member_new_seconds) / float.Parse(group_rate)).ToString();
+                else
+                {
+                    string[] add_min = txt_add_mm.Split(" m".ToCharArray());
+                    min = add_min[0];
+                }
+
+                if (txt_add_hh == "" || txt_add_hh == null)
+                {
+                    hr = "0";
+                }
+                else
+                {
+                    string[] add_hr = txt_add_hh.Split(" h".ToCharArray());
+                    hr = add_hr[0];
+                }
+
+                txt_add_hh = string.Format("{0:0}" + " h", hr);
+                txt_add_mm = string.Format("{0:0}" + " m", min);
+
+                if (txt_add_hh != "" && txt_add_mm != "")
+                {
+                    if (min == "")
+                    {
+                        min = "0";
+                    }
+                    member_new_seconds = ((int.Parse(hr) * 3600) + (int.Parse(min) * 60)).ToString();
+                    txt_lend = (float.Parse(member_new_seconds) / float.Parse(group_rate)).ToString();
+                }
+                IsChanged();
             }
-            IsChanged();
+            
         }
 
         public void GoAddMoneyChanged(object p)
@@ -316,14 +328,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
