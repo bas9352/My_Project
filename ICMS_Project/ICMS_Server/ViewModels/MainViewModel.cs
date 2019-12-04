@@ -60,7 +60,9 @@ namespace ICMS_Server
             });
 
         }
+        #endregion
 
+        #region other method
         private void GoLoginItem(object p)
         {
             var item = p as TextBlock;

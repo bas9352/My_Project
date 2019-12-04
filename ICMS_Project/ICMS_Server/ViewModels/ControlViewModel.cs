@@ -26,12 +26,11 @@ namespace ICMS_Server
     {
         #region Properties
         Database Sconn = new Database();
+
         DispatcherTimer online_timer = new DispatcherTimer();
         public DataRowView online_item { get; set; } = null;
         public int online_index { get; set; }
         public DataGrid online_data { get; set; } = null;
-
-        private int conn_number;
 
         public string lab_username { get; set; }
         public string lab_start_time { get; set; }
@@ -45,7 +44,6 @@ namespace ICMS_Server
         public ICommand btn_top_up { get; set; }
         public ICommand btn_free_top_up { get; set; }
         public ICommand btn_debt { get; set; }
-
         public ICommand item_online { get; set; }
         public ICommand item_online_changed { get; set; }
         #endregion
@@ -62,7 +60,6 @@ namespace ICMS_Server
                 {
                     if (online_item["v_all_type_name"].ToString() == "member")
                     {
-                        //MessageBox.Show("test");
                         IoC.TopUpView.member_id = online_item["v_online_member_id"].ToString();
                         IoC.TopUpView.bonus_status = online_item["v_group_bonus_status"].ToString();//สถานะโบนัส เปิด หรือปิด
                         IoC.TopUpView.group_rate = (3600 / double.Parse(online_item["v_all_group_rate"].ToString())).ToString();//เรทราคา
@@ -198,7 +195,9 @@ namespace ICMS_Server
             online_timer.Tick += online_timer_tick;
             online_timer.Start();
         }
+        #endregion
 
+        #region other method
         private void online_timer_tick(object sender, EventArgs e)
         {
             if (IoC.MainView.CurrPage == ApplicationPage.Control)
@@ -219,14 +218,11 @@ namespace ICMS_Server
             }
             
         }
-        //DataRow data;
         private void GoItemOnline(object p)
         {
             IsClear();
             online_data = p as DataGrid;
             string query = $"select * " +
-                           //$"concat(v_all_hr,':',v_all_mn) as v_all_remaining_time, " +//เวลาที่เหลือ
-                           //$"concat(v_all_use_hr,':',v_all_use_mn) as v_all_use_remaining_time " +//เวลาที่ใช้ไป
                            $"from v_computer_status";
 
             try
@@ -242,13 +238,11 @@ namespace ICMS_Server
                     dt.Columns.Add("v_all_use_remaining_time", typeof(string));
                     dt.Columns.Add("new_v_group_rate", typeof(string));
 
-                    //MessageBox.Show($"{dt.Rows.Count}");
                     foreach (DataRow data in dt.Rows)
                     {
                         data["v_all_remaining_time"] = string.Format("{0:00:}{1:00}", data["v_all_hr"], data["v_all_mn"]);
                         data["v_all_use_remaining_time"] = string.Format("{0:00:}{1:00}", data["v_all_use_hr"], data["v_all_use_mn"]);
                         data["new_v_group_rate"] = string.Format("{0:#,##0.##}", data["v_all_group_rate"]);
-                        //MessageBox.Show($"{data["v_all_hr"].ToString()},{data["v_all_use_remaining_time"]}");
                     }
                     online_data.ItemsSource = dt.DefaultView;
                     
@@ -263,14 +257,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -295,7 +287,6 @@ namespace ICMS_Server
                 lab_group_rate = online_item["new_v_group_rate"].ToString();
                 await Task.Delay(15000);
             }).ContinueWith((previousTask) => {
-                //IsClear();
                 online_timer.Start();
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -318,14 +309,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");

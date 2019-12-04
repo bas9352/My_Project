@@ -321,3 +321,4 @@ C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\obj\Debug\ICMS_Server.csproj.CopyComplete
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\obj\Debug\ICMS_Server.exe
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\obj\Debug\ICMS_Server.pdb
+C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\obj\Debug\ICMS_Server.csprojAssemblyReference.cache
