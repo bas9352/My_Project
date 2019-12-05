@@ -55,7 +55,6 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <Grid Margin="0,0,5,0">
@@ -69,7 +68,7 @@
                      Width="auto">
                             </TextBox>
 
-                            <PasswordBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                            <PasswordBox x:Name="password_add" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=password}"
                      VerticalAlignment="Stretch"
                                      MaxLength="16"
@@ -78,7 +77,7 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PasswordChanged">
                                         <i:InvokeCommandAction Command="{Binding pass}"
-                                               CommandParameter="{Binding ElementName=password}"/>
+                                               CommandParameter="{Binding ElementName=password_add}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </PasswordBox>
@@ -92,7 +91,7 @@
                      Width="auto">
                         </TextBox>-->
 
-                            <ComboBox x:Name="item_group" 
+                            <ComboBox x:Name="item_group_add" 
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                   VerticalAlignment="Stretch" 
                                   ItemsSource="{Binding group_item}" 
@@ -103,17 +102,18 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
                                         <i:InvokeCommandAction Command="{Binding item_group}"
-                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                               CommandParameter="{Binding ElementName=item_group_add}"/>
                                     </i:EventTrigger>
                                     <i:EventTrigger  EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding item_group_change}"
-                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                               CommandParameter="{Binding ElementName=item_group_add}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>
 
                             <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
+                                        Language="th-TH"
                                     Text="{Binding txt_c_date, Mode=TwoWay}"
                                     IsEnabled="{Binding create_date}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=create_date}"
@@ -123,6 +123,7 @@
 
                             <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
+                                        Language="th-TH"
                                     Text="{Binding txt_s_date, Mode=TwoWay}"
                                     IsEnabled="{Binding start_date}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=s_date}"
@@ -140,6 +141,7 @@
                                     VerticalAlignment="Stretch"
                                         DisplayDateStart="{Binding s_put_date}"
                                     IsEnabled="{Binding end_date}"
+                                            Language="th-TH"
                                     Text="{Binding txt_e_date, Mode=TwoWay}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=e_date}"
                                     Width="auto"
@@ -162,15 +164,6 @@
                             </TextBox>
 
                             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=nickname}"
-                     VerticalAlignment="Stretch"
-                     Height="auto"
-                     TextWrapping="Wrap"
-                     Text="{Binding txt_nickname,UpdateSourceTrigger=PropertyChanged}"
-                     Width="auto">
-                            </TextBox>
-
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=lastname}"
                      VerticalAlignment="Stretch"
                      Height="auto"
@@ -179,9 +172,19 @@
                      Width="auto">
                             </TextBox>
 
+                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="{lex:Loc Key=nickname}"
+                     VerticalAlignment="Stretch"
+                     Height="auto"
+                     TextWrapping="Wrap"
+                     Text="{Binding txt_nickname,UpdateSourceTrigger=PropertyChanged}"
+                     Width="auto">
+                            </TextBox>
+
                             <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                     Text="{Binding txt_birthday, Mode=TwoWay}"
+                                    Language="th-TH"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=birthday}"
                                     Width="auto"
                                     Height="auto">
@@ -228,113 +231,9 @@
                             </TextBox>
                         </StackPanel>
                     </Grid>
-
-                    <Grid Grid.Column="2"
-                      Margin="5,0,0,0">
-                        <StackPanel>
-                            <DockPanel>
-                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=debt}"
-                     VerticalAlignment="Stretch"
-                     Height="auto"
-                     TextWrapping="Wrap"
-                                     IsEnabled="False"
-                     Text="{Binding txt_debt,UpdateSourceTrigger=PropertyChanged}"
-                     Width="200">
-                                </TextBox>
-                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
-                        Padding="8"
-                                    Command="{Binding btn_is_debt}"
-                                    IsEnabled="{Binding is_debt}">
-                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
-                                </Button>
-                            </DockPanel>
-
-
-
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=top_up_amount}"
-                     VerticalAlignment="Stretch"
-                     Height="auto"
-                     TextWrapping="Wrap"
-                                 IsEnabled="False"
-                     Text="{Binding txt_total_real_amount,UpdateSourceTrigger=PropertyChanged}"
-                     Width="auto">
-                            </TextBox>
-
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=use_amount}"
-                     VerticalAlignment="Stretch"
-                                 IsEnabled="False"
-                     Height="auto"
-                     TextWrapping="Wrap"
-                     Text="{Binding txt_use_real_free_amount,UpdateSourceTrigger=PropertyChanged}"
-                     Width="auto">
-                            </TextBox>
-
-                            <DockPanel>
-                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_amount}"
-                     VerticalAlignment="Stretch"
-                     Height="auto"
-                                     IsEnabled="False"
-                     TextWrapping="Wrap"
-                     Text="{Binding txt_remaining_real_amount,UpdateSourceTrigger=PropertyChanged}"
-                     Width="200">
-                                </TextBox>
-                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
-                        Padding="8"
-                                    Command="{Binding btn_is_remaining_amount}"
-                                    IsEnabled="{Binding is_remaining_amount}">
-                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
-                                </Button>
-                            </DockPanel>
-
-
-
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=total_free_amount}"
-                     VerticalAlignment="Stretch"
-                     Height="auto"
-                                 IsEnabled="False"
-                     TextWrapping="Wrap"
-                     Text="{Binding txt_total_free_amount,UpdateSourceTrigger=PropertyChanged}"
-                     Width="auto">
-                            </TextBox>
-                            <DockPanel>
-                                <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_free_amount}"
-                     VerticalAlignment="Stretch"
-                                     IsEnabled="False"
-                                 MaxLength="13"
-                     Height="auto"
-                     TextWrapping="Wrap"
-                     Text="{Binding txt_remaining_free_amount,UpdateSourceTrigger=PropertyChanged}"
-                     Width="200">
-                                </TextBox>
-                                <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
-                        Padding="8" 
-                                    Command="{Binding btn_is_remaining_free_amount}"                                   
-                                    IsEnabled="{Binding is_remaining_free_amount}">
-                                    <materialDesign:PackIcon Width="20" Height="20" Kind="Add" VerticalAlignment="Center" HorizontalAlignment="Stretch"></materialDesign:PackIcon>
-                                </Button>
-                            </DockPanel>
-
-                            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="{lex:Loc Key=remaining_point}"
-                     VerticalAlignment="Stretch"
-                                 MaxLength="13"
-                     Height="auto"
-                                 IsEnabled="False"
-                     TextWrapping="Wrap"
-                     Text="{Binding txt_remaining_point,UpdateSourceTrigger=PropertyChanged}"
-                     Width="auto">
-                            </TextBox>
-                        </StackPanel>
-                    </Grid>
                 </Grid>
                 <Grid 
-                    Visibility="{Binding member_add,Converter={local:BooleanToVisiblityConverter}}">
+                    Visibility="{Binding member_edit,Converter={local:BooleanToVisiblityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -352,7 +251,7 @@
                      Width="auto">
                             </TextBox>
 
-                            <PasswordBox x:Name="password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                            <PasswordBox x:Name="password_edit" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                      materialDesign:HintAssist.Hint="{lex:Loc Key=password}"
                      VerticalAlignment="Stretch"
                                      MaxLength="16"
@@ -361,7 +260,7 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PasswordChanged">
                                         <i:InvokeCommandAction Command="{Binding pass}"
-                                               CommandParameter="{Binding ElementName=password}"/>
+                                               CommandParameter="{Binding ElementName=password_edit}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </PasswordBox>
@@ -375,7 +274,7 @@
                      Width="auto">
                         </TextBox>-->
 
-                            <ComboBox x:Name="item_group" 
+                            <ComboBox x:Name="item_group_edit" 
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                   VerticalAlignment="Stretch" 
                                   ItemsSource="{Binding group_item}" 
@@ -386,11 +285,11 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
                                         <i:InvokeCommandAction Command="{Binding item_group}"
-                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                               CommandParameter="{Binding ElementName=item_group_edit}"/>
                                     </i:EventTrigger>
                                     <i:EventTrigger  EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding item_group_change}"
-                                               CommandParameter="{Binding ElementName=item_group}"/>
+                                               CommandParameter="{Binding ElementName=item_group_edit}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </ComboBox>

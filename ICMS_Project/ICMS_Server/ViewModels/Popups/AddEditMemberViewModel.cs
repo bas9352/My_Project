@@ -44,6 +44,7 @@ namespace ICMS_Server
 
         public bool member_add { get; set; } = false;
         public bool member_edit { get; set; } = false;
+
         public DataTable data { get; set; }
         public DataRowView group_item { get; set; }
 
@@ -89,6 +90,7 @@ namespace ICMS_Server
             pass = new RelayCommand(p => GoPassChanged(p));
             item_group = new RelayCommand(p => GoItemGroup(p));
             item_group_change = new RelayCommand(p => GoItemGroupChanged(p));
+
             btn_check_box = new RelayCommand(p =>
             {
                 if (IsCheck == true)
@@ -100,13 +102,15 @@ namespace ICMS_Server
                     end_date = false;
                 }
             });
+
             btn_ok = new RelayCommand(p =>
             {
                 grid_add_edit_m_check = false;
+
                 if (txt_username == null || txt_password == null || txt_username == "" || txt_password == "")
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_user_pass");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                 }
                 else
@@ -145,8 +149,7 @@ namespace ICMS_Server
                             {
                                 DataRow row = data.Rows[i];
                                 if (row["v_all_username"].ToString() == txt_username &&
-                                    row["v_all_id"].ToString() != member_id &&
-                                    row["v_all_type"].ToString() == "member")
+                                    row["v_member_id"].ToString() != member_id)
                                 {
                                     num = 1;
                                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -169,7 +172,6 @@ namespace ICMS_Server
                 }
 
             });
-
 
             btn_cancel = new RelayCommand(p =>
             {
@@ -289,10 +291,8 @@ namespace ICMS_Server
                     }
                     else
                     {
-                        //MessageBox.Show($"{selectedItem}");
                         item.SelectedValue = group_id;
                     }
-                    //selectedIndex = group_item.SelectedValue.ToString();
                     
                 }
                 else
@@ -305,14 +305,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -335,7 +333,7 @@ namespace ICMS_Server
             }
             else
             {
-                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
+                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd", new CultureInfo("us-US", false)) + " " + DateTime.Now.ToString("HH:mm:ss", new CultureInfo("us-US", false));
                 txt_e_date = e_date;
             }
             string query = $"insert into member set " +
@@ -350,10 +348,9 @@ namespace ICMS_Server
                            $"member_email = '{txt_email}', " +
                            $"member_address = '{txt_address}', " +
                            $"member_id_card = '{txt_id_card}', " +
-                           $"member_c_date = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                           $"member_c_date = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("us-US", false))}', " +
                            $"member_e_date = '{txt_e_date}', " +
                            $"member_create_by = '{IoC.LoginView.login_id}' ";
-            //MessageBox.Show($"{query}");
             
             try
             {
@@ -376,14 +373,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -442,14 +437,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -461,7 +454,7 @@ namespace ICMS_Server
 
         public bool IsSelect()
         {
-            string query = $"select * from v_all_username";
+            string query = $"select * from v_all_user";
             try
             {
                 if (OpenConnection() == true)
@@ -485,14 +478,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -514,14 +505,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");

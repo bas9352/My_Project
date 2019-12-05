@@ -25,7 +25,8 @@ namespace ICMS_Server
         {
             InitializeComponent();
             DataContext = IoC.AddEditMemberView;
-            password.Password = IoC.AddEditMemberView.txt_password;
+            password_add.Password = IoC.AddEditMemberView.txt_password;
+            password_edit.Password = IoC.AddEditMemberView.txt_password;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

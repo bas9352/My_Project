@@ -98,6 +98,10 @@ namespace ICMS_Server
                 {
                     IoC.AddEditMemberView.title = GetLocalizedValue<string>("add_member");
                     IoC.AddEditMemberView.member_id = null;
+
+                    IoC.AddEditMemberView.member_add = true;
+                    IoC.AddEditMemberView.member_edit = false;
+
                     DialogHost.Show(new AddEditMemberView(), "Main");
                 }
                 else if (CurrPage == ApplicationPage.Coupon)
@@ -110,6 +114,9 @@ namespace ICMS_Server
             {
                 if (CurrPage == ApplicationPage.Member)
                 {
+                    IoC.AddEditMemberView.member_add = false;
+                    IoC.AddEditMemberView.member_edit = true;
+
                     IoC.AddEditMemberView.is_debt = true;
                     IoC.AddEditMemberView.is_remaining_amount = true;
                     IoC.AddEditMemberView.is_remaining_free_amount = true;
@@ -124,23 +131,23 @@ namespace ICMS_Server
                     {
                         //1
                         IoC.AddEditMemberView.member_id = IoC.MemberView.member_item["v_member_id"].ToString();
-                        IoC.AddEditMemberView.txt_username = IoC.MemberView.member_item["v_member_username"].ToString();
-                        IoC.AddEditMemberView.txt_password = IoC.MemberView.member_item["v_member_password"].ToString();
-                        IoC.AddEditMemberView.group_id = IoC.MemberView.member_item["v_group_id"].ToString();
-                        IoC.AddEditMemberView.txt_c_date = IoC.MemberView.member_item["v_member_c_date"].ToString();
-                        IoC.AddEditMemberView.txt_s_date = IoC.MemberView.member_item["v_member_s_date"].ToString();
+                        IoC.AddEditMemberView.txt_username = IoC.MemberView.member_item["v_all_username"].ToString();
+                        IoC.AddEditMemberView.txt_password = IoC.MemberView.member_item["v_all_password"].ToString();
+                        IoC.AddEditMemberView.group_id = IoC.MemberView.member_item["v_all_group_id"].ToString();
+                        IoC.AddEditMemberView.txt_c_date = IoC.MemberView.member_item["v_all_c_date"].ToString();
+                        IoC.AddEditMemberView.txt_s_date = IoC.MemberView.member_item["v_all_s_date"].ToString();
 
-                        if (IoC.MemberView.member_item["v_member_e_date"].ToString() == null || IoC.MemberView.member_item["v_member_e_date"].ToString() == "")
+                        if (IoC.MemberView.member_item["v_all_e_date"].ToString() == null || IoC.MemberView.member_item["v_all_e_date"].ToString() == "")
                         {
                             IoC.AddEditMemberView.IsCheck = false;
                             IoC.AddEditMemberView.end_date = false;
-                            IoC.AddEditMemberView.txt_e_date = IoC.MemberView.member_item["v_member_e_date"].ToString();
+                            IoC.AddEditMemberView.txt_e_date = DateTime.Now.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
                         }
                         else
                         {
                             IoC.AddEditMemberView.IsCheck = true;
                             IoC.AddEditMemberView.end_date = true;
-                            IoC.AddEditMemberView.txt_e_date = IoC.MemberView.member_item["v_member_e_date"].ToString();
+                            IoC.AddEditMemberView.txt_e_date = IoC.MemberView.member_item["v_all_e_date"].ToString();
                         }
 
                         //2
@@ -154,13 +161,13 @@ namespace ICMS_Server
                         IoC.AddEditMemberView.txt_id_card = IoC.MemberView.member_item["v_member_id_card"].ToString();
 
                         //3
-                        IoC.AddEditMemberView.txt_debt = IoC.MemberView.member_item["v_member_total_debt_remaining_amount"].ToString();
-                        IoC.AddEditMemberView.txt_total_real_amount = IoC.MemberView.member_item["v_member_total_real_amount"].ToString();
-                        IoC.AddEditMemberView.txt_use_real_free_amount = IoC.MemberView.member_item["v_online_total_use_amount"].ToString();
-                        IoC.AddEditMemberView.txt_remaining_real_amount = IoC.MemberView.member_item["v_member_remaining_real_amount"].ToString();
-                        IoC.AddEditMemberView.txt_total_free_amount = IoC.MemberView.member_item["v_member_total_free_amount"].ToString();
-                        IoC.AddEditMemberView.txt_remaining_free_amount = IoC.MemberView.member_item["v_member_remaining_free_amount"].ToString();
-                        IoC.AddEditMemberView.txt_remaining_point = IoC.MemberView.member_item["v_member_remaining_bonus_point"].ToString();
+                        IoC.AddEditMemberView.txt_debt = IoC.MemberView.member_item["v_remaining_debt_amount"].ToString();
+                        IoC.AddEditMemberView.txt_total_real_amount = IoC.MemberView.member_item["v_total_real_top_up"].ToString();
+                        IoC.AddEditMemberView.txt_use_real_free_amount = IoC.MemberView.member_item["v_all_use_real_amount"].ToString();
+                        IoC.AddEditMemberView.txt_remaining_real_amount = IoC.MemberView.member_item["v_all_remaining_real_amount"].ToString();
+                        IoC.AddEditMemberView.txt_total_free_amount = IoC.MemberView.member_item["v_total_free_top_up"].ToString();
+                        IoC.AddEditMemberView.txt_remaining_free_amount = IoC.MemberView.member_item["v_all_remaining_free_amount"].ToString();
+                        IoC.AddEditMemberView.txt_remaining_point = IoC.MemberView.member_item["v_remaining_bonus_amount"].ToString();
 
                         IoC.AddEditMemberView.title = GetLocalizedValue<string>("edit_member");
                         DialogHost.Show(new AddEditMemberView(), "Main");
@@ -199,7 +206,7 @@ namespace ICMS_Server
                             IoC.AddEditCouponView.end_date = true;
                         }
 
-                        ////2
+                        //2
                         IoC.AddEditCouponView.txt_total_real_amount = IoC.CouponView.coupon_item["v_coupon_total_real_amount"].ToString();
                         IoC.AddEditCouponView.txt_use_real_free_amount = IoC.CouponView.coupon_item["v_online_total_use_amount"].ToString();
                         IoC.AddEditCouponView.txt_remaining_real_amount = IoC.CouponView.coupon_item["v_coupon_remaining_real_amount"].ToString();
