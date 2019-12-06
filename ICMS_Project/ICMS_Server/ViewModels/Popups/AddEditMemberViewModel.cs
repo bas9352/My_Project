@@ -84,6 +84,7 @@ namespace ICMS_Server
         public ICommand item_group { get; set; }
         public ICommand item_group_change { get; set; }
         #endregion
+
         #region Constructor
         public AddEditMemberViewModel()
         {
@@ -179,7 +180,9 @@ namespace ICMS_Server
                 IsClear();
             });
         }
+        #endregion
 
+        #region Ohter method
         public void IsClear()
         {
             group = true;
@@ -395,7 +398,7 @@ namespace ICMS_Server
             }
             else
             {
-                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
+                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd", new CultureInfo("us-US", false)) + " " + DateTime.Now.ToString("HH:mm:ss", new CultureInfo("us-US", false));
                 txt_e_date = e_date;
             }
             string query = $"update member set " +

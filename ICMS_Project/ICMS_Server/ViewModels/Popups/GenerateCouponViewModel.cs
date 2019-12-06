@@ -25,6 +25,7 @@ namespace ICMS_Server
 {
     public class GenerateCouponViewModel : BaseView
     {
+        #region Properties
         public Database Sconn = new Database();
 
         public bool option_coupon_check { get; set; } = true;
@@ -53,7 +54,25 @@ namespace ICMS_Server
         public string coupon_time { get; set; }
         public string op_c_id { get; set; }
 
+        public class list
+        {
+            public int number { get; internal set; }
+            public string coupon_username { get; internal set; }
+            public string coupon_password { get; internal set; }
+            public string coupon_price { get; internal set; }
+            public string coupon_end_date { get; internal set; }
+            public string coupon_time { get; internal set; }
+            public string group_id { get; internal set; }
+            public string coupon_free_money { get; internal set; }
+            public string coupon_total_amount { get; internal set; }
+            public string coupon_create_date { get; internal set; }
+            public string coupon_start_date { get; internal set; }
+            public string day { get; internal set; }
+            public string op_c_id { get; internal set; }
+        }
+        #endregion
 
+        #region Commands        
         public ICommand btn_save { get; set; }
         public ICommand btn_cancel { get; set; }
         public ICommand btn_option_coupon { get; set; }
@@ -62,14 +81,14 @@ namespace ICMS_Server
         public ICommand item_coupon_changed { get; set; }
         public ICommand data_coupon { get; set; }
         public ICommand data_coupon_changed { get; set; }
+        #endregion
 
+        #region Constructor
         public GenerateCouponViewModel()
         {
             item_coupon = new RelayCommand(p => GoItemCoupon(p));
             item_coupon_changed = new RelayCommand(p => GoItemCouponChanged(p));
             data_coupon = new RelayCommand(p => GoDataCoupon(p));
-            data_coupon_changed = new RelayCommand(p => GoDataCouponChanged(p));
-
 
             btn_option_coupon = new RelayCommand(p=> 
             {
@@ -116,12 +135,10 @@ namespace ICMS_Server
                             coupon[i] = GenerateCoupon(5, rnd);
                             password[i] = GenerateCoupon(8, rnd);
                         }
-                        //number = n + 1;
                         coupon_username = coupon_item["v_op_c_name"] + String.Join(Environment.NewLine, coupon);
                         coupon_password = String.Join(Environment.NewLine, password);
                         group_id = coupon_item["v_group_id"].ToString();
                         coupon_hr_rate = coupon_item["v_group_rate"].ToString();
-                        //string exp_datetime = DateTime.Parse(reader["oc_exp_datetime"].ToString()).ToString("dd/MM/yyyy");
                         coupon_real_amount = coupon_item["v_op_c_real_amount"].ToString();
                         coupon_free_amount = coupon_item["v_op_c_free_amount"].ToString();
                         coupon_total_amount = (float.Parse(coupon_real_amount) + float.Parse(coupon_free_amount)).ToString();
@@ -147,7 +164,7 @@ namespace ICMS_Server
                             coupon_time = coupon_time,
                             day = day,
                             op_c_id = op_c_id
-                        });;;
+                        });
                     }
                 }
             });
@@ -163,92 +180,111 @@ namespace ICMS_Server
                 }
                 else
                 {
-                    DialogHost.Show(new ProgressBarView(), "InMain");
-
-                    int num = 0;
-                    Task.Factory.StartNew(() =>
+                    try
                     {
-                        for (int i = 0; i < grid_data.Items.Count; i++)
+                        if (OpenConnection() == true)
                         {
-                            var row = grid_data.Items[i];
-                            //var row = grid_data.ItemContainerGenerator.ContainerFromIndex(i) as DataGridRow;
-                            var item = row as list;
+                            DialogHost.Show(new ProgressBarView(), "InMain");
+                            int num = 0;
 
-                            if (item.coupon_end_date != item.day)
+                            Task.Factory.StartNew(() =>
                             {
-                                var end_date = DateTime.Parse(item.coupon_end_date).ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
-                                item.coupon_end_date = end_date;
-                            }
-
-                            string EncryptionKey = "test123456key";
-                            byte[] clearBytes = Encoding.Unicode.GetBytes(item.coupon_password);
-                            using (Aes encryptor = Aes.Create())
-                            {
-                                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                                encryptor.Key = pdb.GetBytes(32);
-                                encryptor.IV = pdb.GetBytes(16);
-                                using (MemoryStream ms = new MemoryStream())
+                                for (int i = 0; i < grid_data.Items.Count; i++)
                                 {
-                                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                                    var row = grid_data.Items[i];
+                                    var item = row as list;
+
+                                    if (item.coupon_end_date != item.day)
                                     {
-                                        cs.Write(clearBytes, 0, clearBytes.Length);
-                                        cs.Close();
+                                        var end_date = DateTime.Parse(item.coupon_end_date).ToString("yyyy-MM-dd", new CultureInfo("us-US", false)) + " " + DateTime.Now.ToString("HH:mm:ss", new CultureInfo("us-US", false));
+                                        item.coupon_end_date = end_date;
                                     }
-                                    item.coupon_password = Convert.ToBase64String(ms.ToArray());
+
+                                    string EncryptionKey = "test123456key";
+                                    byte[] clearBytes = Encoding.Unicode.GetBytes(item.coupon_password);
+                                    using (Aes encryptor = Aes.Create())
+                                    {
+                                        Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                                        encryptor.Key = pdb.GetBytes(32);
+                                        encryptor.IV = pdb.GetBytes(16);
+                                        using (MemoryStream ms = new MemoryStream())
+                                        {
+                                            using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                                            {
+                                                cs.Write(clearBytes, 0, clearBytes.Length);
+                                                cs.Close();
+                                            }
+                                            item.coupon_password = Convert.ToBase64String(ms.ToArray());
+                                        }
+                                    }
+
+                                    string query = $"insert into coupon set " +
+                                                   $"coupon_username = '{item.coupon_username}', " +
+                                                   $"coupon_password = '{item.coupon_password}', " +
+                                                   $"coupon_s_date = '{item.coupon_start_date}', " +
+                                                   $"coupon_e_date = '{item.coupon_end_date}', " +
+                                                   $"coupon_c_date = '{item.coupon_create_date}', " +
+                                                   $"coupon_create_by = '{IoC.LoginView.login_id}', " +
+                                                   $"op_c_id = '{item.op_c_id}';" +
+
+                                                   $"insert into coupon_top_up set " +
+                                                   $"ct_coupon_id = (select max(coupon_id) from coupon), " +
+                                                   $"ct_by = '{IoC.LoginView.login_id}', " +
+                                                   $"ct_ordinal = '1', " +
+                                                   $"ct_real_amount = '{item.coupon_price}', " +
+                                                   $"ct_free_amount = '{item.coupon_free_money}', " +
+                                                   $"ct_date = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("us-US", false))}' ";
+
+                                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                                    Sconn.conn.Close();                                    
+
+                                    if (i == (grid_data.Items.Count - 1))
+                                    {
+                                        num = 1;
+                                        reader.Close();
+                                        Sconn.conn.Close();
+                                    }
+                                    else
+                                    {
+                                        reader.Close();
+                                        Sconn.conn.Open();
+                                    }
                                 }
-                            }
 
-                            string query = $"insert into coupon set " +
-                                           $"coupon_username = '{item.coupon_username}', " +
-                                           $"coupon_password = '{item.coupon_password}', " +
-                                           $"coupon_s_date = '{item.coupon_start_date}', " +
-                                           $"coupon_e_date = '{item.coupon_end_date}', " +
-                                           $"coupon_c_date = '{item.coupon_create_date}', " +
-                                           $"coupon_create_by = '{IoC.LoginView.login_id}', " +
-                                           $"op_c_id = '{item.op_c_id}';" +
-
-                                           $"insert into coupon_top_up set " +
-                                           $"ct_coupon_id = (select max(coupon_id) from coupon), " +
-                                           $"ct_by = '{IoC.LoginView.login_id}', " +
-                                           $"ct_ordinal = '1', " +
-                                           $"ct_real_amount = '{item.coupon_price}', " +
-                                           $"ct_free_amount = '{item.coupon_free_money}', " +
-                                           $"ct_date = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("us-US", false))}' ";
-                            //MessageBox.Show($"{query}");
-
-                            if (IsInsert(query) == true)
+                            }).ContinueWith((previousTask) =>
                             {
-                                if (i == (grid_data.Items.Count - 1))
+                                if (num == 1)
                                 {
-                                    num = 1;
-                                    //MessageBox.Show($"{"test"}");
-                                    
+                                    IoC.Application.DialogHostInMain = false;
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("add_success");
+                                    DialogHost.Show(new WarningView(), "Msg", SuccessClosingEventHandler);
                                 }
-                            }
-                            else
-                            {
-                                grid_data.Items.Clear();
-                                grid_g_coupon = true;
-                                IoC.Application.DialogHostInMain = false;
-                                break;
-                            }
-                        }
-
-                    }).ContinueWith((previousTask) =>
-                    {
-                        if (num == 1)
-                        {
-                            IoC.Application.DialogHostInMain = false;
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("add_success");
-                            DialogHost.Show(new WarningView(), "Msg", SuccessClosingEventHandler);
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
                         }
                         else
                         {
-
+                            Sconn.conn.Close();
                         }
-                    }, TaskScheduler.FromCurrentSynchronizationContext());
-
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Sconn.conn.Close();
+                        if (ex.Number == 0)
+                        {
+                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                            DialogHost.Show(new WarningView(), "Msg");
+                        }
+                        else
+                        {
+                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                            DialogHost.Show(new WarningView(), "Msg");
+                        }
+                    }
                 }
             });
 
@@ -258,48 +294,9 @@ namespace ICMS_Server
                 IoC.Application.DialogHostMain = false;
             });
         }
+        #endregion
 
-        public bool IsInsert(string query)
-        {
-            try
-            {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    reader.Close();
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                //MessageBox.Show($"{ex.Message}");
-                return false;
-            }
-
-        }
+        #region Other method
 
         private void SuccessClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
@@ -334,13 +331,6 @@ namespace ICMS_Server
             coupon_id = null;
             data = null;
             txt_create_amount = "1";
-        }
-
-        private void GoDataCouponChanged(object p)
-        {
-            //var item = p as DataGrid;
-            //staff_item = item.SelectedItem as DataRowView;
-            //staff_index = item.SelectedIndex;
         }
 
         private void GoDataCoupon(object p)
@@ -394,10 +384,8 @@ namespace ICMS_Server
                     }
                     else
                     {
-                        //MessageBox.Show($"{selectedItem}");
                         item.SelectedValue = coupon_id;
                     }
-                    //selectedIndex = group_item.SelectedValue.ToString();
                     Sconn.conn.Close();
                 }
                 else
@@ -410,14 +398,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -453,14 +439,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -481,14 +465,12 @@ namespace ICMS_Server
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -496,26 +478,11 @@ namespace ICMS_Server
                 return false;
             }
         }
+
         public static T GetLocalizedValue<T>(string key)
         {
             return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":resLang:" + key);
         }
-
-        public class list
-        {
-            public int number { get; internal set; }
-            public string coupon_username { get; internal set; }
-            public string coupon_password { get; internal set; }
-            public string coupon_price { get; internal set; }
-            public string coupon_end_date { get; internal set; }
-            public string coupon_time { get; internal set; }
-            public string group_id { get; internal set; }
-            public string coupon_free_money { get; internal set; }
-            public string coupon_total_amount { get; internal set; }
-            public string coupon_create_date { get; internal set; }
-            public string coupon_start_date { get; internal set; }
-            public string day { get; internal set; }
-            public string op_c_id { get; internal set; }
-        }
+        #endregion
     }
 }
