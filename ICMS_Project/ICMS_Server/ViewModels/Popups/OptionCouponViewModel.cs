@@ -293,14 +293,15 @@ namespace ICMS_Server
         private void GoItemCoupon(object p)
         {
             //IsClear();
+            grid_op_c_check = false;
             var item = p as DataGrid;
             string query = $"select * from option_coupon " +
                            $"inner join user_group on user_group.group_id = option_coupon.group_id " +
                            $"order by option_coupon.op_c_id";
 
-            if (OpenConnection() == true)
+            try
             {
-                try
+                if (OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
                     MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
@@ -308,31 +309,34 @@ namespace ICMS_Server
                     adp.Fill(dt);
                     item.ItemsSource = dt.DefaultView;
                     grid_data = item;
-                    if (grid_data.Items.Count >= 10)
+                    if (grid_data != null)
                     {
-                        button_add = false;
-                    }
-                    else
-                    {
-                        button_add = true;
+                        grid_op_c_check = true;
                     }
                     Sconn.conn.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                }
-                finally
-                {
+                    
                     Sconn.conn.Close();
                 }
             }
-            else
+            catch (MySqlException ex)
             {
                 Sconn.conn.Close();
-                //MessageBox.Show($"{Sconn.msg_con}");
-            }
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
+                }
+            }            
         }
 
         public bool OpenConnection()
@@ -344,18 +348,30 @@ namespace ICMS_Server
             }
             catch (MySqlException ex)
             {
-                switch (ex.Number)
+                Sconn.conn.Close();
+                if (ex.Number == 0)
                 {
-                    case 0:
-                        MessageBox.Show(ex.ToString());
-                        break;
-                    case 1045:
-                        MessageBox.Show(ex.ToString());
-                        break;
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
                 return false;
             }
         }
+        private void conn_fail(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter == true)
+            {
+                grid_op_c_check = true;
+            }
+        }
+
         public static T GetLocalizedValue<T>(string key)
         {
             return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":resLang:" + key);

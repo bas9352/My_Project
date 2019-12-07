@@ -43,7 +43,7 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <GroupBox Margin="25,25,25,25"
-                  Header="{lex:Loc Key=coupon}">
+                  Header="{lex:Loc Key=option_coupon}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
@@ -58,7 +58,6 @@
                         Padding="8"
                         Width="100"
                         Height="35"
-                            IsEnabled="{Binding button_add}"
                         Command="{Binding btn_add}"
                         ToolTip="{lex:Loc Key=add}"
                         Content="{lex:Loc Key=add}">
