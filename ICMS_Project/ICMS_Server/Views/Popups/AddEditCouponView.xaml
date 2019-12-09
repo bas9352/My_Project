@@ -40,7 +40,7 @@
 
 
     <Grid Width="800" Height="520"
-          IsEnabled="{Binding grid_add_edit_m_check}">
+          IsEnabled="{Binding grid_add_edit_c_check}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

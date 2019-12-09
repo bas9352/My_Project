@@ -136,25 +136,18 @@ namespace ICMS_Server
                            $"where staff_username = '{txt_username}' and staff_password = '{txt_password}' ";
             try
             {
-                if (OpenConnection() == true)
-                { 
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    data = dt;
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                data = dt;
+                Sconn.conn.Close();
+                return true;
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -168,6 +161,10 @@ namespace ICMS_Server
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
         }
         public bool IsUpdate()
@@ -177,24 +174,17 @@ namespace ICMS_Server
                            $"where staff_id = '{login_data["staff_id"].ToString()}' ";
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                Sconn.conn.Open();
 
-                    reader.Close();
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Close();
+                Sconn.conn.Close();
+                return true;
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -208,6 +198,10 @@ namespace ICMS_Server
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
         }
 
@@ -239,32 +233,6 @@ namespace ICMS_Server
                     }
                     txt_password = Convert.ToBase64String(ms.ToArray());
                 }
-            }
-        }
-
-        public bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
             }
         }
 

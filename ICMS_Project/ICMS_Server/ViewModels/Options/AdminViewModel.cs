@@ -29,8 +29,6 @@ namespace ICMS_Server
         public string txt_new_password { get; set; } = null;
         public string txt_confirm_password { get; set; } = null;
         public Database Sconn = new Database();
-
-        private int conn_number;
         private string pass;
         private string id;
 
@@ -57,8 +55,6 @@ namespace ICMS_Server
 
             btn_ok = new RelayCommand(p =>
             {
-                //MessageBox.Show($"{txt_username}");
-                //MessageBox.Show($"{txt_old_password},{txt_new_password},{txt_confirm_password}");
                 if (txt_username == null ||
                     txt_old_password == null || 
                     txt_new_password == null || 
@@ -78,45 +74,38 @@ namespace ICMS_Server
                     }
                     else
                     {
-                        if (IsSelectCheckUserName() == true)
+                        if (IsSelectCheckUserName() == true && data_username.Rows.Count > 0)
                         {
                             int num = 0;
-                            for (int i = 0; i < data_username.Rows.Count; i++)
-                            {
-                                var item = data_username.Rows[i];
+                            var item = data_username.Rows[0];
 
-                                if (txt_username == item["v_all_username"].ToString() &&
-                                    item["v_all_id"].ToString() != IoC.LoginView.login_id &&
-                                    item["v_all_type_name"].ToString() != "admin")
-                                {
-                                    num = 1;
-                                }
+                            if (txt_username == item["v_all_username"].ToString() &&
+                                item["v_staff_id"].ToString() != IoC.LoginView.login_id &&
+                                item["v_all_type_name"].ToString() != "admin")
+                            {
+                                num = 1;
                             }
 
                             if (num == 0)
                             {
                                 if (IsSelectCheckPass() == true)
                                 {
-                                    for (int i = 0; i < data_pass.Rows.Count; i++)
-                                    {
-                                        row = data_pass.Rows[i];
-                                        //MessageBox.Show($"{row["staff_id"].ToString()}");
-                                        string EncryptionKey = "test123456key";
+                                    row = data_pass.Rows[0];
+                                    string EncryptionKey = "test123456key";
 
-                                        byte[] cipherBytes = Convert.FromBase64String(row["staff_password"].ToString());
-                                        Aes encryptor = Aes.Create();
-                                        Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                                        encryptor.Key = pdb.GetBytes(32);
-                                        encryptor.IV = pdb.GetBytes(16);
-                                        using (MemoryStream ms = new MemoryStream())
+                                    byte[] cipherBytes = Convert.FromBase64String(row["staff_password"].ToString());
+                                    Aes encryptor = Aes.Create();
+                                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                                    encryptor.Key = pdb.GetBytes(32);
+                                    encryptor.IV = pdb.GetBytes(16);
+                                    using (MemoryStream ms = new MemoryStream())
+                                    {
+                                        using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                                         {
-                                            using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-                                            {
-                                                cs.Write(cipherBytes, 0, cipherBytes.Length);
-                                                cs.Close();
-                                            }
-                                            pass = Encoding.Unicode.GetString(ms.ToArray());
+                                            cs.Write(cipherBytes, 0, cipherBytes.Length);
+                                            cs.Close();
                                         }
+                                        pass = Encoding.Unicode.GetString(ms.ToArray());
                                     }
 
                                     if (txt_old_password != pass)
@@ -136,7 +125,7 @@ namespace ICMS_Server
                                     }
                                 }
                             }
-                            else
+                            else if(IsSelectCheckUserName() == true && data_username.Rows.Count < 1)
                             {
                                 IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                                 IoC.WarningView.msg_text = GetLocalizedValue<string>("staff_name_unsuccess");
@@ -150,7 +139,6 @@ namespace ICMS_Server
             btn_cancel = new RelayCommand(p => 
             {
                 IsClear();
-                //IoC.OptionView.btn_officer.Execute("");
                 IoC.Application.CurrPage = ApplicationPage.Reset;
                 IoC.Application.CurrPage = ApplicationPage.Main;
             });
@@ -161,10 +149,8 @@ namespace ICMS_Server
             if ((bool)eventArgs.Parameter == true)
             {
                 IsClear();
-                //IoC.OptionView.btn_officer.Execute("");
                 IoC.OptionView.CurrPage = ApplicationPage.Reset;
                 IoC.OptionView.CurrPage = ApplicationPage.Admin;
-                //IoC.StaffView.IsSelect();
             }
         }
 
@@ -221,41 +207,35 @@ namespace ICMS_Server
 
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                Sconn.conn.Open();
 
-                    reader.Close();
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Close();
+                Sconn.conn.Close();
+                return true;
             }
             catch (MySqlException ex)
             {
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
-                Sconn.conn.Close();
                 return false;
             }
-            
+            finally
+            {
+                Sconn.conn.Close();
+            }
         }
 
         public bool IsSelectCheckPass()
@@ -266,40 +246,35 @@ namespace ICMS_Server
 
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    data_pass = dt;
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                data_pass = dt;
+                Sconn.conn.Close();
+                return true;
             }
             catch (MySqlException ex)
             {
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
-                Sconn.conn.Close();
                 return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
             
         }
@@ -307,72 +282,39 @@ namespace ICMS_Server
         public bool IsSelectCheckUserName()
         {
             string query = $"select * " +
-                           $"from v_all_username ";
+                           $"from v_all_user ";
 
-            try
-            {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    data_username = dt;
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
-            }
-            catch (MySqlException ex)
-            {
-                if (ex.Number == 0)
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                Sconn.conn.Close();
-                return false;
-            }
-        }
-
-        public bool OpenConnection()
-        {
             try
             {
                 Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                data_username = dt;
+                Sconn.conn.Close();
                 return true;
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
         }
 

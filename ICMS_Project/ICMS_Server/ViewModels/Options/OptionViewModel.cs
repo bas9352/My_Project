@@ -111,13 +111,11 @@ namespace ICMS_Server
             btn_admin = new RelayCommand(p =>
             {
                 CurrPage = ApplicationPage.Admin;
-                //DialogHost.Show(new AdminView(), "RootDialogMain");
             });
 
             btn_staff = new RelayCommand(p =>
             {
                 CurrPage = ApplicationPage.Staff;
-                //IoC.StaffView.IsSelect();
             });
 
             btn_database = new RelayCommand(p =>
@@ -134,7 +132,6 @@ namespace ICMS_Server
                 control = false;
                 additional = false;
                 CurrPage = ApplicationPage.UserGroup;
-                //IoC.UserGroupView.IsSelect();
             });
 
             btn_promotion = new RelayCommand(p =>

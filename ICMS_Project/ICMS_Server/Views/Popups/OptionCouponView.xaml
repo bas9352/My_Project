@@ -83,6 +83,7 @@
                 </DockPanel>
                 <DataGrid Grid.Row="1"
                     x:Name="coupon_data" Foreground="Black"
+                          CellStyle="{StaticResource DataGridCell}"
                           Style="{StaticResource MaterialDesignDataGrid}"
                           CanUserAddRows="False"
                           CanUserResizeColumns="False" 

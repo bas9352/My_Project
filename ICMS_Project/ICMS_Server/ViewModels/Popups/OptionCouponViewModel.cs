@@ -33,7 +33,7 @@ namespace ICMS_Server
         public bool button_add { get; set; } = false;
         public bool grid_op_c_check { get; set; } = true;
 
-        public DataGrid grid_data { get; set; }
+        public DataGrid op_c_data { get; set; }
         public Window MainApp { get; set; }
         public bool list_menu { get; set; } = false;
 
@@ -127,53 +127,6 @@ namespace ICMS_Server
                     IoC.AddEditOptionCouponView.txt_add_hh = string.Format("{0:0}" + " h", Math.Floor(float.Parse(IoC.AddEditOptionCouponView.seconds) / 3600));
                     IoC.AddEditOptionCouponView.txt_add_mm = string.Format("{0:0}" + " m", Math.Round((float.Parse(IoC.AddEditOptionCouponView.seconds) / 60) % 60));
                     
-                    
-                    //IoC.AddEditCouponView.IsChanged();
-                    ////IoC.AddEditStaffView.convertpass = IoC.AddEditStaffView.txt_password = reader["staff_password"].ToString();
-                    ////string EncryptionKey = "test123456key";
-
-                    ////byte[] cipherBytes = Convert.FromBase64String(reader["staff_password"].ToString());
-                    ////Aes encryptor = Aes.Create();
-                    ////Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                    ////encryptor.Key = pdb.GetBytes(32);
-                    ////encryptor.IV = pdb.GetBytes(16);
-                    ////using (MemoryStream ms = new MemoryStream())
-                    ////{
-                    ////    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-                    ////    {
-                    ////        cs.Write(cipherBytes, 0, cipherBytes.Length);
-                    ////        cs.Close();
-                    ////    }
-                    ////    IoC.AddEditStaffView.txt_password = Encoding.Unicode.GetString(ms.ToArray());
-                    ////}
-                    //IoC.AddEditStaffView.txt_password = staff_item["staff_password"].ToString();
-                    //IoC.AddEditStaffView.group_id = staff_item["group_id"].ToString();
-                    //IoC.AddEditStaffView.txt_name = staff_item["staff_name"].ToString();
-                    //IoC.AddEditStaffView.txt_lastname = staff_item["staff_lastname"].ToString();
-                    //IoC.AddEditStaffView.txt_nickname = staff_item["staff_nickname"].ToString();
-                    //IoC.AddEditStaffView.txt_birthday = staff_item["staff_birthday"].ToString();
-                    //IoC.AddEditStaffView.txt_tel = staff_item["staff_tel"].ToString();
-                    //IoC.AddEditStaffView.txt_email = staff_item["staff_email"].ToString();
-                    //IoC.AddEditStaffView.txt_address = staff_item["staff_address"].ToString();
-                    //IoC.AddEditStaffView.txt_id_card = staff_item["staff_id_card"].ToString();
-                    //IoC.AddEditStaffView.txt_c_date = staff_item["staff_c_date"].ToString();
-                    //IoC.AddEditStaffView.txt_s_date = staff_item["staff_s_date"].ToString();
-
-                    //if (staff_item["staff_e_date"].ToString() == null || staff_item["staff_e_date"].ToString() == "")
-                    //{
-                    //    IoC.AddEditStaffView.IsCheck = false;
-                    //    IoC.AddEditStaffView.end_date = false;
-                    //    IoC.AddEditStaffView.txt_e_date = staff_item["staff_e_date"].ToString();
-                    //}
-                    //else
-                    //{
-                    //    IoC.AddEditStaffView.IsCheck = true;
-                    //    IoC.AddEditStaffView.end_date = true;
-                    //    IoC.AddEditStaffView.txt_e_date = staff_item["staff_e_date"].ToString();
-                    //}
-                    ////IsRow();
-                    //IoC.AddEditStaffView.staff_id = staff_item["staff_id"].ToString();
-                    ////CurrPage = ApplicationPage.Admin;
                     DialogHost.Show(new AddEditOptionCouponView(), "InMain");
                 }
 
@@ -195,10 +148,6 @@ namespace ICMS_Server
                     DialogHost.Show(new ConfirmView(), "Msg", ExtendedClosingEventHandler);
                 }
             });
-            btn_ok = new RelayCommand(p=> 
-            {
-
-            });
 
             btn_cancel = new RelayCommand(p =>
             {
@@ -206,30 +155,20 @@ namespace ICMS_Server
                 DialogHost.Show(new GenerateCouponView(), "Main");
             });
         }
+        #endregion
 
+        #region Other method
         public void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
             {
                 if (IsDelete() == true)
                 {
-                    IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("del_success");
                     DialogHost.Show(new WarningView(), "Msg");
                     IoC.Application.DialogHostMain = false;
                     DialogHost.Show(new OptionCouponView(), "Main");
-                    //IoC.OptionCouponView.CurrPage = ApplicationPage.Reset;
-                    //IoC.OptionView.CurrPage = ApplicationPage.Staff;
-                    //IsClear();
-                    //IsSelect();
-                }
-                else
-                {
-                    IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
-                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                 }
             }
             else
@@ -249,37 +188,41 @@ namespace ICMS_Server
         {
             string query = $"select * from option_coupon";
 
-            if (OpenConnection() == true)
+            try
             {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
-                    DataRow dr = dt.Rows[coupon_index];
-                    dr.Delete();
-                    adp.Update(dt);
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
+                DataRow dr = dt.Rows[coupon_index];
+                dr.Delete();
+                adp.Update(dt);
+                Sconn.conn.Close();
+                return true;
             }
-            else
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                return false;
+            }
+            finally
             {
                 Sconn.conn.Close();
-                return false;
             }
         }
 
@@ -292,38 +235,30 @@ namespace ICMS_Server
 
         private void GoItemCoupon(object p)
         {
-            //IsClear();
+            IsClear();
             grid_op_c_check = false;
-            var item = p as DataGrid;
+            op_c_data = p as DataGrid;
             string query = $"select * from option_coupon " +
                            $"inner join user_group on user_group.group_id = option_coupon.group_id " +
                            $"order by option_coupon.op_c_id";
 
             try
             {
-                if (OpenConnection() == true)
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                op_c_data.ItemsSource = dt.DefaultView;
+                if (op_c_data != null)
                 {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    item.ItemsSource = dt.DefaultView;
-                    grid_data = item;
-                    if (grid_data != null)
-                    {
-                        grid_op_c_check = true;
-                    }
-                    Sconn.conn.Close();
-                }
-                else
-                {
-                    
-                    Sconn.conn.Close();
+                    grid_op_c_check = true;
                 }
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -334,41 +269,33 @@ namespace ICMS_Server
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
-            }            
+            }
+            finally
+            {
+                Sconn.conn.Close();
+            }
         }
 
-        public bool OpenConnection()
+        public void IsClear()
         {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
-                }
-                return false;
-            }
+            coupon_item = null;
+            coupon_index = 0;
         }
+
         private void conn_fail(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
             {
-                grid_op_c_check = true;
+                IoC.Application.DialogHostMsg = false;
+                Task.Factory.StartNew(async () =>
+                {
+                    await Task.Delay(5000);
+                }).ContinueWith((previousTask) =>
+                {
+                    item_coupon.Execute(op_c_data);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 

@@ -227,34 +227,27 @@ namespace ICMS_Server
 
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt); 
-                    Sconn.conn.Close();
-                    dt.Columns.Add("v_all_remaining_time", typeof(string));
-                    dt.Columns.Add("v_all_use_remaining_time", typeof(string));
-                    dt.Columns.Add("new_v_group_rate", typeof(string));
+                Sconn.conn.Open();
 
-                    foreach (DataRow data in dt.Rows)
-                    {
-                        data["v_all_remaining_time"] = string.Format("{0:00:}{1:00}", data["v_all_hr"], data["v_all_mn"]);
-                        data["v_all_use_remaining_time"] = string.Format("{0:00:}{1:00}", data["v_all_use_hr"], data["v_all_use_mn"]);
-                        data["new_v_group_rate"] = string.Format("{0:#,##0.##}", data["v_all_group_rate"]);
-                    }
-                    online_data.ItemsSource = dt.DefaultView;
-                    
-                }
-                else
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                dt.Columns.Add("v_all_remaining_time", typeof(string));
+                dt.Columns.Add("v_all_use_remaining_time", typeof(string));
+                dt.Columns.Add("new_v_group_rate", typeof(string));
+
+                foreach (DataRow data in dt.Rows)
                 {
-                    Sconn.conn.Close();
+                    data["v_all_remaining_time"] = string.Format("{0:00:}{1:00}", data["v_all_hr"], data["v_all_mn"]);
+                    data["v_all_use_remaining_time"] = string.Format("{0:00:}{1:00}", data["v_all_use_hr"], data["v_all_use_mn"]);
+                    data["new_v_group_rate"] = string.Format("{0:#,##0.##}", data["v_all_group_rate"]);
                 }
+                online_data.ItemsSource = dt.DefaultView;
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -268,7 +261,10 @@ namespace ICMS_Server
                     DialogHost.Show(new WarningView(), "Msg");
                 }
             }
-            
+            finally
+            {
+                Sconn.conn.Close();
+            }
         }
 
         private void GoItemOnlineChanged(object p)
@@ -295,32 +291,6 @@ namespace ICMS_Server
         {
             online_item = null;
             online_index = 0;
-        }
-
-        private bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
         }
 
         public static T GetLocalizedValue<T>(string key)

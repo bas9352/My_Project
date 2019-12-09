@@ -161,24 +161,17 @@ namespace ICMS_Server
                            $"where member_id = {member_id} ";
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                Sconn.conn.Open();
 
-                    reader.Close();
-                    Sconn.conn.Close();
-                    return true;
-                }
-                else
-                {
-                    Sconn.conn.Close();
-                    return false;
-                }
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Close();
+                Sconn.conn.Close();
+                return true;
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -193,7 +186,10 @@ namespace ICMS_Server
                 }
                 return false;
             }           
-
+            finally
+            {
+                Sconn.conn.Close();
+            }
         }
 
         public void GoAddHHChanged(object p)
@@ -316,32 +312,6 @@ namespace ICMS_Server
                 txt_total_remaining_amount = string.Format("{0:#,##0.##}", float.Parse(remaining_money) + float.Parse(txt_lend));
             }
         }
-        public bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
-        }
-
 
         public static T GetLocalizedValue<T>(string key)
         {

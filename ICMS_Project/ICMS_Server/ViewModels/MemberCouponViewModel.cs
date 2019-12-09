@@ -188,30 +188,32 @@ namespace ICMS_Server
                     {
                         //1
                         IoC.AddEditCouponView.coupon_id = IoC.CouponView.coupon_item["v_coupon_id"].ToString();
-                        IoC.AddEditCouponView.txt_username = IoC.CouponView.coupon_item["v_coupon_username"].ToString();
-                        IoC.AddEditCouponView.txt_password = IoC.CouponView.coupon_item["v_coupon_password"].ToString();
-                        IoC.AddEditCouponView.group_id = IoC.CouponView.coupon_item["v_group_id"].ToString();
-                        IoC.AddEditCouponView.txt_c_date = IoC.CouponView.coupon_item["v_coupon_c_date"].ToString();
-                        IoC.AddEditCouponView.txt_s_date = IoC.CouponView.coupon_item["v_coupon_s_date"].ToString();
-
-                        IoC.AddEditCouponView.txt_e_date = IoC.CouponView.coupon_item["v_coupon_e_date"].ToString();
-                        if (IoC.CouponView.coupon_item["v_coupon_e_date"].ToString() == null || IoC.CouponView.coupon_item["v_coupon_e_date"].ToString() == "")
+                        IoC.AddEditCouponView.txt_username = IoC.CouponView.coupon_item["v_all_username"].ToString();
+                        IoC.AddEditCouponView.txt_password = IoC.CouponView.coupon_item["v_all_password"].ToString();
+                        IoC.AddEditCouponView.group_id = IoC.CouponView.coupon_item["v_all_group_id"].ToString();
+                        IoC.AddEditCouponView.txt_c_date = IoC.CouponView.coupon_item["v_all_c_date"].ToString();
+                        IoC.AddEditCouponView.txt_s_date = IoC.CouponView.coupon_item["v_all_s_date"].ToString();
+                        
+                                                
+                        if (IoC.CouponView.coupon_item["v_all_e_date"].ToString() == null || IoC.CouponView.coupon_item["v_all_e_date"].ToString() == "")
                         {
                             IoC.AddEditCouponView.IsCheck = false;
                             IoC.AddEditCouponView.end_date = false;
+                            IoC.AddEditCouponView.txt_e_date = DateTime.Now.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
                         }
                         else
                         {
                             IoC.AddEditCouponView.IsCheck = true;
                             IoC.AddEditCouponView.end_date = true;
+                            IoC.AddEditCouponView.txt_e_date = IoC.CouponView.coupon_item["v_all_e_date"].ToString();
                         }
 
                         //2
-                        IoC.AddEditCouponView.txt_total_real_amount = IoC.CouponView.coupon_item["v_coupon_total_real_amount"].ToString();
-                        IoC.AddEditCouponView.txt_use_real_free_amount = IoC.CouponView.coupon_item["v_online_total_use_amount"].ToString();
-                        IoC.AddEditCouponView.txt_remaining_real_amount = IoC.CouponView.coupon_item["v_coupon_remaining_real_amount"].ToString();
-                        IoC.AddEditCouponView.txt_total_free_amount = IoC.CouponView.coupon_item["v_coupon_total_free_amount"].ToString();
-                        IoC.AddEditCouponView.txt_remaining_free_amount = IoC.CouponView.coupon_item["v_coupon_remaining_free_amount"].ToString();
+                        IoC.AddEditCouponView.txt_total_real_amount = IoC.CouponView.coupon_item["v_all_total_real_amount"].ToString();
+                        IoC.AddEditCouponView.txt_use_real_free_amount = IoC.CouponView.coupon_item["v_all_use_real_amount"].ToString();
+                        IoC.AddEditCouponView.txt_remaining_real_amount = IoC.CouponView.coupon_item["v_all_remaining_real_amount"].ToString();
+                        IoC.AddEditCouponView.txt_total_free_amount = IoC.CouponView.coupon_item["v_all_total_free_amount"].ToString();
+                        IoC.AddEditCouponView.txt_remaining_free_amount = IoC.CouponView.coupon_item["v_all_remaining_free_amount"].ToString();
 
                         IoC.AddEditCouponView.title = GetLocalizedValue<string>("edit_coupon");
                         DialogHost.Show(new AddEditCouponView(), "Main");
@@ -403,68 +405,61 @@ namespace ICMS_Server
         {
             if ((bool)eventArgs.Parameter == true)
             {
-                Task.Factory.StartNew(() =>
+                if (CurrPage == ApplicationPage.Member)
                 {
-                }).ContinueWith((previousTask) => {
+                    query = $"delete from member " +
+                            $"where member_id = '{IoC.MemberView.member_item["v_member_id"].ToString()}' ";
+                }
+                else if (CurrPage == ApplicationPage.Coupon)
+                {
+                    query = $"delete from coupon " +
+                            $"where coupon_id = '{IoC.CouponView.coupon_item["v_coupon_id"].ToString()}' ";
+                }
+
+                try
+                {
+                    Sconn.conn.Open();
+
+                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    reader.Close();
+                    Sconn.conn.Close();
+
                     if (CurrPage == ApplicationPage.Member)
                     {
-                        query = $"delete from member " +
-                                $"where member_id = '{IoC.MemberView.member_item["v_member_id"].ToString()}' ";
+                        IoC.MemberView.item_member.Execute(IoC.MemberView.member_data);
                     }
                     else if (CurrPage == ApplicationPage.Coupon)
                     {
-                        query = $"delete from coupon " +
-                                $"where coupon_id = '{IoC.CouponView.coupon_item["v_coupon_id"].ToString()}' ";
+                        IoC.CouponView.item_coupon.Execute(IoC.CouponView.coupon_data);
                     }
-
-
-                    try
+                }
+                catch (MySqlException ex)
+                {
+                    if (ex.Number == 1451)
                     {
-                        if (OpenConnection() == true)
-                        {
-                            MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                            MySqlDataReader reader = cmd.ExecuteReader();
-
-                            reader.Close();
-                            Sconn.conn.Close();
-
-                            if (CurrPage == ApplicationPage.Member)
-                            {
-                                IoC.MemberView.item_member.Execute(IoC.MemberView.member_data);
-                            }
-                            else if (CurrPage == ApplicationPage.Coupon)
-                            {
-                                IoC.CouponView.item_coupon.Execute(IoC.CouponView.coupon_data);
-                            }
-                        }
-                        else
-                        {
-                            Sconn.conn.Close();
-                        }
+                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                        IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
+                        DialogHost.Show(new WarningView(), "Msg");
                     }
-                    catch (MySqlException ex)
+                    else if (ex.Number == 0)
                     {
-                        if (ex.Number == 1451)
-                        {
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
-                            DialogHost.Show(new WarningView(), "Msg");
-                        }
-                        else if (ex.Number == 0)
-                        {
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                            DialogHost.Show(new WarningView(), "Msg");
-                        }
-                        else
-                        {
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
-                            DialogHost.Show(new WarningView(), "Msg");
-                        }
-                        Sconn.conn.Close();
+                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                        IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                        DialogHost.Show(new WarningView(), "Msg");
                     }
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                    else
+                    {
+                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                        IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
+                        DialogHost.Show(new WarningView(), "Msg");
+                    }
+                }
+                finally
+                {
+                    Sconn.conn.Close();
+                }
             }
         }
 
@@ -511,33 +506,7 @@ namespace ICMS_Server
                 IoC.CouponView.item_coupon.Execute(IoC.CouponView.coupon_data);
             }
         }
-
-        public bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
-        }
-
+        
         public static T GetLocalizedValue<T>(string key)
         {
             return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":resLang:" + key);

@@ -49,17 +49,13 @@ namespace ICMS_Server
             btn_main = new RelayCommand(p =>
             {
                 IoC.MainView.CurrPage = ApplicationPage.Control;
-                //DialogHost.Show(new MainView(), "RootDialogMain");
                 CurrPage = ApplicationPage.Main;
             });
 
             btn_option = new RelayCommand(p =>
             {
                 IoC.OptionView.btn_officer.Execute("");
-                //IoC.OptionView.CurrPage = ApplicationPage.Admin;
                 CurrPage = ApplicationPage.Option;
-
-                //DialogHost.Show(new OptionView(), "RootDialogMain");
             });
 
             btn_logout = new RelayCommand(p =>
@@ -67,7 +63,6 @@ namespace ICMS_Server
                 IoC.LoginView.IsClear();
                 list_menu = false;
                 CurrPage = ApplicationPage.Login;                
-                //DialogHost.Show(new ReportView(), "RootDialogMain");
             });
 
         }

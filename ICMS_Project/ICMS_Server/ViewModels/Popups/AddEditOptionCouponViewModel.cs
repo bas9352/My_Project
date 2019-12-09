@@ -31,6 +31,7 @@ namespace ICMS_Server
         public bool add_edit_coupon_check { get; set; } = true;
         public DataTable data { get; set; }
         public DataRowView group_item { get; set; }
+        public ComboBox group_data { get; set; }
         public string op_c_id { get; set; } = null;
         public string txt_username { get; set; } = null;
         public string group_id { get; set; } = null;
@@ -64,8 +65,6 @@ namespace ICMS_Server
         public ICommand pass { get; set; }
         public ICommand item_group { get; set; }
         public ICommand item_group_change { get; set; }
-
-
         #endregion
 
         #region Constructor
@@ -79,7 +78,6 @@ namespace ICMS_Server
 
             btn_ok = new RelayCommand(p=>
             {
-                //DialogHost.Show(new ProgressBarView(), "Msg");
                 add_edit_coupon_check = false;
 
                 if (txt_username == null || txt_username == "" ||
@@ -89,16 +87,6 @@ namespace ICMS_Server
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                    //Task.Factory.StartNew(() =>
-                    //{
-
-                    //}).ContinueWith((previousTask) =>
-                    //{
-                    //    IoC.Application.DialogHostMsg = false;
-                    //    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    //    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
-                    //    DialogHost.Show(new WarningView(), "Msg");
-                    //}, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 else
                 {
@@ -128,12 +116,6 @@ namespace ICMS_Server
                                     IoC.WarningView.msg_text = GetLocalizedValue<string>("add_success");
                                     DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                                 }
-                                else
-                                {
-                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("add_unsuccess");
-                                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                }
                             }
                         }
                         else
@@ -158,22 +140,8 @@ namespace ICMS_Server
                                     IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
                                     DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                                 }
-                                else
-                                {
-                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_unsuccess");
-                                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                }
                             }
                         }
-
-
-                    }
-                    else
-                    {
-                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                        IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                        DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                     }
                 }
             });
@@ -187,60 +155,53 @@ namespace ICMS_Server
             });
 
         }
+        #endregion
 
+        #region Other method
         public bool IsInsert()
         {
-            string s_c_date;
-            if (start_create_date == true)
+            string query = $"insert into option_coupon set " +
+                           $"op_c_name = '{txt_username}', " +
+                           $"op_c_real_amount = '{txt_hr_price}', " +
+                           $"op_c_free_amount = '{txt_free_money}', " +
+                           $"op_c_s_date = '{start_create_date}', " +
+                           $"op_c_e_date = '{txt_exp_date}', " +
+                           $"group_id = '{group_id}' ";
+            try
             {
-                s_c_date = "1";
-            }
-            else
-            {
-                s_c_date = "0";
-            }
-
-            string query = $"insert into option_coupon (op_c_name, op_c_real_amount, op_c_free_amount, op_c_s_date, op_c_e_date, group_id) value " +
-                           $"('{txt_username}', '{txt_hr_price}', '{txt_free_money}', '{s_c_date}', '{txt_exp_date}', '{group_id}')";
-            //MessageBox.Show($"{query}");
-            //return true;
-            if (OpenConnection() == true)
-            {
-                try
+                Sconn.conn.Open();
+                if (Sconn.conn.State == ConnectionState.Open)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
 
-                    if (!reader.Read())
-                    {
-                        reader.Close();
-                        Sconn.conn.Close();
-                        return true;
-                    }
-                    else
-                    {
-                        reader.Close();
-                        Sconn.conn.Close();
-                        return false;
-                    }
+                    reader.Close();
+                    Sconn.conn.Close();
+                    return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.ToString());
                     Sconn.conn.Close();
                     return false;
                 }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-
             }
-            else
+            catch (MySqlException ex)
             {
                 Sconn.conn.Close();
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
                 return false;
-            }
+            }            
         }
 
         private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
@@ -252,23 +213,13 @@ namespace ICMS_Server
                     add_edit_coupon_check = true;
                 }).ContinueWith((previousTask) =>
                 {
-                    
+
                     IoC.Application.DialogHostMain = false;
                     IoC.Application.DialogHostInMain = false;
                     DialogHost.Show(new OptionCouponView(), "Main");
 
                     IsClear();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
-
-
-
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Reset;
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Member;
-                //IoC.StaffView.IsSelect();
-            }
-            else
-            {
-                add_edit_coupon_check = true;
             }
         }
 
@@ -282,56 +233,50 @@ namespace ICMS_Server
 
         public bool IsUpdate()
         {
-            string s_c_date;
+            string query = $"update option_coupon set " +
+                           $"op_c_name='{txt_username}' , " +
+                           $"op_c_real_amount='{txt_hr_price}' , " +
+                           $"op_c_free_amount='{txt_free_money}' , " +
+                           $"op_c_s_date='{start_create_date}' , " +
+                           $"op_c_e_date='{txt_exp_date}' , " +
+                           $"group_id='{group_id}' " +
+                           $"where op_c_id = '{op_c_id}'";
 
-            if (start_create_date == true)
+            try
             {
-                s_c_date = "1";
-            }
-            else
-            {
-                s_c_date = "0";
-            }
-
-            string query = $"update option_coupon set op_c_name='{txt_username}' , op_c_real_amount='{txt_hr_price}' , op_c_free_amount='{txt_free_money}' , op_c_s_date='{s_c_date}' , op_c_e_date='{txt_exp_date}' , group_id='{group_id}' where op_c_id = '{op_c_id}'";
-
-            if (OpenConnection() == true)
-            {
-                try
+                Sconn.conn.Open();
+                if (Sconn.conn.State == ConnectionState.Open)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
 
-                    if (!reader.Read())
-                    {
-                        reader.Close();
-                        Sconn.conn.Close();
-                        return true;
-                    }
-                    else
-                    {
-                        reader.Close();
-                        Sconn.conn.Close();
-                        return false;
-                    }
+                    reader.Close();
+                    Sconn.conn.Close();
+                    return true;
                 }
-                catch (Exception)
+                else
                 {
                     Sconn.conn.Close();
                     return false;
                 }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-
             }
-            else
+            catch (MySqlException ex)
             {
                 Sconn.conn.Close();
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
                 return false;
             }
-
         }
 
         public void IsClear()
@@ -417,38 +362,40 @@ namespace ICMS_Server
 
         public void IsChanged()
         {
-            //MessageBox.Show($"1{g_hr_price},2{g_free_money}");
             txt_total_amount = (float.Parse(g_hr_price) + float.Parse(g_free_money)).ToString();
-
         }
 
         private void GoTotalAmount(object p)
         {
-            //var group_rate = (3600 / float.Parse(txt_hr_rate)).ToString();//เรทราคา
             seconds = ((3600 / float.Parse(txt_hr_rate)) * float.Parse(txt_total_amount)).ToString();
             txt_add_hh = string.Format("{0:0}" + " h", Math.Floor(float.Parse(seconds) / 3600));
             txt_add_mm = string.Format("{0:0}" + " m", Math.Round((float.Parse(seconds) / 60) % 60));
-        }        
-
+        }
 
         public void GoItemGroup(object p)
         {
-            var item = p as ComboBox;
-            string query = $"select * from user_group inner join type on type.type_id = user_group.type_id where type_name like '%coupon%' order by group_id";
+            group_data = p as ComboBox;
+            string query = $"select * " +
+                           $"from user_group " +
+                           $"inner join type " +
+                           $"on type.type_id = user_group.type_id " +
+                           $"where type_name like '%coupon%' " +
+                           $"order by group_id";
 
-            if (OpenConnection() == true)
+            try
             {
-                try
+                Sconn.conn.Open();
+                if (Sconn.conn.State == ConnectionState.Open)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
                     MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
                     DataSet ds = new DataSet();
                     adp.Fill(ds, "user_group");
-                    item.ItemsSource = ds.Tables[0].DefaultView;
-                    item.SelectedValuePath = ds.Tables[0].Columns["group_id"].ToString();
-                    item.DisplayMemberPath = ds.Tables[0].Columns["group_name"].ToString();
-                    item.SelectedIndex = 0;
-                    group_item = item.SelectedItem as DataRowView;
+                    group_data.ItemsSource = ds.Tables[0].DefaultView;
+                    group_data.SelectedValuePath = ds.Tables[0].Columns["group_id"].ToString();
+                    group_data.DisplayMemberPath = ds.Tables[0].Columns["group_name"].ToString();
+                    group_data.SelectedIndex = 0;
+                    group_item = group_data.SelectedItem as DataRowView;
                     if (group_id == null)
                     {
                         group_id = group_item["group_id"].ToString();
@@ -456,26 +403,33 @@ namespace ICMS_Server
                     }
                     else
                     {
-                        //MessageBox.Show($"{selectedItem}");
-                        item.SelectedValue = group_id;
+                        group_data.SelectedValue = group_id;
                         txt_hr_rate = group_item["group_rate"].ToString();
                     }
-                    //selectedIndex = group_item.SelectedValue.ToString();
                     Sconn.conn.Close();
+                    add_edit_coupon_check = true;
                 }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                }
-                finally
+                else
                 {
                     Sconn.conn.Close();
+                    add_edit_coupon_check = false;
                 }
             }
-            else
+            catch (MySqlException ex)
             {
                 Sconn.conn.Close();
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
+                }
             }
         }
 
@@ -488,36 +442,16 @@ namespace ICMS_Server
             txt_total_amount = "0";
             IsChanged();
         }
-
-        public bool OpenConnection()
+                
+        public bool IsSelect()
         {
+            string query = $"select * " +
+                           $"from option_coupon";
+
             try
             {
                 Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                switch (ex.Number)
-                {
-                    case 0:
-                        MessageBox.Show("ไม่มีการเชื่อมต่อ");
-                        break;
-                    case 1045:
-                        MessageBox.Show("เชื่อมต่อสำเร็จ");
-                        break;
-                }
-                return false;
-            }
-        }
-
-        public bool IsSelect()
-        {
-            string query = $"select * from option_coupon order by op_c_id;";
-
-            if (OpenConnection() == true)
-            {
-                try
+                if (Sconn.conn.State == ConnectionState.Open)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
                     MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
@@ -527,21 +461,43 @@ namespace ICMS_Server
                     Sconn.conn.Close();
                     return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.ToString());
                     Sconn.conn.Close();
                     return false;
                 }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
             }
-            else
+            catch (MySqlException ex)
             {
                 Sconn.conn.Close();
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
                 return false;
+            }
+        }
+
+        private void conn_fail(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter == true)
+            {
+                IoC.Application.DialogHostMsg = false;
+                Task.Factory.StartNew(async () =>
+                {
+                    await Task.Delay(5000);
+                }).ContinueWith((previousTask) =>
+                {
+                    item_group.Execute(group_data);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 

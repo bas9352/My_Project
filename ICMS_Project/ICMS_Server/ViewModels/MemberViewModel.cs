@@ -51,10 +51,12 @@ namespace ICMS_Server
             item_member_change = new RelayCommand(p => GoItemMemberChanged(p));
             item_member = new RelayCommand(p => GoItemMember(p));
         }
+        #endregion
+
+        #region Other method
         string query;
         public void GoItemMember(object p)
         {
-            ////MessageBox.Show($"{IoC.MemberCouponView.cmb.Items.Count < 1}");
             IoC.MemberCouponView.cmb_data = new ObservableCollection<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair < string , string > (GetLocalizedValue<string>("username"), "username"),
@@ -68,8 +70,6 @@ namespace ICMS_Server
 
             IsClear();
             member_data = p as DataGrid;
-
-
 
             if (IoC.MemberCouponView.txt_search == null || IoC.MemberCouponView.txt_search == "")
             {
@@ -108,50 +108,58 @@ namespace ICMS_Server
                 }
                 IoC.MemberCouponView.txt_search_null = null;
                 IoC.MemberCouponView.txt_search = null;
-
             }
 
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    Sconn.conn.Close();
+                Sconn.conn.Open();
 
-                    dt.Columns.Add("new_v_all_remaining_amount", typeof(string));
-                    foreach (DataRow data in dt.Rows)
-                    {
-                        data["new_v_all_remaining_amount"] = string.Format("{0:#,##0.##}", double.Parse(data["v_all_remaining_amount"].ToString()));
-                        //MessageBox.Show($"{data["v_all_remaining_amount"].GetType()}");
-                    }
-                    member_data.ItemsSource = dt.DefaultView;
-                }
-                else
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+
+                dt.Columns.Add("new_v_all_remaining_amount", typeof(string));
+                foreach (DataRow data in dt.Rows)
                 {
-                    Sconn.conn.Close();
-                    //MessageBox.Show($"{Sconn.msg_con}");
+                    data["new_v_all_remaining_amount"] = string.Format("{0:#,##0.##}", double.Parse(data["v_all_remaining_amount"].ToString()));
                 }
+                member_data.ItemsSource = dt.DefaultView;
             }
             catch (MySqlException ex)
             {
-                Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
+            }
+            finally
+            {
+                Sconn.conn.Close();
+            }
+        }
+
+        private void conn_fail(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter == true)
+            {
+                IoC.Application.DialogHostMsg = false;
+                Task.Factory.StartNew(async () =>
+                {
+                    await Task.Delay(5000);
+                }).ContinueWith((previousTask) =>
+                {
+                    item_member.Execute(member_data);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
@@ -166,34 +174,6 @@ namespace ICMS_Server
         {
             member_item = null;
             member_index = 0;
-        }
-
-        public bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
         }
 
         public static T GetLocalizedValue<T>(string key)
