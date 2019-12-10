@@ -44,7 +44,7 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="25"
-                  Header="{lex:Loc Key=add_edit_group}">
+                  Header="{Binding title}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>

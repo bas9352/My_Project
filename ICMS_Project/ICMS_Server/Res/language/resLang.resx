@@ -147,6 +147,9 @@
   <data name="add_edit_staff" xml:space="preserve">
     <value>เพิ่ม / แก้ไข ข้อมูลพนักงาน</value>
   </data>
+  <data name="add_group" xml:space="preserve">
+    <value>เพิ่มกลุ่มผู้ใช้</value>
+  </data>
   <data name="add_hh" xml:space="preserve">
     <value>ชั่วโมง</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="add_remove_programe" xml:space="preserve">
     <value>Hide Add or remove programe</value>
+  </data>
+  <data name="add_staff" xml:space="preserve">
+    <value>เพิ่มข้อมูลพนักงาน</value>
   </data>
   <data name="add_success" xml:space="preserve">
     <value>เพิ่มข้อมูลสำเร็จ</value>
@@ -342,8 +348,14 @@
   <data name="edit_coupon" xml:space="preserve">
     <value>แก้ไขข้อมูลคูปอง</value>
   </data>
+  <data name="edit_group" xml:space="preserve">
+    <value>แก้ไขกลุ่มผู้ใช้</value>
+  </data>
   <data name="edit_member" xml:space="preserve">
     <value>แก้ไขข้อมูลสมาชิก</value>
+  </data>
+  <data name="edit_staff" xml:space="preserve">
+    <value>แก้ไขข้อมูลพนักงาน</value>
   </data>
   <data name="edit_success" xml:space="preserve">
     <value>แก้ไขข้อมูลสำเร็จ</value>

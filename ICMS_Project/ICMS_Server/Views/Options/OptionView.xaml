@@ -79,7 +79,7 @@
                 </Menu>
             </StackPanel>
 
-            <Menu>
+            <Menu Visibility="Collapsed">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical"/>

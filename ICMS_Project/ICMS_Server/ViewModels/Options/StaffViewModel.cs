@@ -32,9 +32,6 @@ namespace ICMS_Server
         public DataRowView staff_item { get; set; } = null;
         public DataGrid staff_data { get; set; } = null;
         public int staff_index { get; set; }
-
-        private int conn_number;
-
         #endregion
 
         #region Commands
@@ -57,14 +54,15 @@ namespace ICMS_Server
         {
             item_staff = new RelayCommand(p => GoStaffItem(p));
             item_staff_change = new RelayCommand(p => GoStaffItemChange(p));
-            //IsSelect();
             btn_add = new RelayCommand(p =>
             {
+                IoC.AddEditStaffView.title = GetLocalizedValue<string>("add_staff");
                 IoC.AddEditStaffView.staff_id = null;
                 DialogHost.Show(new AddEditStaffView(), "Main");
             });
             btn_edit = new RelayCommand(p =>
             {
+                IoC.AddEditStaffView.title = GetLocalizedValue<string>("edit_staff");
                 if (staff_item == null)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -91,7 +89,7 @@ namespace ICMS_Server
                     {
                         IoC.AddEditStaffView.IsCheck = false;
                         IoC.AddEditStaffView.end_date = false;
-                        IoC.AddEditStaffView.txt_e_date = staff_item["staff_e_date"].ToString();
+                        IoC.AddEditStaffView.txt_e_date = DateTime.Now.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
                     }
                     else
                     {
@@ -99,9 +97,7 @@ namespace ICMS_Server
                         IoC.AddEditStaffView.end_date = true;
                         IoC.AddEditStaffView.txt_e_date = staff_item["staff_e_date"].ToString();
                     }
-                    //IsRow();
                     IoC.AddEditStaffView.staff_id = staff_item["staff_id"].ToString();
-                    //CurrPage = ApplicationPage.Admin;
                     DialogHost.Show(new AddEditStaffView(), "Main");
                 }
                 
@@ -123,7 +119,9 @@ namespace ICMS_Server
                 }
             });
         }
+        #endregion
 
+        #region Other method
         public void IsDelete(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
@@ -137,43 +135,38 @@ namespace ICMS_Server
 
                     try
                     {
-                        if (OpenConnection() == true)
-                        {
-                            MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                            MySqlDataReader reader = cmd.ExecuteReader();
+                        Sconn.conn.Open();
 
-                            reader.Close();
-                            Sconn.conn.Close();
-                            item_staff.Execute(staff_data);
-                        }
-                        else
-                        {
-                            Sconn.conn.Close();
-                        }
+                        MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                        MySqlDataReader reader = cmd.ExecuteReader();
+
+                        reader.Close();
+                        Sconn.conn.Close();
+                        item_staff.Execute(staff_data);
                     }
                     catch (MySqlException ex)
                     {
                         if (ex.Number == 1451)
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
                         else if (ex.Number == 0)
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
                         else
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
+                    }
+                    finally
+                    {
                         Sconn.conn.Close();
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -182,9 +175,7 @@ namespace ICMS_Server
 
         public void GoStaffItem(object p)
         {
-            //MessageBox.Show($"{IoC.LoginView.login_data["staff_id"]}");
             IsClear();
-            //var item = p as DataGrid;
             staff_data = p as DataGrid;
             string query;
             if (IoC.LoginView.login_data["type_name"].ToString() == "staff")
@@ -204,33 +195,48 @@ namespace ICMS_Server
 
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    staff_data.ItemsSource = dt.DefaultView;
-                    Sconn.conn.Close();
-                }
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                staff_data.ItemsSource = dt.DefaultView;
             }
             catch (MySqlException ex)
             {
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
+            }
+            finally
+            {
                 Sconn.conn.Close();
+            }
+        }
+
+        private void conn_fail(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter == true)
+            {
+                IoC.Application.DialogHostMsg = false;
+                Task.Factory.StartNew(async () =>
+                {
+                    await Task.Delay(5000);
+                }).ContinueWith((previousTask) =>
+                {
+                    item_staff.Execute(staff_data);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
@@ -245,33 +251,6 @@ namespace ICMS_Server
             var item = p as DataGrid;
             staff_item = item.SelectedItem as DataRowView;
             staff_index = item.SelectedIndex;
-        }
-
-        private bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                if (ex.Number == 0)
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
         }
 
         public static T GetLocalizedValue<T>(string key)

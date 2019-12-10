@@ -54,12 +54,14 @@ namespace ICMS_Server
 
             btn_option = new RelayCommand(p =>
             {
+                IoC.MainView.CurrPage = ApplicationPage.Reset;
                 IoC.OptionView.btn_officer.Execute("");
                 CurrPage = ApplicationPage.Option;
             });
 
             btn_logout = new RelayCommand(p =>
             {
+                IoC.MainView.CurrPage = ApplicationPage.Reset;
                 IoC.LoginView.IsClear();
                 list_menu = false;
                 CurrPage = ApplicationPage.Login;                

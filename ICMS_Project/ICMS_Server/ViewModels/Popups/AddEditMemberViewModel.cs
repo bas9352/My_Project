@@ -357,7 +357,7 @@ namespace ICMS_Server
             }
             else
             {
-                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd", new CultureInfo("us-US", false)) + " " + DateTime.Now.ToString("HH:mm:ss", new CultureInfo("us-US", false));
+                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
                 txt_e_date = e_date;
             }
             string query = $"insert into member set " +
@@ -416,7 +416,7 @@ namespace ICMS_Server
             }
             else
             {
-                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd", new CultureInfo("us-US", false)) + " " + DateTime.Now.ToString("HH:mm:ss", new CultureInfo("us-US", false));
+                var e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
                 txt_e_date = e_date;
             }
             string query = $"update member set " +

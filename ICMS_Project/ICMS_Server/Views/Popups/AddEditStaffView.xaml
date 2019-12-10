@@ -48,7 +48,7 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="25"
-                  Header="{lex:Loc Key=add_edit_staff}">
+                  Header="{Binding title}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -111,6 +111,7 @@
 
                         <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
+                                    Language="th-TH"
                                     Text="{Binding txt_c_date, Mode=TwoWay}"
                                     IsEnabled="{Binding create_date}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=create_date}"
@@ -120,6 +121,7 @@
 
                         <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
+                                    Language="th-TH"
                                     Text="{Binding txt_s_date, Mode=TwoWay}"
                                     IsEnabled="{Binding start_date}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=s_date}"
@@ -135,6 +137,7 @@
                             </CheckBox>
                             <DatePicker x:Name="e_date" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
+                                        Language="th-TH"
                                     IsEnabled="{Binding end_date}"
                                     Text="{Binding txt_e_date, Mode=TwoWay}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=e_date}"
@@ -178,6 +181,7 @@
 
                         <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
+                                    Language="th-TH"
                                     Text="{Binding txt_birthday, Mode=TwoWay}"
                                     materialDesign:HintAssist.Hint="{lex:Loc Key=birthday}"
                                     Width="auto"

@@ -145,7 +145,7 @@ namespace ICMS_Server
                 {
                     IoC.ConfirmView.msg_title = GetLocalizedValue<string>("title_confirm");
                     IoC.ConfirmView.msg_text = GetLocalizedValue<string>("del_confirm");
-                    DialogHost.Show(new ConfirmView(), "Msg", ExtendedClosingEventHandler);
+                    DialogHost.Show(new ConfirmView(), "Msg", IsDelete);
                 }
             });
 
@@ -158,18 +158,59 @@ namespace ICMS_Server
         #endregion
 
         #region Other method
-        public void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        public void IsDelete(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
             {
-                if (IsDelete() == true)
+                Task.Factory.StartNew(() =>
                 {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("del_success");
-                    DialogHost.Show(new WarningView(), "Msg");
-                    IoC.Application.DialogHostMain = false;
-                    DialogHost.Show(new OptionCouponView(), "Main");
-                }
+                }).ContinueWith((previousTask) => {
+                    string query = $"select * from option_coupon";
+
+                    try
+                    {
+                        Sconn.conn.Open();
+
+                        MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                        MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                        MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
+                        DataTable dt = new DataTable();
+                        adp.Fill(dt);
+                        Sconn.conn.Close();
+                        Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
+                        DataRow dr = dt.Rows[coupon_index];
+                        dr.Delete();
+                        adp.Update(dt);
+
+                        IoC.Application.DialogHostMain = false;
+                        DialogHost.Show(new OptionCouponView(), "Main");
+                    }
+                    catch (MySqlException ex)
+                    {
+                        if (ex.Number == 1451)
+                        {
+                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
+                            DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                        }
+                        else if (ex.Number == 0)
+                        {
+                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                            DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                        }
+                        else
+                        {
+                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                            DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                        }
+                    }
+                    finally
+                    {
+                        Sconn.conn.Close();
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             else
             {
@@ -181,48 +222,6 @@ namespace ICMS_Server
             if ((bool)eventArgs.Parameter == true)
             {
                 grid_op_c_check = true;
-            }
-        }
-
-        public bool IsDelete()
-        {
-            string query = $"select * from option_coupon";
-
-            try
-            {
-                Sconn.conn.Open();
-
-                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
-                DataTable dt = new DataTable();
-                adp.Fill(dt);
-                Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
-                DataRow dr = dt.Rows[coupon_index];
-                dr.Delete();
-                adp.Update(dt);
-                Sconn.conn.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                }
-                return false;
-            }
-            finally
-            {
-                Sconn.conn.Close();
             }
         }
 

@@ -142,6 +142,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to เพิ่มกลุ่มผู้ใช้.
+        /// </summary>
+        internal static string add_group {
+            get {
+                return ResourceManager.GetString("add_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ชั่วโมง.
         /// </summary>
         internal static string add_hh {
@@ -183,6 +192,15 @@ namespace ICMS_Server.Res.language {
         internal static string add_remove_programe {
             get {
                 return ResourceManager.GetString("add_remove_programe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to เพิ่มข้อมูลพนักงาน.
+        /// </summary>
+        internal static string add_staff {
+            get {
+                return ResourceManager.GetString("add_staff", resourceCulture);
             }
         }
         
@@ -754,11 +772,29 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to แก้ไขกลุ่มผู้ใช้.
+        /// </summary>
+        internal static string edit_group {
+            get {
+                return ResourceManager.GetString("edit_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to แก้ไขข้อมูลสมาชิก.
         /// </summary>
         internal static string edit_member {
             get {
                 return ResourceManager.GetString("edit_member", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to แก้ไขข้อมูลพนักงาน.
+        /// </summary>
+        internal static string edit_staff {
+            get {
+                return ResourceManager.GetString("edit_staff", resourceCulture);
             }
         }
         

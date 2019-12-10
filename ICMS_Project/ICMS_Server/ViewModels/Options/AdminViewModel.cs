@@ -21,7 +21,6 @@ namespace ICMS_Server
         #region Properties
         public DataTable data_pass { get; set; }
         public DataTable data_username { get; set; }
-        public DataRow row { get; set; }
         public string txt_name { get; set; } = null;
         public string txt_lastname { get; set; } = null;
         public string txt_username { get; set; } = null;
@@ -74,65 +73,71 @@ namespace ICMS_Server
                     }
                     else
                     {
+                        //ถ้ามีข้อมูล มากกว่า 1
                         if (IsSelectCheckUserName() == true && data_username.Rows.Count > 0)
                         {
                             int num = 0;
-                            var item = data_username.Rows[0];
-
-                            if (txt_username == item["v_all_username"].ToString() &&
-                                item["v_staff_id"].ToString() != IoC.LoginView.login_id &&
-                                item["v_all_type_name"].ToString() != "admin")
+                            for (int i = 0; i < data_username.Rows.Count; i++)
                             {
-                                num = 1;
-                            }
+                                var item = data_username.Rows[i];
+                                //ถ้าตรง แต่ไม่ใช่ id เดียวกัน แจ้งเตือนชื่อผู้ใช้ซ้ำ
+                                if (txt_username == item["v_all_username"].ToString() &&
+                                    item["v_staff_id"].ToString() != IoC.LoginView.login_id)
+                                {
+                                    num = 1;
+                                    
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("staff_name_unsuccess");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                    break;
+                                    
+                                }
+                            }                           
 
                             if (num == 0)
                             {
-                                if (IsSelectCheckPass() == true)
+                                var item = data_username.Rows[0];
+                                string EncryptionKey = "test123456key";
+
+                                byte[] cipherBytes = Convert.FromBase64String(item["v_all_password"].ToString());
+                                Aes encryptor = Aes.Create();
+                                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                                encryptor.Key = pdb.GetBytes(32);
+                                encryptor.IV = pdb.GetBytes(16);
+                                using (MemoryStream ms = new MemoryStream())
                                 {
-                                    row = data_pass.Rows[0];
-                                    string EncryptionKey = "test123456key";
-
-                                    byte[] cipherBytes = Convert.FromBase64String(row["staff_password"].ToString());
-                                    Aes encryptor = Aes.Create();
-                                    Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                                    encryptor.Key = pdb.GetBytes(32);
-                                    encryptor.IV = pdb.GetBytes(16);
-                                    using (MemoryStream ms = new MemoryStream())
+                                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
                                     {
-                                        using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-                                        {
-                                            cs.Write(cipherBytes, 0, cipherBytes.Length);
-                                            cs.Close();
-                                        }
-                                        pass = Encoding.Unicode.GetString(ms.ToArray());
+                                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                                        cs.Close();
                                     }
+                                    pass = Encoding.Unicode.GetString(ms.ToArray());
+                                }
 
-                                    if (txt_old_password != pass)
+                                if (txt_old_password != pass)
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_match");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                                else
+                                {
+                                    if (IsUpdate() == true)
                                     {
-                                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                        IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_match");
-                                        DialogHost.Show(new WarningView(), "Msg");
-                                    }
-                                    else
-                                    {
-                                        if (IsUpdate() == true)
-                                        {
-                                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                                            IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
-                                            DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
-                                        }
+                                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
+                                        IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
+                                        DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                                     }
                                 }
                             }
-                            else if(IsSelectCheckUserName() == true && data_username.Rows.Count < 1)
-                            {
-                                IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                IoC.WarningView.msg_text = GetLocalizedValue<string>("staff_name_unsuccess");
-                                DialogHost.Show(new WarningView(), "Msg");
-                            }
                         }
-                    }
+                        else if (IsSelectCheckUserName() == true && data_username.Rows.Count < 1)
+                        {
+                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("unsuccess");
+                            DialogHost.Show(new WarningView(), "Msg");
+                        }
+                    }                    
                 }
             });
 
@@ -143,7 +148,9 @@ namespace ICMS_Server
                 IoC.Application.CurrPage = ApplicationPage.Main;
             });
         }
+        #endregion
 
+        #region Other method
         private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
@@ -238,47 +245,6 @@ namespace ICMS_Server
             }
         }
 
-        public bool IsSelectCheckPass()
-        {
-            string query = $"select staff_password " +
-                           $"from staff " +
-                           $"where staff_id = '{IoC.LoginView.login_id}' ";
-
-            try
-            {
-                Sconn.conn.Open();
-
-                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adp.Fill(dt);
-                data_pass = dt;
-                Sconn.conn.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
-            finally
-            {
-                Sconn.conn.Close();
-            }
-            
-        }
-
         public bool IsSelectCheckUserName()
         {
             string query = $"select * " +
@@ -292,8 +258,8 @@ namespace ICMS_Server
                 MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 adp.Fill(dt);
-                data_username = dt;
                 Sconn.conn.Close();
+                data_username = dt;
                 return true;
             }
             catch (MySqlException ex)
