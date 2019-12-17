@@ -28,7 +28,6 @@ namespace ICMS_Server
     {
         #region Properties
         Database Sconn = new Database();
-        public DateTime s_put_date { get; set; } = DateTime.Now;
         public string title { get;set; }
         public bool is_debt { get; set; } = false;
         public bool is_remaining_amount { get; set; } = false;
@@ -48,6 +47,7 @@ namespace ICMS_Server
         public DataTable data { get; set; }
         public DataRowView group_item { get; set; }
         public ComboBox group_data { get; set; }
+        public PasswordBox member_password { get; set; }
 
 
         public string member_id { get; set; }
@@ -108,8 +108,7 @@ namespace ICMS_Server
             btn_ok = new RelayCommand(p =>
             {
                 grid_add_edit_m_check = false;
-
-                if (txt_username == null || txt_password == null || txt_username == "" || txt_password == "")
+                if (string.IsNullOrEmpty(txt_username) == true || string.IsNullOrEmpty(txt_password) == true)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
@@ -246,25 +245,8 @@ namespace ICMS_Server
 
         public void GoPassChanged(object p)
         {
-            var passwordBox = p as PasswordBox;
-
-            string EncryptionKey = "test123456key";
-            byte[] clearBytes = Encoding.Unicode.GetBytes(passwordBox.Password);
-            using (Aes encryptor = Aes.Create())
-            {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
-                    }
-                    txt_password = Convert.ToBase64String(ms.ToArray());
-                }
-            }
+            member_password = p as PasswordBox;
+            txt_password = member_password.Password;
         }
 
         public void GoItemGroup(object p)
@@ -362,7 +344,7 @@ namespace ICMS_Server
             }
             string query = $"insert into member set " +
                            $"member_username = '{txt_username}', " +
-                           $"member_password = '{txt_password}', " +
+                           $"member_password = AES_ENCRYPT('{member_password.Password}', 'dead_project'), " +
                            $"group_id = '{group_id}', " +
                            $"member_name = '{txt_name}', " +
                            $"member_lastname = '{txt_lastname}', " +
@@ -421,7 +403,7 @@ namespace ICMS_Server
             }
             string query = $"update member set " +
                            $"member_username='{txt_username}' , " +
-                           $"member_password='{txt_password}' , " +
+                           $"member_password = if('{member_password}' = '{""}', AES_ENCRYPT((select AES_DECRYPT(member_password,'dead_project') from member where member_id = '{member_id}'), 'dead_project'), AES_ENCRYPT('{txt_password}', 'dead_project')), " +
                            $"member_name='{txt_name}' , " +
                            $"member_lastname='{txt_lastname}' , " +
                            $"member_nickname='{txt_nickname}' , " +
@@ -434,7 +416,6 @@ namespace ICMS_Server
                            $"group_id ='{group_id}' " +
                            $"where member_id = '{member_id}'";
 
-            
             try
             {
                 Sconn.conn.Open();

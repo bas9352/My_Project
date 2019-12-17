@@ -41,6 +41,7 @@ namespace ICMS_Server
         public ComboBox type_data { get; set; }
         public DataRowView bonus_item { get; set; }
         public DataGrid bonus_data { get; set; }
+        public DataTable check_bonus_data { get; set; }
 
         public string group_id { get; set; }
         public int bonus_index { get; set; }
@@ -112,7 +113,7 @@ namespace ICMS_Server
                             for (int i = 0; i < data.Rows.Count; i++)
                             {
                                 DataRow row = data.Rows[i];
-                                if (row["group_name"].ToString() == txt_group_name)
+                                if (row["v_group_name"].ToString() == txt_group_name)
                                 {
                                     num = 1;
                                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -137,45 +138,33 @@ namespace ICMS_Server
                             for (int i = 0; i < data.Rows.Count; i++)
                             {
                                 DataRow row = data.Rows[i];
-                                if (row["group_name"].ToString() == txt_group_name && row["group_id"].ToString() != group_id)
+                                if (row["v_group_name"].ToString() == txt_group_name && 
+                                    row["v_group_id"].ToString() != group_id)
                                 {
                                     num = 1;
                                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                                     IoC.WarningView.msg_text = GetLocalizedValue<string>("group_name_unsuccess");
                                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                                 }
+                                else if(row["v_all_group"].ToString() == "true" &&
+                                        row["v_group_id"].ToString() == group_id &&
+                                        row["v_group_rate"].ToString() != txt_group_rate)
+                                {
+                                    num = 1;
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_edit_rate");
+                                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                                }
                             }
 
                             if (num == 0)
                             {
-                                if (IsSelectGroupCheck() == true)
+                                if (IsUpdate() == true)
                                 {
-                                    int number = 0;
-                                    for (int i =0; i<data_username.Rows.Count;i++)
-                                    {
-                                        var row = data_username.Rows[i];
-
-                                        if (row["v_all_group_id"].ToString() == group_id && 
-                                            row["v_all_group_rate"].ToString() != txt_group_rate)
-                                        {
-                                            number = 1;
-                                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                            IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_edit_rate");
-                                            DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                        }
-                                    }
-
-                                    if (number == 0)
-                                    {
-                                        if (IsUpdate() == true)
-                                        {
-                                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                                            IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
-                                            DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
-                                        }
-                                    }
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
+                                    DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                                 }
-
                             }
                         }
                     }
@@ -191,6 +180,7 @@ namespace ICMS_Server
 
             btn_add = new RelayCommand(p =>
             {
+                IoC.AddEditBonusView.title = GetLocalizedValue<string>("add_bonus");
                 grid_add_edit_g_check = false;
                 IoC.AddEditBonusView.bonus_id = null;
                 DialogHost.Show(new AddEditBonusView(), "InMain");
@@ -198,6 +188,7 @@ namespace ICMS_Server
 
             btn_edit = new RelayCommand(p =>
             {
+                IoC.AddEditBonusView.title = GetLocalizedValue<string>("edit_bonus");
                 grid_add_edit_g_check = false;
                 if (bonus_item == null)
                 {
@@ -265,33 +256,126 @@ namespace ICMS_Server
 
         private void IsDelete(object sender, DialogClosingEventArgs eventArgs)
         {
-            int num = 0;
             if ((bool)eventArgs.Parameter == true)
             {
                 Task.Factory.StartNew(() =>
                 {
-                    if (IsDelete() == true)
-                    {
-                        num = 1;
-
-                    }
-                    else
-                    {
-                        num = 0;
-                    }
                 }).ContinueWith((previousTask) => {
-                    if (num == 1)
+
+                    if (IsCheckBonus() == true)
                     {
-                        grid_add_edit_g_check = true;
-                        bonus_item = null;
-                        bonus_index = 0;
-                        item_bonus.Execute(bonus_data);
+                        int num = 0;
+                        for (int i = 0; i < check_bonus_data.Rows.Count; i++)
+                        {
+                            DataRow row = check_bonus_data.Rows[i];
+
+                            if (row["v_mt_bonus"].ToString() == "true" &&
+                                row["v_bonus_id"].ToString() == bonus_item["bonus_id"].ToString())
+                            {
+                                num = 1;
+                                IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_del_bonus");
+                                DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                            }
+                        }
+
+                        if (num == 0)
+                        {
+                            string query = $"select * from bonus";
+
+                            try
+                            {
+                                Sconn.conn.Open();
+
+                                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                                MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
+                                DataTable dt = new DataTable();
+                                adp.Fill(dt);
+                                Sconn.conn.Close();
+                                Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
+                                DataRow dr = dt.Rows[bonus_index];
+                                dr.Delete();
+                                adp.Update(dt);
+
+                                grid_add_edit_g_check = true;
+                                bonus_item = null;
+                                bonus_index = 0;
+                                item_bonus.Execute(bonus_data);
+                            }
+                            catch (MySqlException ex)
+                            {
+                                if (ex.Number == 1451)
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                                else if (ex.Number == 0)
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                                else
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                            }
+                            finally
+                            {
+                                Sconn.conn.Close();
+                            }
+                        }
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
             }
+            else
+            {
+                grid_add_edit_g_check = true;
+            }
         }
 
+        public bool IsCheckBonus()
+        {
+            string query = $"select * from v_bonus";
+
+            try
+            {
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                check_bonus_data = dt;
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
+            }
+        }
 
         private void IsClear()
         {
@@ -370,48 +454,6 @@ namespace ICMS_Server
 
                 reader.Close();
                 Sconn.conn.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
-            finally
-            {
-                Sconn.conn.Close();
-            }
-        }
-
-        public bool IsDelete()
-        {
-            string query = $"select * from bonus";
-
-            try
-            {
-                Sconn.conn.Open();
-
-                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
-                DataTable dt = new DataTable();
-                adp.Fill(dt);
-                Sconn.conn.Close();
-                Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
-                DataRow dr = dt.Rows[bonus_index];
-                dr.Delete();
-                adp.Update(dt);
                 return true;
             }
             catch (MySqlException ex)
@@ -569,7 +611,7 @@ namespace ICMS_Server
 
         public bool IsSelect()
         {
-            string query = $"select * from user_group order by group_id;";
+            string query = $"select * from v_user_group";
 
             try
             {
@@ -581,44 +623,6 @@ namespace ICMS_Server
                 adp.Fill(dt);
                 Sconn.conn.Close();
                 data = dt;
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                if (ex.Number == 0)
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                }
-                else
-                {
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                }
-                return false;
-            }
-            finally
-            {
-                Sconn.conn.Close();
-            }
-        }
-
-        public bool IsSelectGroupCheck()
-        {
-            string query = $"select * from v_all_user";
-
-            try
-            {
-                Sconn.conn.Open();
-
-                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adp.Fill(dt);
-                Sconn.conn.Close();
-                data_username = dt;
                 return true;
             }
             catch (MySqlException ex)

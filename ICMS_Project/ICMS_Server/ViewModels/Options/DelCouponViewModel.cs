@@ -41,12 +41,9 @@ namespace ICMS_Server
         public string txt_max_balance { get; set; } = null;
         public string txt_exp_start_date { get; set; } = null;
         public string txt_exp_end_date { get; set; } = null;
-
-        private int conn_number;
-        private Timer timer;
         public ArrayList ar { get; set; }
-
         #endregion
+
         #region Commands
         public ICommand btn_del { get; set; }
         public ICommand btn_cancel { get; set; }
@@ -55,13 +52,10 @@ namespace ICMS_Server
         public ICommand btn_select_all { get; set; }
         public ICommand btn_select_changed { get; set; }
         #endregion
+
         #region Constructor
         public DelCouponViewModel()
         {
-            //timer = new Timer(); //Updates every quarter second.
-            //timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-
-            //timer.Enabled = true;
             btn_del = new RelayCommand(p =>
             {
                 if (coupon_data != null)
@@ -84,9 +78,6 @@ namespace ICMS_Server
                         else
                         {
                             ar.Add(i);
-                            //index[n] = i;
-                            //n++;
-                            //MessageBox.Show($"{ar[i]}");
                         }
                     }
 
@@ -100,7 +91,7 @@ namespace ICMS_Server
                     {
                         IoC.ConfirmView.msg_title = GetLocalizedValue<string>("title_confirm");
                         IoC.ConfirmView.msg_text = GetLocalizedValue<string>("del_confirm");
-                        DialogHost.Show(new ConfirmView(), "Msg", ExtendedClosingEventHandler);
+                        DialogHost.Show(new ConfirmView(), "Msg", IsDelete);
 
                     }
                 }
@@ -117,8 +108,7 @@ namespace ICMS_Server
             btn_cancel = new RelayCommand(p =>
             {
                 IsClear();
-                IoC.Application.CurrPage = ApplicationPage.Reset;
-                IoC.Application.CurrPage = ApplicationPage.Main;
+                IoC.Application.btn_main.Execute("");
             });
 
             btn_search = new RelayCommand(p => GoCouponItem(p));
@@ -145,8 +135,6 @@ namespace ICMS_Server
                     }
                     else if (select_all == false)
                     {
-                        //timer.Enabled = false;
-
                         foreach (var list in coupon_data.Items)
                         {
                             var chBx = firstCol.GetCellContent(list) as CheckBox;
@@ -157,22 +145,13 @@ namespace ICMS_Server
                             chBx.IsChecked = false;
                         }
                     }
-
                     select_check = true;
                 }
             });
         }
+        #endregion
 
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            if (IoC.OptionView.CurrPage != ApplicationPage.DelCoupon)
-            {
-                MessageBox.Show("111");
-                IsClear();
-                timer.Enabled = false;
-            }
-        }
-
+        #region Other method
         public DataGridCheckBoxColumn firstCol { get; set; }
 
         public void IsClear()
@@ -204,13 +183,9 @@ namespace ICMS_Server
 
         private string query;
         private string start_date, end_date, exp_start_date, exp_end_date;
-        private object param;
         public void GoCouponItem(object p)
         {
             select_all = false;
-            //MessageBox.Show($"{IoC.LoginView.login_data["staff_id"]}");
-            //IsClear();
-            //var item = p as DataGrid;
             coupon_data = p as DataGrid;
 
             if (txt_start_date == null || txt_start_date == "")
@@ -249,44 +224,45 @@ namespace ICMS_Server
                 exp_end_date = DateTime.Parse(txt_exp_end_date).ToString("yyyy-MM-dd");
             }
             query = $"select * " +
-                        $"from v_coupon " +
-                        //$"where v_coupon_username = if('{txt_coupon_name_s}' = '{""}' , v_coupon_username ,'{txt_coupon_name_s}') " +
-                        $"where if('{txt_coupon_name_s}' = '{""}' or '{cb_coupon_name_s}' = 'False', v_coupon_username = v_coupon_username, v_coupon_username like '%{txt_coupon_name_s}%') and " +
-                                $"if('{start_date}' = '{""}' or '{cb_start_date}' = 'False', v_coupon_c_date = v_coupon_c_date, v_coupon_c_date between '{start_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
-                                $"if('{end_date}' = '{""}' or '{cb_end_date}' = 'False', v_coupon_c_date = v_coupon_c_date, v_coupon_c_date between '1999-01-01%' and '{end_date}%') and " +
-                                $"if('{txt_max_balance}' = '{""}' or '{cb_max_balance}' = 'False', v_coupon_total_remaining_amount = v_coupon_total_remaining_amount, v_coupon_total_remaining_amount <= '{txt_max_balance}') and " +
-                                $"if('{exp_start_date}' = '{""}' or '{cb_exp_start_date}' = 'False', v_coupon_e_date = v_coupon_e_date, v_coupon_e_date between '{exp_start_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
-                                $"if('{exp_end_date}' = '{""}' or '{cb_exp_end_date}' = 'False', v_coupon_e_date = v_coupon_e_date, v_coupon_e_date between '1999-01-01%' and '{exp_end_date}%') " +
-                        $"order by v_coupon_username";
-            //MessageBox.Show($"{query}");
+                        $"from v_all_customer " +
+                        $"where if('{txt_coupon_name_s}' = '{""}' or '{cb_coupon_name_s}' = 'False', v_all_username = v_all_username, v_all_username like '%{txt_coupon_name_s}%') and " +
+                                $"if('{start_date}' = '{""}' or '{cb_start_date}' = 'False', v_all_c_date = v_all_c_date, v_all_c_date between '{start_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
+                                $"if('{end_date}' = '{""}' or '{cb_end_date}' = 'False', v_all_c_date = v_all_c_date, v_all_c_date between '1999-01-01%' and '{end_date}%') and " +
+                                $"if('{txt_max_balance}' = '{""}' or '{cb_max_balance}' = 'False', v_all_remaining_amount = v_all_remaining_amount, v_all_remaining_amount <= '{txt_max_balance}') and " +
+                                $"if('{exp_start_date}' = '{""}' or '{cb_exp_start_date}' = 'False', v_all_e_date = v_all_e_date, v_all_e_date between '{exp_start_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
+                                $"if('{exp_end_date}' = '{""}' or '{cb_exp_end_date}' = 'False', v_all_e_date = v_all_e_date, v_all_e_date between '1999-01-01%' and '{exp_end_date}%') and " +
+                                $"v_all_type_name = 'coupon' " +
+                        $"order by v_all_username";
 
-
-            if (OpenConnection() == true)
+            try
             {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    coupon_data.ItemsSource = dt.DefaultView;
-                    Sconn.conn.Close();
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show(ex.ToString());
+                Sconn.conn.Open();
 
-                    Sconn.conn.Close();
-                }
-                finally
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                coupon_data.ItemsSource = dt.DefaultView;
+                Sconn.conn.Close();
+            }
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
                 {
-                    Sconn.conn.Close();
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
                 }
             }
-            else
+            finally
             {
                 Sconn.conn.Close();
-                //MessageBox.Show($"{Sconn.msg_con}");
             }
         }
 
@@ -295,178 +271,69 @@ namespace ICMS_Server
             var item = p as DataGrid;
             coupon_item = item.SelectedItem as DataRowView;
             coupon_index = item.SelectedIndex;
-
-            //รอเคลียข้อม฿ลตอนค้นหา
-            //var firstCol = coupon_data.Columns.OfType<DataGridCheckBoxColumn>().FirstOrDefault(c => c.DisplayIndex == 0);
-            //var list = coupon_data.Items[coupon_index];
-            //var chBx = firstCol.GetCellContent(list) as CheckBox;
-
-            //MessageBox.Show($"{chBx.IsChecked}");
         }
 
-        //private void ConfirmClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        //{
-        //    if ((bool)eventArgs.Parameter == true)
-        //    {
-        //        grid_add_edit_m_check = true;
-        //    }
-        //}
-
-        private void SuccessClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        public void IsDelete(object sender, DialogClosingEventArgs eventArgs)
         {
-            if ((bool)eventArgs.Parameter == true)
-            {
-                ////grid_g_coupon = true;
-                //IoC.Application.DialogHostMain = false;
-                //IsClear();
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Reset;
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Coupon;
-            }
-        }
-
-        private void UnsuccessClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        {
-            if ((bool)eventArgs.Parameter == true)
-            {
-                //grid_g_coupon = true;
-                //IoC.Application.DialogHostMain = false;
-                //IsClear();
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Reset;
-                //IoC.MemberCouponView.CurrPage = ApplicationPage.Coupon;
-            }
-        }
-
-        public void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        {
-            int num = 0;
             if ((bool)eventArgs.Parameter == true)
             {
                 Task.Factory.StartNew(() =>
                 {
-                    if (IsDelete() == true)
-                    {
-                        num = 1;
-
-                    }
-                    else
-                    {
-                        num = 0;
-                    }
                 }).ContinueWith((previousTask) => {
-                    if (num == 1)
+                    int i;
+                    
+                    string query = $"select * from coupon";
+
+                    try
                     {
-                        btn_search.Execute(coupon_data);
-                        IoC.Application.DialogHostMsg = false;
-                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                        IoC.WarningView.msg_text = GetLocalizedValue<string>("del_success");
-                        DialogHost.Show(new WarningView(), "Msg");
-                        //IoC.OptionView.CurrPage = ApplicationPage.Reset;
-                        //IoC.OptionView.CurrPage = ApplicationPage.DelCoupon;
-                        //IsClear();
-                        //IsSelect();
-                    }
-                    else
-                    {
-                        if (conn_number == 0)
+                        Sconn.conn.Open();
+
+                        MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                        MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                        MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
+                        DataTable dt = new DataTable();
+                        adp.Fill(dt);
+                        Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
+                        for (i = 0; i < ar.Count; i++)
                         {
-                            //IoC.Application.DialogHostMsg = false;
+                            var index = (int)ar[i];
+
+                            DataRow dr = dt.Rows[index];
+                            dr.Delete();
+
+                        }
+                        adp.Update(dt);
+                        Sconn.conn.Close();
+
+                        btn_search.Execute(coupon_data);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        if (ex.Number == 0)
+                        {
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
                         else
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
+                    }
+                    finally
+                    {
+                        Sconn.conn.Close();
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
             }
         }
-
-        private bool IsDelete()
-        {
-            int i;
-            
-
-            string query = $"select * from coupon";
-            //MessageBox.Show($"{data}");
-            if (OpenConnection() == true)
-            {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
-                    for (i = 0; i < ar.Count; i++)
-                    {
-                        var index = (int)ar[i];
-
-                        DataRow dr = dt.Rows[index];
-                        dr.Delete();
-
-                    }
-                    adp.Update(dt);
-                    //btn_search = new RelayCommand(p => GoCouponItem(p));
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    conn_number = ex.Number;
-                    //MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-            }
-            else
-            {
-                Sconn.conn.Close();
-                return false;
-            }
-        }
-
-        private bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                switch (ex.Number)
-                {
-                    case 0:
-                        MessageBox.Show("ไม่มีการเชื่อมต่อ");
-                        break;
-                    case 1045:
-                        MessageBox.Show("เชื่อมต่อสำเร็จ");
-                        break;
-                }
-                return false;
-            }
-        }
-
         public static T GetLocalizedValue<T>(string key)
         {
             return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":resLang:" + key);
         }
-
-        //public class list
-        //{
-        //    public bool is_select { get; set; }
-        //}
         #endregion
     }
 }

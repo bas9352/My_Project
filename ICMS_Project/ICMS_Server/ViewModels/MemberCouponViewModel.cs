@@ -41,7 +41,6 @@ namespace ICMS_Server
         public string search_text { get; set; }
         public int index { get; set; }
         public string query { get; set; }
-        private int conn_number { get; set; }
 
         #endregion
 

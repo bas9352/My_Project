@@ -234,7 +234,7 @@
                         </DataGridCheckBoxColumn>
                         
                         <DataGridTextColumn 
-                                Binding="{Binding v_member_username}" 
+                                Binding="{Binding v_all_username}" 
                                 Header="{lex:Loc Key=username}" 
                         Width="auto" 
                                 IsReadOnly="True"></DataGridTextColumn>
@@ -249,17 +249,17 @@
                         Width="auto" 
                                 IsReadOnly="True"></DataGridTextColumn>
                         <DataGridTextColumn 
-                                Binding="{Binding v_member_total_remaining_amount}" 
+                                Binding="{Binding v_all_remaining_amount}" 
                                 Header="{lex:Loc Key=member_total_amount}" 
                         Width="auto" 
                                 IsReadOnly="True"></DataGridTextColumn>
                         <DataGridTextColumn 
-                                Binding="{Binding v_member_total_debt_remaining_amount}" 
+                                Binding="{Binding v_remaining_debt_amount}" 
                                 Header="{lex:Loc Key=debt_check}" 
                         Width="auto" 
                                 IsReadOnly="True"></DataGridTextColumn>
                         <DataGridTextColumn 
-                                Binding="{Binding v_group_name}" 
+                                Binding="{Binding v_all_group_name}" 
                                 Header="{lex:Loc Key=user_group}" 
                         Width="auto" 
                                 IsReadOnly="True"></DataGridTextColumn>

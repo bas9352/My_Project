@@ -47,7 +47,10 @@
 
         MemberReport = 35,
         UserHistory = 36,
-        UserTopUpHistory = 37
-
+        UserTopUpHistory = 37,
+        CouponReport = 38,
+        TopUpReport = 39,
+        IncomeReport = 40,
+        OnlineHistoryReport = 41
     }
 }

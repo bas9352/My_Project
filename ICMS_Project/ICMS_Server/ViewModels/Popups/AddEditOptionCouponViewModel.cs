@@ -99,7 +99,7 @@ namespace ICMS_Server
                             for (int i = 0; i < data.Rows.Count; i++)
                             {
                                 DataRow row = data.Rows[i];
-                                if (row["op_c_name"].ToString() == txt_username)
+                                if (row["v_op_c_name"].ToString() == txt_username)
                                 {
                                     num = 1;
                                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -123,11 +123,21 @@ namespace ICMS_Server
                             for (int i = 0; i < data.Rows.Count; i++)
                             {
                                 DataRow row = data.Rows[i];
-                                if (row["op_c_name"].ToString() == txt_username && row["op_c_id"].ToString() != op_c_id)
+                                if (row["v_op_c_name"].ToString() == txt_username && 
+                                    row["v_op_c_id"].ToString() != op_c_id)
                                 {
                                     num = 1;
                                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                                     IoC.WarningView.msg_text = GetLocalizedValue<string>("coupon_name_unsuccess");
+                                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                                }
+                                else if (row["v_op_c"].ToString() == "true" &&
+                                        row["v_op_c_id"].ToString() == op_c_id &&
+                                        row["v_op_c_real_amount"].ToString() != txt_hr_price)
+                                {
+                                    num = 1;
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_edit_price");
                                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                                 }
                             }
@@ -446,7 +456,7 @@ namespace ICMS_Server
         public bool IsSelect()
         {
             string query = $"select * " +
-                           $"from option_coupon";
+                           $"from v_op_c";
 
             try
             {

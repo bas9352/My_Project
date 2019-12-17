@@ -1,0 +1,24 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ICMS_Server"
+        xmlns:Viewer="clr-namespace:SAPBusinessObjects.WPF.Viewer;assembly=SAPBusinessObjects.WPF.Viewer"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    x:Class="ICMS_Server.ReportViewer"
+        mc:Ignorable="d"
+        Title="ReportViewer" Height="600" Width="1080">
+    <Grid>
+
+        <Viewer:CrystalReportsViewer x:Name="item_report">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding item_report}"
+                                           CommandParameter="{Binding ElementName=item_report}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Viewer:CrystalReportsViewer>
+
+    </Grid>
+</Window>

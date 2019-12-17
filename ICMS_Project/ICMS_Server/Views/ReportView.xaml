@@ -66,14 +66,12 @@
                                   Command="{Binding btn_top_up_report}">
                 </MenuItem>
                 <Separator Margin="0 -4 0 -4"/>
-
-                <MenuItem Header="{lex:Loc Key=online_history_report}"
-                                  Command="{Binding btn_online_history_report}">
-                </MenuItem>
-                <Separator Margin="0 -4 0 -4"/>
-
                 <MenuItem Header="{lex:Loc Key=income_report}"
                                   Command="{Binding btn_income_report}">
+                </MenuItem>
+                <Separator Margin="0 -4 0 -4"/>
+                <MenuItem Header="{lex:Loc Key=online_history_report}"
+                                  Command="{Binding btn_online_history_report}">
                 </MenuItem>
 
             </Menu>

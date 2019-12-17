@@ -51,11 +51,13 @@ namespace ICMS_Server
 
             btn_add = new RelayCommand(p =>
             {
+                IoC.AddEditPromotionView.title = GetLocalizedValue<string>("add_promo");
                 IoC.AddEditPromotionView.promo_id = null;
                 DialogHost.Show(new AddEditPromotionView(), "Main");
             });
             btn_edit = new RelayCommand(p =>
             {
+                IoC.AddEditPromotionView.title = GetLocalizedValue<string>("edit_promo");
                 if (promo_item == null)
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
@@ -87,55 +89,57 @@ namespace ICMS_Server
                 {
                     IoC.ConfirmView.msg_title = GetLocalizedValue<string>("title_confirm");
                     IoC.ConfirmView.msg_text = GetLocalizedValue<string>("del_confirm");
-                    DialogHost.Show(new ConfirmView(), "Msg", ExtendedClosingEventHandler);
+                    DialogHost.Show(new ConfirmView(), "Msg", IsDelete);
                 }
             });
         }
+        #endregion
 
-        public void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        #region Other method
+        public void IsDelete(object sender, DialogClosingEventArgs eventArgs)
         {
             int num = 0;
             if ((bool)eventArgs.Parameter == true)
             {
                 Task.Factory.StartNew(() =>
                 {
-                    if (IsDelete() == true)
-                    {
-                        num = 1;
-
-                    }
-                    else
-                    {
-                        num = 0;
-                    }
                 }).ContinueWith((previousTask) => {
-                    if (num == 1)
+                    string query = $"select * from promotion";
+
+                    try
                     {
+                        Sconn.conn.Open();
+
+                        MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                        MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                        MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
+                        DataTable dt = new DataTable();
+                        adp.Fill(dt);
+                        Sconn.conn.Close();
+                        Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
+                        DataRow dr = dt.Rows[promo_index];
+                        dr.Delete();
+                        adp.Update(dt);
                         item_promo.Execute(promo_data);
-                        //IoC.Application.DialogHostMsg = false;
-                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                        IoC.WarningView.msg_text = GetLocalizedValue<string>("del_success");
-                        DialogHost.Show(new WarningView(), "Msg");
-                        //IoC.OptionView.CurrPage = ApplicationPage.Reset;
-                        //IoC.OptionView.CurrPage = ApplicationPage.Promotion;
-                        IsClear();
                     }
-                    else
+                    catch (MySqlException ex)
                     {
-                        if (conn_number == 0)
+                        if (ex.Number == 0)
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                             IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
                         else
                         {
-                            //IoC.Application.DialogHostMsg = false;
                             IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
+                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                             DialogHost.Show(new WarningView(), "Msg");
                         }
+                    }
+                    finally
+                    {
+                        Sconn.conn.Close();
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
@@ -153,38 +157,39 @@ namespace ICMS_Server
         {
             string query = $"select * from promotion";
 
-            if (OpenConnection() == true)
+            try
             {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
-                    DataRow dr = dt.Rows[promo_index];
-                    dr.Delete();
-                    adp.Update(dt);
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    conn_number = ex.Number;
-                    //MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                MySqlCommandBuilder cmdb = new MySqlCommandBuilder(adp);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Console.WriteLine(cmdb.GetDeleteCommand().CommandText);
+                DataRow dr = dt.Rows[promo_index];
+                dr.Delete();
+                adp.Update(dt);
+                Sconn.conn.Close();
+                return true;
             }
-            else
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
+                }
+                return false;
+            }
+            finally
             {
                 Sconn.conn.Close();
-                return false;
             }
         }
 
@@ -201,55 +206,53 @@ namespace ICMS_Server
             promo_data = p as DataGrid;
             string query = $"select * from promotion order by promo_id";
 
-            if (OpenConnection() == true)
-            {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    promo_data.ItemsSource = dt.DefaultView;
-                    Sconn.conn.Close();
-                }
-                catch (MySqlException ex)
-                {
-                    //MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-            }
-            else
-            {
-                Sconn.conn.Close();
-                //MessageBox.Show($"{Sconn.msg_con}");
-            }
-        }
-
-        private bool OpenConnection()
-        {
             try
             {
                 Sconn.conn.Open();
-                return true;
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                promo_data.ItemsSource = dt.DefaultView;
             }
             catch (MySqlException ex)
             {
-                switch (ex.Number)
+                if (ex.Number == 0)
                 {
-                    case 0:
-                        MessageBox.Show("ไม่มีการเชื่อมต่อ");
-                        break;
-                    case 1045:
-                        MessageBox.Show("เชื่อมต่อสำเร็จ");
-                        break;
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
                 }
-                return false;
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", conn_fail);
+                }
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
         }
+
+        private void conn_fail(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if ((bool)eventArgs.Parameter == true)
+            {
+                IoC.Application.DialogHostMsg = false;
+                Task.Factory.StartNew(async () =>
+                {
+                    await Task.Delay(5000);
+                }).ContinueWith((previousTask) =>
+                {
+                    item_promo.Execute(promo_data);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+
         public static T GetLocalizedValue<T>(string key)
         {
             return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":resLang:" + key);

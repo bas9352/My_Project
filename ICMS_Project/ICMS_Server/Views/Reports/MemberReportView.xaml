@@ -14,6 +14,79 @@
              TextOptions.TextFormattingMode="Ideal" 
              TextOptions.TextRenderingMode="Auto">
     <Grid>
-        <Label>report</Label>
+        <GroupBox Margin="25"
+                  Header="{lex:Loc Key=member_report}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Margin="25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="0,0,5,0">
+                        <ComboBox x:Name="item_staff" 
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  VerticalAlignment="Stretch" 
+                                  ItemsSource="{Binding group_item}" 
+                                  Width="auto"
+                                  Height="40"
+                                  materialDesign:HintAssist.Hint="{lex:Loc Key=create_by}"
+                                  IsEnabled="{Binding group}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:InvokeCommandAction Command="{Binding item_staff}"
+                                               CommandParameter="{Binding ElementName=item_staff}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger  EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding item_staff_changed}"
+                                               CommandParameter="{Binding ElementName=item_staff}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="0,0,5,0">
+                        <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                        Language="th-TH"
+                                    Text="{Binding txt_s_create_date, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=s_create_date}"
+                                    Width="auto"
+                                    Height="auto">
+                        </DatePicker>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    VerticalAlignment="Stretch"
+                                        Language="th-TH"
+                                    Text="{Binding txt_e_create_date, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=e_create_date}"
+                                    Width="auto"
+                                    Height="auto">
+                        </DatePicker>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      Margin="0,0,0,25">
+                    <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+                        Padding="8"
+                        Width="150"
+                        Height="35"
+                        Command="{Binding btn_open_report}"
+                        ToolTip="{lex:Loc Key=open_report}"
+                        Content="{lex:Loc Key=open_report}">
+                    </Button>
+                </Grid>
+            </Grid>                
+        </GroupBox>
     </Grid>
 </UserControl>

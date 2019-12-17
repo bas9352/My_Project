@@ -35,8 +35,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="sapbusinessobjects.wpf.viewer, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="SAPBusinessObjects.WPF.ViewerShared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -101,7 +114,33 @@
     <Compile Include="ViewModels\Popups\ProcessBarViewModel.cs" />
     <Compile Include="ViewModels\Popups\UserHistoryViewModel.cs" />
     <Compile Include="ViewModels\Popups\UserTopUpHistoryViewModel.cs" />
+    <Compile Include="ViewModels\Reports\Class\CouponClass.cs" />
+    <Compile Include="ViewModels\Reports\CouponReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CrystalReports\MemberReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemberReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Reports\CrystalReports\ReportCoupon.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReportCoupon.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Reports\DataSet\DataSetReport.cs">
+      <DependentUpon>DataSetReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Reports\DataSet\DataSetReport.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Reports\IncomeReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\MemberReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\OnlineHistoryViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ReportViewerModel.cs" />
+    <Compile Include="ViewModels\Reports\TopUpReportViewModel.cs" />
     <Compile Include="Views\Popups\AddEditCouponView.xaml.cs">
       <DependentUpon>AddEditCouponView.xaml</DependentUpon>
     </Compile>
@@ -210,8 +249,23 @@
     <Compile Include="Views\Popups\WarningView.xaml.cs">
       <DependentUpon>WarningView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Reports\CouponReportView.xaml.cs">
+      <DependentUpon>CouponReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\IncomeReportView.xaml.cs">
+      <DependentUpon>IncomeReportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Reports\MemberReportView.xaml.cs">
       <DependentUpon>MemberReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\OnlineHistoryReportView.xaml.cs">
+      <DependentUpon>OnlineHistoryReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ReportViewer.xaml.cs">
+      <DependentUpon>ReportViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\TopUpReportView.xaml.cs">
+      <DependentUpon>TopUpReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReportView.xaml.cs">
       <DependentUpon>ReportView.xaml</DependentUpon>
@@ -376,7 +430,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Reports\CouponReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\IncomeReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Reports\MemberReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\OnlineHistoryReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\ReportViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\TopUpReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -420,6 +494,25 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>resLang.th.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="ViewModels\Reports\CrystalReports\MemberReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MemberReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewModels\Reports\CrystalReports\ReportCoupon.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReportCoupon.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="ViewModels\Reports\DataSet\DataSetReport.xsc">
+      <DependentUpon>DataSetReport.xsd</DependentUpon>
+    </None>
+    <None Include="ViewModels\Reports\DataSet\DataSetReport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetReport.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="ViewModels\Reports\DataSet\DataSetReport.xss">
+      <DependentUpon>DataSetReport.xsd</DependentUpon>
+    </None>
     <Resource Include="Fonts\GoogleSans-Bold.ttf" />
     <Resource Include="Fonts\GoogleSans-BoldItalic.ttf" />
     <Resource Include="Fonts\GoogleSans-Italic.ttf" />
@@ -549,6 +642,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

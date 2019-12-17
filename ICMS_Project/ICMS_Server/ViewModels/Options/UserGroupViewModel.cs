@@ -24,11 +24,9 @@ namespace ICMS_Server
         public bool del { get; set; } = true;
         public DataRowView group_item { get; set; } = null;
         public DataGrid group_data { get; set; } = null;
+        public DataTable check_group_data { get; set; } = null;
         public string group_id { get; set; } = null;
         public int group_index { get; set; }
-        
-
-        private int conn_number;
 
         #endregion
 
@@ -74,7 +72,7 @@ namespace ICMS_Server
                     IoC.AddEditGroupView.type_id = group_item["type_id"].ToString();
                     IoC.AddEditGroupView.txt_group_name = group_item["group_name"].ToString();
                     IoC.AddEditGroupView.txt_group_rate = group_item["group_rate"].ToString();
-                    IoC.AddEditGroupView.txt_c_date = group_item["group__c_date"].ToString();
+                    IoC.AddEditGroupView.txt_c_date = group_item["group_c_date"].ToString();
 
                     if (group_item["type_name"].ToString() == "coupon")
                     {
@@ -124,45 +122,103 @@ namespace ICMS_Server
                 Task.Factory.StartNew(() =>
                 {
                 }).ContinueWith((previousTask) => {
-                    string query = $"delete from user_group " +
+                    if (IsCheckGroup() == true)
+                    {
+                        int num = 0;
+                        for (int i = 0; i < check_group_data.Rows.Count; i++)
+                        {
+                            DataRow row = check_group_data.Rows[i];
+                            if (row["v_all_group"].ToString() == "true" &&
+                                    row["v_group_id"].ToString() == group_item["group_id"].ToString())
+                            {
+                                num = 1;
+                                IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_del_rate");
+                                DialogHost.Show(new WarningView(), "Msg");
+                            }
+                        }
+
+                        if (num == 0)
+                        {
+                            string query = $"delete from user_group " +
                            $"where group_id = '{group_item["group_id"].ToString()}' ";
 
-                    try
-                    {
-                        Sconn.conn.Open();
+                            try
+                            {
+                                Sconn.conn.Open();
 
-                        MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                        MySqlDataReader reader = cmd.ExecuteReader();
+                                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                                MySqlDataReader reader = cmd.ExecuteReader();
 
-                        reader.Close();
-                        Sconn.conn.Close();
-                    }
-                    catch (MySqlException ex)
-                    {
-                        if (ex.Number == 1451)
-                        {
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
-                            DialogHost.Show(new WarningView(), "Msg");
+                                reader.Close();
+                                Sconn.conn.Close();
+                            }
+                            catch (MySqlException ex)
+                            {
+                                if (ex.Number == 1451)
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false_in_use");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                                else if (ex.Number == 0)
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                                else
+                                {
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                                    DialogHost.Show(new WarningView(), "Msg");
+                                }
+                            }
+                            finally
+                            {
+                                Sconn.conn.Close();
+                            }
                         }
-                        else if (ex.Number == 0)
-                        {
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                            DialogHost.Show(new WarningView(), "Msg");
-                        }
-                        else
-                        {
-                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                            IoC.WarningView.msg_text = GetLocalizedValue<string>("del_false");
-                            DialogHost.Show(new WarningView(), "Msg");
-                        }
-                    }
-                    finally
-                    {
-                        Sconn.conn.Close();
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+
+        public bool IsCheckGroup()
+        {
+            string query = $"select * from v_user_group";
+
+            try
+            {
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                check_group_data = dt;
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg");
+                }
+                return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
         }
 

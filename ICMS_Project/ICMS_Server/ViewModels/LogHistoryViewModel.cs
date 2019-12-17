@@ -71,29 +71,29 @@ namespace ICMS_Server
             online_timer.Tick += online_timer_tick;
             online_timer.Start();
         }
+        #endregion
 
+        #region Other method
         private void online_timer_tick(object sender, EventArgs e)
         {
-            if (online_data != null)
+            if (IoC.MainView.CurrPage == ApplicationPage.LogHistory)
             {
-                //lab_username = null;
-                //lab_start_time = null;
-                //lab_use_time = null;
-                //lab_remaining_time = null;
-                //lab_group_rate = null;
-                item_online.Execute(online_data);
-                
+                if (online_data != null)
+                {
+                    item_online.Execute(online_data);
+                }
+            }
+            else
+            {
+                online_timer.Stop();
             }
         }
 
         DateTime temp;
         private string query;
         private string start_date, end_date;
-        //string query;
         private void GoItemOnline(object p)
         {
-            ////MessageBox.Show($"{IoC.MemberCouponView.cmb.Items.Count < 1}");
-
             if (cmb.ItemsSource == null)
             {
                 cmb_data = new ObservableCollection<KeyValuePair<string, string>>()
@@ -106,7 +106,6 @@ namespace ICMS_Server
                 cmb.DisplayMemberPath = "Key";
                 cmb.SelectedIndex = 0;
             }
-            //IsClear();
             online_data = p as DataGrid;
             try
             {
@@ -127,7 +126,7 @@ namespace ICMS_Server
             {
                 end_date = null;
             }
-            //MessageBox.Show($"{search_text}");
+
             if (search_text == "username")
             {
                 query = $"select * " +
@@ -143,62 +142,48 @@ namespace ICMS_Server
                         $"from v_online_history " +
                         $"where if('{start_date}' = '{""}', v_online_s_date = v_online_s_date, v_online_s_date between '{start_date}' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}') and " +
                                 $"if('{end_date}' = '{""}', v_online_s_date = v_online_s_date, v_online_s_date between '1999-01-01' and '{end_date}') and " +
-                        $"if('{search_text}' = '{"pc_name"}' and '{txt_search}' = '{""}', v_online_id = v_online_id, v_pc_name like '%{txt_search}%') " +
+                        $"if('{search_text}' = '{"_pc_name"}' and '{txt_search}' = '{""}', v_online_id = v_online_id, v_online_pc_name like '%{txt_search}%') " +
                         $"order by v_online_id";
             }
             else
             {
                 query = $"select * " +
-                           //$"date_format(str_to_date(v_online_s_date, '%Y-%m-%d'),'%d/%m/%Y') as v_all_s_date " +
                         $"from v_online_history " +
                         $"where if('{start_date}' = '{""}', v_online_s_date = v_online_s_date, v_online_s_date between '{start_date}' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}') and " +
                                 $"if('{end_date}' = '{""}', v_online_s_date = v_online_s_date, v_online_s_date between '1999-01-01' and '{end_date}') " +
                         $"order by v_online_id";
             }
-            //MessageBox.Show($"{query}");
-
-
             
             try
             {
-                if (OpenConnection() == true)
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    Sconn.conn.Close();
+                Sconn.conn.Open();
 
-                    dt.Columns.Add("new_v_online_use_time", typeof(string));
-                    dt.Columns.Add("new_v_online_s_date", typeof(string));
-                    foreach (DataRow data in dt.Rows)
-                    {
-                        data["new_v_online_use_time"] = string.Format("{0:00:}{1:00}",data["v_all_hr"], data["v_all_mn"]);
-                        data["new_v_online_s_date"] = DateTime.Parse(data["v_online_s_date"].ToString()).ToString("dd/MM/yyyy");
-                        //data["new_v_all_remaining_amount"] = string.Format("{0:#,##0.##}", double.Parse(data["v_all_remaining_amount"].ToString()));
-                        //MessageBox.Show($"{data["v_all_remaining_amount"].GetType()}");
-                    }
-                    online_data.ItemsSource = dt.DefaultView;
-                }
-                else
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+
+                dt.Columns.Add("new_v_online_use_time", typeof(string));
+                dt.Columns.Add("new_v_online_s_date", typeof(string));
+                foreach (DataRow data in dt.Rows)
                 {
-                    Sconn.conn.Close();
-                    //MessageBox.Show($"{Sconn.msg_con}");
+                    data["new_v_online_use_time"] = string.Format("{0:00:}{1:00}", data["v_all_hr"], data["v_all_mn"]);
+                    data["new_v_online_s_date"] = DateTime.Parse(data["v_online_s_date"].ToString()).ToString("dd/MM/yyyy");
                 }
+                online_data.ItemsSource = dt.DefaultView;
             }
             catch (MySqlException ex)
             {
                 Sconn.conn.Close();
                 if (ex.Number == 0)
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
                 }
                 else
                 {
-                    //IoC.Application.DialogHostMsg = false;
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
                     DialogHost.Show(new WarningView(), "Msg");
@@ -225,34 +210,6 @@ namespace ICMS_Server
                 search_text = ((KeyValuePair<string, string>)item.SelectedItem).Value;
             }
 
-        }
-
-        private bool OpenConnection()
-        {
-            try
-            {
-                Sconn.conn.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Sconn.conn.Close();
-                if (ex.Number == 0)
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                else
-                {
-                    //IoC.Application.DialogHostMsg = false;
-                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                    DialogHost.Show(new WarningView(), "Msg");
-                }
-                return false;
-            }
         }
 
         public static T GetLocalizedValue<T>(string key)

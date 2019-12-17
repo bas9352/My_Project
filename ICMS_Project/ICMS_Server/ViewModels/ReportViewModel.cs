@@ -25,25 +25,20 @@ using WPFLocalizeExtension.Extensions;
 
 namespace ICMS_Server
 {
-    public class ReportViewModel
+    public class ReportViewModel : BaseView
     {
         #region Properties
         public Window MainApp { get; set; }
         public ApplicationPage CurrPage { get; set; } = ApplicationPage.MemberReport;
-        Database Sconn = new Database();
-        public DataRowView member_item { get; set; }
-        public DataTable data_mt { get; set; }
-        public DataTable data_online { get; set; }
-        public DataGrid member_data { get; set; }
-        public DataRow mt_data { get; set; }
-        public DataRow online_data { get; set; }
-        public int member_index { get; set; }
 
         #endregion
 
         #region Commands
         public ICommand btn_member_report { get; set; }
-        public ICommand item_member_change { get; set; }
+        public ICommand btn_coupon_report { get; set; }
+        public ICommand btn_top_up_report { get; set; }
+        public ICommand btn_income_report { get; set; }
+        public ICommand btn_history_report { get; set; }
 
         #endregion
 
@@ -53,6 +48,26 @@ namespace ICMS_Server
             btn_member_report = new RelayCommand(p=>
             {
                 CurrPage = ApplicationPage.MemberReport;
+            });
+
+            btn_coupon_report = new RelayCommand(p =>
+            {
+                CurrPage = ApplicationPage.CouponReport;
+            });
+
+            btn_top_up_report = new RelayCommand(p =>
+            {
+                CurrPage = ApplicationPage.TopUpReport;
+            });
+
+            btn_income_report = new RelayCommand(p =>
+            {
+                CurrPage = ApplicationPage.IncomeReport;
+            });
+
+            btn_history_report = new RelayCommand(p =>
+            {
+                CurrPage = ApplicationPage.OnlineHistoryReport;
             });
         }
         #endregion

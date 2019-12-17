@@ -33,7 +33,7 @@ namespace ICMS_Server
 
         public int promo_index { get; set; }
 
-        private int conn_number;
+        public string title { get; set; }
 
         #endregion
 
@@ -59,7 +59,10 @@ namespace ICMS_Server
                 grid_add_edit_p_check = false;
                 if (txt_promo_name == null || 
                     txt_promo_rate_point == null || 
-                    txt_promo_rate == null)
+                    txt_promo_rate == null ||
+                    txt_promo_name == "" ||
+                    txt_promo_rate_point == "" ||
+                    txt_promo_rate == "")
                 {
                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                     IoC.WarningView.msg_text = GetLocalizedValue<string>("enter_info");
@@ -75,8 +78,8 @@ namespace ICMS_Server
                             for (int i = 0; i < data.Rows.Count; i++)
                             {
                                 DataRow row = data.Rows[i];
-                                if (row["promo_name"].ToString() == txt_promo_name &&
-                                    row["promo_status"].ToString() == "true" && 
+                                if (row["v_promo_name"].ToString() == txt_promo_name &&
+                                    row["v_promo_status"].ToString() == "true" && 
                                     on_off_promo == true)
                                 {
                                     num = 1;
@@ -94,21 +97,6 @@ namespace ICMS_Server
                                     IoC.WarningView.msg_text = GetLocalizedValue<string>("add_success");
                                     DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                                 }
-                                else
-                                {
-                                    if (conn_number == 0)
-                                    {
-                                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                        IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                                        DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                    }
-                                    else
-                                    {
-                                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                        IoC.WarningView.msg_text = GetLocalizedValue<string>("add_unsuccess");
-                                        DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                    }
-                                }
                             }
                         }
                         else
@@ -117,78 +105,38 @@ namespace ICMS_Server
                             for (int i = 0; i < data.Rows.Count; i++)
                             {
                                 DataRow row = data.Rows[i];
-                                if (row["promo_name"].ToString() == txt_promo_name &&
-                                    row["promo_status"].ToString() == "true" &&
+                                if (row["v_promo_name"].ToString() == txt_promo_name &&
+                                    row["v_promo_status"].ToString() == "true" &&
                                     on_off_promo == true &&
-                                    row["promo_id"].ToString() != promo_id)
+                                    row["v_promo_id"].ToString() != promo_id)
                                 {
                                     num = 1;
                                     IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                                     IoC.WarningView.msg_text = GetLocalizedValue<string>("promo_name_unsuccess");
                                     DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                                 }
+                                else if(row["v_mt_promo"].ToString() == "true" &&
+                                        row["v_promo_id"].ToString() == promo_id &&
+                                        (row["v_promo_rate"].ToString() != txt_promo_rate ||
+                                        row["v_promo_rate_point"].ToString() != txt_promo_rate_point))
+                                {
+                                    num = 1;
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_edit_promo");
+                                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                                }
                             }
 
                             if (num == 0)
                             {
-                                if (IsSelectPromoCheck() == true)
+                                if (IsUpdate() == true)
                                 {
-                                    int num_promo = 0;
-                                    for(int i = 0; i< data_promo.Rows.Count; i++)
-                                    {
-                                        var item = data_promo.Rows[i];
-
-                                        if ((item["v_promo_rate_point"].ToString() != txt_promo_rate_point || 
-                                            item["v_promo_rate"].ToString() != txt_promo_rate) &&
-                                            item["v_promo_id"].ToString() == promo_id)
-                                        {
-                                            num_promo = 1;
-                                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                            IoC.WarningView.msg_text = GetLocalizedValue<string>("cant_edit_promo");
-                                            DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                        }
-                                    }
-
-                                    if (num_promo == 0)
-                                    {
-                                        if (IsUpdate() == true)
-                                        {
-                                            IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
-                                            IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
-                                            DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
-                                        }
-                                        else
-                                        {
-                                            if (conn_number == 0)
-                                            {
-                                                IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                                IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                                                DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                            }
-                                            else
-                                            {
-                                                IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                                IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_unsuccess");
-                                                DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (conn_number == 0)
-                                {
-                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_success");
+                                    IoC.WarningView.msg_text = GetLocalizedValue<string>("edit_success");
                                     DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                                 }
-                                
                             }
                         }
-                    }
-                    else if(conn_number == 0)
-                    {
-                        IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
-                        IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
-                        DialogHost.Show(new WarningView(), "Msg", ExtendedClosingEventHandler);
                     }
                 }
             });
@@ -199,6 +147,9 @@ namespace ICMS_Server
                 IoC.Application.DialogHostMain = false;
             });
         }
+        #endregion
+
+        #region Other method
         private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             if ((bool)eventArgs.Parameter == true)
@@ -207,9 +158,6 @@ namespace ICMS_Server
                 grid_add_edit_p_check = true;
                 IoC.Application.DialogHostMain = false;
                 IsClear();
-                //IoC.OptionView.CurrPage = ApplicationPage.Reset;
-                //oC.OptionView.CurrPage = ApplicationPage.Promotion;
-                //IoC.UserGroupView.IsSelect();
             }
             else
             {
@@ -247,35 +195,36 @@ namespace ICMS_Server
                            $"promo_rate = '{txt_promo_rate}', " +
                            $"promo_c_date = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", new CultureInfo("us-US", false))}', " +
                            $"promo_status = '{on_off_promo}' ";
-            //MessageBox.Show($"{query}");
-            if (OpenConnection() == true)
+
+            try
             {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                Sconn.conn.Open();
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
 
-                    reader.Close();
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    conn_number = ex.Number;
-                    //MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-
+                reader.Close();
+                Sconn.conn.Close();
+                return true;
             }
-            else
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                return false;
+            }
+            finally
             {
                 Sconn.conn.Close();
-                return false;
             }
         }
 
@@ -288,126 +237,74 @@ namespace ICMS_Server
                            $"promo_status = '{on_off_promo}' " +
                            $"where promo_id = '{promo_id}'";
 
-            if (OpenConnection() == true)
-            {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    reader.Close();
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    conn_number = ex.Number;
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-
-            }
-            else
-            {
-                Sconn.conn.Close();
-                return false;
-            }
-
-        }
-
-        public bool IsSelect()
-        {
-            string query = $"select * from promotion order by promo_id;";
-
-            if (OpenConnection() == true)
-            {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    data = dt;
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    conn_number = ex.Number;
-                    //MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-            }
-            else
-            {
-                Sconn.conn.Close();
-                return false;
-            }
-        }
-
-        public bool IsSelectPromoCheck()
-        {
-            string query = $"select * from v_promo_check";
-
-            if (OpenConnection() == true)
-            {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
-                    MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adp.Fill(dt);
-                    data_promo = dt;
-                    Sconn.conn.Close();
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    conn_number = ex.Number;
-                    //MessageBox.Show(ex.ToString());
-                    Sconn.conn.Close();
-                    return false;
-                }
-                finally
-                {
-                    Sconn.conn.Close();
-                }
-            }
-            else
-            {
-                Sconn.conn.Close();
-                return false;
-            }
-        }
-
-        public bool OpenConnection()
-        {
             try
             {
                 Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                reader.Close();
+                Sconn.conn.Close();
                 return true;
             }
             catch (MySqlException ex)
             {
-                switch (ex.Number)
+                if (ex.Number == 0)
                 {
-                    case 0:
-                        MessageBox.Show("ไม่มีการเชื่อมต่อ");
-                        break;
-                    case 1045:
-                        MessageBox.Show("เชื่อมต่อสำเร็จ");
-                        break;
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
                 }
                 return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
+            }
+        }
+
+        public bool IsSelect()
+        {
+            string query = $"select * from v_promotion;";
+
+            try
+            {
+                Sconn.conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand(query, Sconn.conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                adp.Fill(dt);
+                Sconn.conn.Close();
+                data = dt;
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                if (ex.Number == 0)
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                else
+                {
+                    IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
+                    IoC.WarningView.msg_text = GetLocalizedValue<string>("conn_unsuccess");
+                    DialogHost.Show(new WarningView(), "Msg", ConfirmClosingEventHandler);
+                }
+                return false;
+            }
+            finally
+            {
+                Sconn.conn.Close();
             }
         }
 
@@ -415,8 +312,6 @@ namespace ICMS_Server
         {
             return LocExtension.GetLocalizedValue<T>(Assembly.GetCallingAssembly().GetName().Name + ":resLang:" + key);
         }
-
-
         #endregion
     }
 }

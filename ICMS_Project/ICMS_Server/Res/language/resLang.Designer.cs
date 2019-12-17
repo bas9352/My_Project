@@ -79,6 +79,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to เพิ่มข้อมูลโบนัสเติมเงิน.
+        /// </summary>
+        internal static string add_bonus {
+            get {
+                return ResourceManager.GetString("add_bonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to เพิ่มข้อมูลคูปอง.
         /// </summary>
         internal static string add_coupon {
@@ -187,6 +196,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to เพิ่มสิทธิพิเศษ.
+        /// </summary>
+        internal static string add_promo {
+            get {
+                return ResourceManager.GetString("add_promo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide Add or remove programe.
         /// </summary>
         internal static string add_remove_programe {
@@ -241,7 +259,7 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to แอดมิน.
+        ///   Looks up a localized string similar to เจ้าของร้าน.
         /// </summary>
         internal static string admin {
             get {
@@ -264,6 +282,15 @@ namespace ICMS_Server.Res.language {
         internal static string after_use {
             get {
                 return ResourceManager.GetString("after_use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ทั้งหมด.
+        /// </summary>
+        internal static string all {
+            get {
+                return ResourceManager.GetString("all", resourceCulture);
             }
         }
         
@@ -358,6 +385,33 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to โบนัสนี้กำลังถูกใช้ ไม่มามารถลบแต้มโบนัสได้.
+        /// </summary>
+        internal static string cant_del_bonus {
+            get {
+                return ResourceManager.GetString("cant_del_bonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ชื่อคูปองนี้กำลังถูกใช้ ไม่สามารถลบข้อมูลได้.
+        /// </summary>
+        internal static string cant_del_op_c {
+            get {
+                return ResourceManager.GetString("cant_del_op_c", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to กลุ่มนี้กำลังถูกใช้ ไม่สามารถลบข้อมูลได้.
+        /// </summary>
+        internal static string cant_del_rate {
+            get {
+                return ResourceManager.GetString("cant_del_rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ไม่สามารถแก้ไขข้อมูลนี่ได้.
         /// </summary>
         internal static string cant_edit {
@@ -376,7 +430,16 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to โปรโมชั่นนี้กำลังถูกใช้ ไม่สามารถแก้ไขยอดเติมเงิน หรือแต้มโบนัสได้.
+        ///   Looks up a localized string similar to ชื่อค่าคูปองนี้กำลังถูกใช้ ไม่มามารถแก้ไขค่าบริการได้.
+        /// </summary>
+        internal static string cant_edit_price {
+            get {
+                return ResourceManager.GetString("cant_edit_price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to สิทธิพิเศษนี้กำลังถูกใช้ ไม่สามารถแก้ไขเงินฟรี หรือแต้มโบนัสได้.
         /// </summary>
         internal static string cant_edit_promo {
             get {
@@ -601,6 +664,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to สร้างโดย.
+        /// </summary>
+        internal static string create_by {
+            get {
+                return ResourceManager.GetString("create_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to สร้างคูปอง.
         /// </summary>
         internal static string create_coupon {
@@ -745,6 +817,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ถึงวันที่.
+        /// </summary>
+        internal static string e_create_date {
+            get {
+                return ResourceManager.GetString("e_create_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to วันที่สิ้นสุด วัน เดือน ปี (ค.ศ.).
         /// </summary>
         internal static string e_date {
@@ -759,6 +840,15 @@ namespace ICMS_Server.Res.language {
         internal static string edit {
             get {
                 return ResourceManager.GetString("edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to แก้ไขข้อมูลโบนัสเติมเงิน.
+        /// </summary>
+        internal static string edit_bonus {
+            get {
+                return ResourceManager.GetString("edit_bonus", resourceCulture);
             }
         }
         
@@ -786,6 +876,15 @@ namespace ICMS_Server.Res.language {
         internal static string edit_member {
             get {
                 return ResourceManager.GetString("edit_member", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to แก้ไขสิทธิพิเศษ.
+        /// </summary>
+        internal static string edit_promo {
+            get {
+                return ResourceManager.GetString("edit_promo", resourceCulture);
             }
         }
         
@@ -1420,6 +1519,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ดูตัวอย่าง.
+        /// </summary>
+        internal static string open_report {
+            get {
+                return ResourceManager.GetString("open_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to การตั้งค่า.
         /// </summary>
         internal static string option {
@@ -1546,7 +1654,7 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ชื่อโปรโปรชั่น.
+        ///   Looks up a localized string similar to ชื่อสิทธิพิเศษ.
         /// </summary>
         internal static string promo_name {
             get {
@@ -1555,7 +1663,7 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to มีชื่อโปรโมชั่นนี้แล้ว.
+        ///   Looks up a localized string similar to มีชื่อสิทธิพิเศษนี้แล้ว.
         /// </summary>
         internal static string promo_name_unsuccess {
             get {
@@ -1564,7 +1672,7 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to เงินโบนัส.
+        ///   Looks up a localized string similar to เงินฟรี.
         /// </summary>
         internal static string promo_rate {
             get {
@@ -1582,7 +1690,7 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to โปรโมชั่น.
+        ///   Looks up a localized string similar to สิทธิพิเศษ.
         /// </summary>
         internal static string promotion {
             get {
@@ -1686,6 +1794,15 @@ namespace ICMS_Server.Res.language {
         internal static string rounding {
             get {
                 return ResourceManager.GetString("rounding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ตั้งแต่วันที่.
+        /// </summary>
+        internal static string s_create_date {
+            get {
+                return ResourceManager.GetString("s_create_date", resourceCulture);
             }
         }
         

@@ -43,7 +43,7 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="25"
-                  Header="{lex:Loc Key=add_edit_promo}">
+                  Header="{Binding title}">
             <Grid>
                 <StackPanel>
                     <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"

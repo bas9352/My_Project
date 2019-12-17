@@ -81,8 +81,8 @@ namespace ICMS_Server
                 query = $"select * " +
                         $"from v_all_customer " +
                         $"where v_all_type_name = 'coupon' " +
-                        $"and v_coupon_username like '%{IoC.MemberCouponView.txt_search}%' " +
-                        $"order by v_coupon_username";
+                        $"and v_all_username like '%{IoC.MemberCouponView.txt_search}%' " +
+                        $"order by v_all_username";
 
             }
             IoC.MemberCouponView.txt_search_null = null;

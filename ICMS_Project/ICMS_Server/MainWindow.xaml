@@ -89,7 +89,7 @@
 
     <Grid>
         <ContentControl BorderThickness="0"
-                            Content="{Binding CurrPage,Converter={local:AppPageValueConverter}}"
+                        Content="{Binding CurrPage,Converter={local:AppPageValueConverter}}"
                         SnapsToDevicePixels="True">
 
         </ContentControl>

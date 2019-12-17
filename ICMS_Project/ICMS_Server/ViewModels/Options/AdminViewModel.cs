@@ -144,8 +144,7 @@ namespace ICMS_Server
             btn_cancel = new RelayCommand(p => 
             {
                 IsClear();
-                IoC.Application.CurrPage = ApplicationPage.Reset;
-                IoC.Application.CurrPage = ApplicationPage.Main;
+                IoC.Application.btn_main.Execute("");
             });
         }
         #endregion

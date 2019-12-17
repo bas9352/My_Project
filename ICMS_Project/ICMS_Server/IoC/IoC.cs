@@ -48,8 +48,14 @@ namespace ICMS_Server
         public static ProgressBarViewModel ProgressBarView => IoC.Get<ProgressBarViewModel>();
 
         public static MemberReportViewModel MemberReportView => IoC.Get<MemberReportViewModel>();
+        public static CouponReportViewModel CouponReportView => IoC.Get<CouponReportViewModel>();
+        public static TopUpReportViewModel TopUpReportView => IoC.Get<TopUpReportViewModel>();
+        public static IncomeReportViewModel IncomeReportView => IoC.Get<IncomeReportViewModel>();
+        public static OnlineHistoryReportViewModel OnlineHistoryReportView => IoC.Get<OnlineHistoryReportViewModel>();
+
         public static UserHistoryViewModel UserHistoryView => IoC.Get<UserHistoryViewModel>();
         public static UserTopUpHistoryViewModel UserTopUpHistorytView => IoC.Get<UserTopUpHistoryViewModel>();
+        public static ReportViewerModel ReportViewer => IoC.Get<ReportViewerModel>();
 
         public static void Setup()
         {
@@ -100,9 +106,16 @@ namespace ICMS_Server
             Kernel.Bind<GenerateCouponViewModel>().ToConstant(new GenerateCouponViewModel());
             Kernel.Bind<AddEditOptionCouponViewModel>().ToConstant(new AddEditOptionCouponViewModel());
             Kernel.Bind<ProgressBarViewModel>().ToConstant(new ProgressBarViewModel());
+
             Kernel.Bind<MemberReportViewModel>().ToConstant(new MemberReportViewModel());
+            Kernel.Bind<CouponReportViewModel>().ToConstant(new CouponReportViewModel());
+            Kernel.Bind<TopUpReportViewModel>().ToConstant(new TopUpReportViewModel());
+            Kernel.Bind<IncomeReportViewModel>().ToConstant(new IncomeReportViewModel());
+            Kernel.Bind<OnlineHistoryReportViewModel>().ToConstant(new OnlineHistoryReportViewModel());
+
             Kernel.Bind<UserHistoryViewModel>().ToConstant(new UserHistoryViewModel());
             Kernel.Bind<UserTopUpHistoryViewModel>().ToConstant(new UserTopUpHistoryViewModel());
+            Kernel.Bind<ReportViewerModel>().ToConstant(new ReportViewerModel());
 
         }
 

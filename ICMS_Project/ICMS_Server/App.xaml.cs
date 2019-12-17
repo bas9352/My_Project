@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
+using System.Windows.Markup;
 
 namespace ICMS_Server
 {
@@ -14,9 +16,6 @@ namespace ICMS_Server
             IoC.Setup();
 
             // Show the main window
-
-
-
             Current.MainWindow = new MainWindow()
             {
                 DataContext = IoC.Application,

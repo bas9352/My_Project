@@ -234,19 +234,19 @@
 
 
                         <DataGridTextColumn 
-                                Binding="{Binding v_coupon_username}" 
+                                Binding="{Binding v_all_username}" 
                                 Header="{lex:Loc Key=username}" 
                         Width="auto" 
                                 IsReadOnly="True">
                         </DataGridTextColumn>
                         <DataGridTextColumn 
-                                Binding="{Binding v_coupon_total_remaining_amount}" 
+                                Binding="{Binding v_all_remaining_amount}" 
                                 Header="{lex:Loc Key=coupon_total_amount}" 
                         Width="auto" 
                                 IsReadOnly="True">
                         </DataGridTextColumn>
                         <DataGridTextColumn 
-                                Binding="{Binding v_group_name}" 
+                                Binding="{Binding v_all_group_name}" 
                                 Header="{lex:Loc Key=user_group}" 
                         Width="auto" 
                                 IsReadOnly="True">

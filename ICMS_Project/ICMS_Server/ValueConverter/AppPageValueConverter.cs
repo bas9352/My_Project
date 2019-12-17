@@ -53,8 +53,17 @@ namespace ICMS_Server
                 return new LendView();
                 case ApplicationPage.PayDebt:
                     return new PayDebtView();
+
                 case ApplicationPage.MemberReport:
                     return new MemberReportView();
+                case ApplicationPage.CouponReport:
+                    return new CouponReportView();
+                case ApplicationPage.TopUpReport:
+                    return new TopUpReportView();
+                case ApplicationPage.IncomeReport:
+                    return new IncomeReportView();
+                case ApplicationPage.OnlineHistoryReport:
+                    return new OnlineHistoryReportView();
                 //case ApplicationPage.Confirm:
                 //return new ConfirmView();
                 //case ApplicationPage.Warning:

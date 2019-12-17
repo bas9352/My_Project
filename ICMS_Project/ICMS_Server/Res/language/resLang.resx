@@ -126,6 +126,9 @@
   <data name="address" xml:space="preserve">
     <value>ที่อยู่</value>
   </data>
+  <data name="add_bonus" xml:space="preserve">
+    <value>เพิ่มข้อมูลโบนัสเติมเงิน</value>
+  </data>
   <data name="add_coupon" xml:space="preserve">
     <value>เพิ่มข้อมูลคูปอง</value>
   </data>
@@ -162,6 +165,9 @@
   <data name="add_money" xml:space="preserve">
     <value>เพิ่มเงิน</value>
   </data>
+  <data name="add_promo" xml:space="preserve">
+    <value>เพิ่มสิทธิพิเศษ</value>
+  </data>
   <data name="add_remove_programe" xml:space="preserve">
     <value>Hide Add or remove programe</value>
   </data>
@@ -175,13 +181,16 @@
     <value>เพิ่มข้อมูลล้มเหลว</value>
   </data>
   <data name="admin" xml:space="preserve">
-    <value>แอดมิน</value>
+    <value>เจ้าของร้าน</value>
   </data>
   <data name="administrative_tool" xml:space="preserve">
     <value>Hide Administrative tool</value>
   </data>
   <data name="after_use" xml:space="preserve">
     <value>วันหลังเปิดใช้งาน</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>ทั้งหมด</value>
   </data>
   <data name="baht" xml:space="preserve">
     <value>บาท</value>
@@ -213,14 +222,26 @@
   <data name="cant_del" xml:space="preserve">
     <value>ไม่สามารถลบข้อมูลนี้ได้</value>
   </data>
+  <data name="cant_del_bonus" xml:space="preserve">
+    <value>โบนัสนี้กำลังถูกใช้ ไม่มามารถลบแต้มโบนัสได้</value>
+  </data>
+  <data name="cant_del_op_c" xml:space="preserve">
+    <value>ชื่อคูปองนี้กำลังถูกใช้ ไม่สามารถลบข้อมูลได้</value>
+  </data>
+  <data name="cant_del_rate" xml:space="preserve">
+    <value>กลุ่มนี้กำลังถูกใช้ ไม่สามารถลบข้อมูลได้</value>
+  </data>
   <data name="cant_edit" xml:space="preserve">
     <value>ไม่สามารถแก้ไขข้อมูลนี่ได้</value>
   </data>
   <data name="cant_edit_bonus" xml:space="preserve">
     <value>โบนัสนี้กำลังถูกใช้ ไม่มามารถแก้ไขแต้มโบนัสได้</value>
   </data>
+  <data name="cant_edit_price" xml:space="preserve">
+    <value>ชื่อค่าคูปองนี้กำลังถูกใช้ ไม่มามารถแก้ไขค่าบริการได้</value>
+  </data>
   <data name="cant_edit_promo" xml:space="preserve">
-    <value>โปรโมชั่นนี้กำลังถูกใช้ ไม่สามารถแก้ไขยอดเติมเงิน หรือแต้มโบนัสได้</value>
+    <value>สิทธิพิเศษนี้กำลังถูกใช้ ไม่สามารถแก้ไขเงินฟรี หรือแต้มโบนัสได้</value>
   </data>
   <data name="cant_edit_rate" xml:space="preserve">
     <value>กลุ่มนี้กำลังถูกใช้ ไม่สามารถแก้ไขค่าบริการได้</value>
@@ -294,6 +315,9 @@
   <data name="create_amount" xml:space="preserve">
     <value>จำนวนที่สร้าง</value>
   </data>
+  <data name="create_by" xml:space="preserve">
+    <value>สร้างโดย</value>
+  </data>
   <data name="create_coupon" xml:space="preserve">
     <value>สร้างคูปอง</value>
   </data>
@@ -345,6 +369,9 @@
   <data name="edit" xml:space="preserve">
     <value>แก้ไข</value>
   </data>
+  <data name="edit_bonus" xml:space="preserve">
+    <value>แก้ไขข้อมูลโบนัสเติมเงิน</value>
+  </data>
   <data name="edit_coupon" xml:space="preserve">
     <value>แก้ไขข้อมูลคูปอง</value>
   </data>
@@ -353,6 +380,9 @@
   </data>
   <data name="edit_member" xml:space="preserve">
     <value>แก้ไขข้อมูลสมาชิก</value>
+  </data>
+  <data name="edit_promo" xml:space="preserve">
+    <value>แก้ไขสิทธิพิเศษ</value>
   </data>
   <data name="edit_staff" xml:space="preserve">
     <value>แก้ไขข้อมูลพนักงาน</value>
@@ -389,6 +419,9 @@
   </data>
   <data name="exp_start" xml:space="preserve">
     <value>วันหมดอายุ ตั้งแต่ วัน เดือน ปี(ค.ศ.)</value>
+  </data>
+  <data name="e_create_date" xml:space="preserve">
+    <value>ถึงวันที่</value>
   </data>
   <data name="e_date" xml:space="preserve">
     <value>วันที่สิ้นสุด วัน เดือน ปี (ค.ศ.)</value>
@@ -561,6 +594,9 @@
   <data name="online_use_time" xml:space="preserve">
     <value>เวลาที่ใช้ไป</value>
   </data>
+  <data name="open_report" xml:space="preserve">
+    <value>ดูตัวอย่าง</value>
+  </data>
   <data name="option" xml:space="preserve">
     <value>การตั้งค่า</value>
   </data>
@@ -610,16 +646,16 @@
     <value>เปิดใช้งานสิทธิพิเศษ</value>
   </data>
   <data name="promotion" xml:space="preserve">
-    <value>โปรโมชั่น</value>
+    <value>สิทธิพิเศษ</value>
   </data>
   <data name="promo_name" xml:space="preserve">
-    <value>ชื่อโปรโปรชั่น</value>
+    <value>ชื่อสิทธิพิเศษ</value>
   </data>
   <data name="promo_name_unsuccess" xml:space="preserve">
-    <value>มีชื่อโปรโมชั่นนี้แล้ว</value>
+    <value>มีชื่อสิทธิพิเศษนี้แล้ว</value>
   </data>
   <data name="promo_rate" xml:space="preserve">
-    <value>เงินโบนัส</value>
+    <value>เงินฟรี</value>
   </data>
   <data name="promo_rate_point" xml:space="preserve">
     <value>แต้มโบนัส</value>
@@ -716,6 +752,9 @@
   </data>
   <data name="system" xml:space="preserve">
     <value>Hide System panel applet</value>
+  </data>
+  <data name="s_create_date" xml:space="preserve">
+    <value>ตั้งแต่วันที่</value>
   </data>
   <data name="s_date" xml:space="preserve">
     <value>วันที่เริ่มต้น วัน เดือน ปี (ค.ศ.)</value>

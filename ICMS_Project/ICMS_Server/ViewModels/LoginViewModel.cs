@@ -26,8 +26,6 @@ namespace ICMS_Server
     {
         #region Public Properties
         Database Sconn = new Database();
-
-
         public DataTable data { get; set; }
         public DataRow login_data { get; set; }
         public string txt_username { get; set; } = null;
@@ -88,8 +86,8 @@ namespace ICMS_Server
                     {
                         IoC.WarningView.msg_title = GetLocalizedValue<string>("title_false");
                         IoC.WarningView.msg_text = GetLocalizedValue<string>("unsuccess");
-                        DialogHost.Show(new WarningView(), "Msg"); 
-                        
+                        DialogHost.Show(new WarningView(), "Msg");
+
                         IoC.Application.CurrPage = ApplicationPage.Reset;
                         IoC.Application.CurrPage = ApplicationPage.Login;
                     }
@@ -133,7 +131,7 @@ namespace ICMS_Server
                            $"from staff " +
                            $"left join user_group on user_group.group_id = staff.group_id " +
                            $"left join type on type.type_id = user_group.type_id " +
-                           $"where staff_username = '{txt_username}' and staff_password = '{txt_password}' ";
+                           $"where staff_username = '{txt_username}' and staff_password = AES_ENCRYPT('{txt_password}', 'dead_project') ";
             try
             {
                 Sconn.conn.Open();
@@ -216,24 +214,7 @@ namespace ICMS_Server
         public void GoPassChanged(object p)
         {
             var passwordBox = p as PasswordBox;
-
-            string EncryptionKey = "test123456key";
-            byte[] clearBytes = Encoding.Unicode.GetBytes(passwordBox.Password);
-            using (Aes encryptor = Aes.Create())
-            {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
-                    }
-                    txt_password = Convert.ToBase64String(ms.ToArray());
-                }
-            }
+            txt_password = passwordBox.Password;
         }
 
         public void IsClear()
