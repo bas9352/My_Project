@@ -37,6 +37,12 @@
   <ItemGroup>
     <Reference Include="AxShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
@@ -115,7 +121,16 @@
     <Compile Include="ViewModels\Popups\UserHistoryViewModel.cs" />
     <Compile Include="ViewModels\Popups\UserTopUpHistoryViewModel.cs" />
     <Compile Include="ViewModels\Reports\Class\CouponClass.cs" />
+    <Compile Include="ViewModels\Reports\Class\CouponReportClass.cs" />
+    <Compile Include="ViewModels\Reports\Class\MemberReportClass.cs" />
+    <Compile Include="ViewModels\Reports\Class\TopUpReportClass.cs" />
     <Compile Include="ViewModels\Reports\CouponReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CrystalReports\CouponReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CouponReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ViewModels\Reports\CrystalReports\MemberReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,13 +143,11 @@
       <DependentUpon>ReportCoupon.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ViewModels\Reports\DataSet\DataSetReport.cs">
-      <DependentUpon>DataSetReport.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\Reports\DataSet\DataSetReport.Designer.cs">
+    <Compile Include="ViewModels\Reports\CrystalReports\TopUpReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSetReport.xsd</DependentUpon>
+      <DependentUpon>TopUpReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\Reports\IncomeReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\MemberReportViewModel.cs" />
@@ -494,6 +507,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>resLang.th.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="ViewModels\Reports\CrystalReports\CouponReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CouponReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewModels\Reports\CrystalReports\MemberReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MemberReport.cs</LastGenOutput>
@@ -502,17 +519,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ReportCoupon.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ViewModels\Reports\DataSet\DataSetReport.xsc">
-      <DependentUpon>DataSetReport.xsd</DependentUpon>
-    </None>
-    <None Include="ViewModels\Reports\DataSet\DataSetReport.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetReport.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ViewModels\Reports\DataSet\DataSetReport.xss">
-      <DependentUpon>DataSetReport.xsd</DependentUpon>
-    </None>
+    <EmbeddedResource Include="ViewModels\Reports\CrystalReports\TopUpReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TopUpReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <Resource Include="Fonts\GoogleSans-Bold.ttf" />
     <Resource Include="Fonts\GoogleSans-BoldItalic.ttf" />
     <Resource Include="Fonts\GoogleSans-Italic.ttf" />

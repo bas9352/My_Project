@@ -58,7 +58,7 @@ namespace ICMS_Server.ViewModels.Reports.CrystalReports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
             get {
                 return this.ReportDefinition.Sections[1];
             }
@@ -66,7 +66,7 @@ namespace ICMS_Server.ViewModels.Reports.CrystalReports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
+        public CrystalDecisions.CrystalReports.Engine.Section PageHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -98,7 +98,7 @@ namespace ICMS_Server.ViewModels.Reports.CrystalReports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_s_create_date {
+        public CrystalDecisions.Shared.IParameterField Parameter_create_s_date {
             get {
                 return this.DataDefinition.ParameterFields[0];
             }
@@ -106,7 +106,7 @@ namespace ICMS_Server.ViewModels.Reports.CrystalReports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_e_create_date {
+        public CrystalDecisions.Shared.IParameterField Parameter_create_e_date {
             get {
                 return this.DataDefinition.ParameterFields[1];
             }

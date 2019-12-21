@@ -38,7 +38,7 @@ namespace ICMS_Server
         public ICommand btn_coupon_report { get; set; }
         public ICommand btn_top_up_report { get; set; }
         public ICommand btn_income_report { get; set; }
-        public ICommand btn_history_report { get; set; }
+        public ICommand btn_online_history_report { get; set; }
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace ICMS_Server
                 CurrPage = ApplicationPage.IncomeReport;
             });
 
-            btn_history_report = new RelayCommand(p =>
+            btn_online_history_report = new RelayCommand(p =>
             {
                 CurrPage = ApplicationPage.OnlineHistoryReport;
             });

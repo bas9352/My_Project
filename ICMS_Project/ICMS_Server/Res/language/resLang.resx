@@ -249,6 +249,9 @@
   <data name="cd_rom" xml:space="preserve">
     <value>Disable CD-Rom</value>
   </data>
+  <data name="choice" xml:space="preserve">
+    <value>ตัวเลือกรายได้</value>
+  </data>
   <data name="client_shutdown" xml:space="preserve">
     <value>Client Shutdown</value>
   </data>
@@ -338,6 +341,9 @@
   </data>
   <data name="date_time" xml:space="preserve">
     <value>Hide Date and Time</value>
+  </data>
+  <data name="days" xml:space="preserve">
+    <value>รายได้รายวัน</value>
   </data>
   <data name="debt" xml:space="preserve">
     <value>หนี้</value>
@@ -543,6 +549,9 @@
   <data name="money_history" xml:space="preserve">
     <value>ประวัติการใช้เงิน</value>
   </data>
+  <data name="months" xml:space="preserve">
+    <value>รายได้รายเดือน</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>ชื่อ</value>
   </data>
@@ -747,6 +756,9 @@
   <data name="status" xml:space="preserve">
     <value>ใช้งานกลุ่มผู้ใช้</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>รายงานคูปอง</value>
+  </data>
   <data name="swicth_user" xml:space="preserve">
     <value>Disable Swicth User</value>
   </data>
@@ -783,8 +795,17 @@
   <data name="top_up_amount" xml:space="preserve">
     <value>เงินที่เติม</value>
   </data>
+  <data name="top_up_by" xml:space="preserve">
+    <value>ถูกเติมโดย</value>
+  </data>
+  <data name="top_up_e_date" xml:space="preserve">
+    <value>ถึงวันที่</value>
+  </data>
   <data name="top_up_report" xml:space="preserve">
     <value>รายงานการเติมเงิน</value>
+  </data>
+  <data name="top_up_s_date" xml:space="preserve">
+    <value>ตั้งแต่วันที่</value>
   </data>
   <data name="total_amount" xml:space="preserve">
     <value>เงินทั้งหมด(บาท)</value>
@@ -836,5 +857,8 @@
   </data>
   <data name="wait_pls" xml:space="preserve">
     <value>โปรดรอ</value>
+  </data>
+  <data name="years" xml:space="preserve">
+    <value>รายได้รายปี</value>
   </data>
 </root>

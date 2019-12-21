@@ -161,10 +161,10 @@ namespace ICMS_Server
 
                         //3
                         IoC.AddEditMemberView.txt_debt = IoC.MemberView.member_item["v_remaining_debt_amount"].ToString();
-                        IoC.AddEditMemberView.txt_total_real_amount = IoC.MemberView.member_item["v_total_real_top_up"].ToString();
+                        IoC.AddEditMemberView.txt_total_real_amount = IoC.MemberView.member_item["v_all_total_real_amount"].ToString();
                         IoC.AddEditMemberView.txt_use_real_free_amount = IoC.MemberView.member_item["v_all_use_real_amount"].ToString();
                         IoC.AddEditMemberView.txt_remaining_real_amount = IoC.MemberView.member_item["v_all_remaining_real_amount"].ToString();
-                        IoC.AddEditMemberView.txt_total_free_amount = IoC.MemberView.member_item["v_total_free_top_up"].ToString();
+                        IoC.AddEditMemberView.txt_total_free_amount = IoC.MemberView.member_item["v_all_total_free_amount"].ToString();
                         IoC.AddEditMemberView.txt_remaining_free_amount = IoC.MemberView.member_item["v_all_remaining_free_amount"].ToString();
                         IoC.AddEditMemberView.txt_remaining_point = IoC.MemberView.member_item["v_remaining_bonus_amount"].ToString();
 

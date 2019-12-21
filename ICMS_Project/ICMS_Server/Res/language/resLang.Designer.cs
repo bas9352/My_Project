@@ -466,6 +466,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ตัวเลือกรายได้.
+        /// </summary>
+        internal static string choice {
+            get {
+                return ResourceManager.GetString("choice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Client Shutdown.
         /// </summary>
         internal static string client_shutdown {
@@ -732,6 +741,15 @@ namespace ICMS_Server.Res.language {
         internal static string date_time {
             get {
                 return ResourceManager.GetString("date_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to รายได้รายวัน.
+        /// </summary>
+        internal static string days {
+            get {
+                return ResourceManager.GetString("days", resourceCulture);
             }
         }
         
@@ -1344,6 +1362,15 @@ namespace ICMS_Server.Res.language {
         internal static string money_history {
             get {
                 return ResourceManager.GetString("money_history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to รายได้รายเดือน.
+        /// </summary>
+        internal static string months {
+            get {
+                return ResourceManager.GetString("months", resourceCulture);
             }
         }
         
@@ -1969,6 +1996,15 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to รายงานคูปอง.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disable Swicth User.
         /// </summary>
         internal static string swicth_user {
@@ -2059,11 +2095,38 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ถูกเติมโดย.
+        /// </summary>
+        internal static string top_up_by {
+            get {
+                return ResourceManager.GetString("top_up_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ถึงวันที่.
+        /// </summary>
+        internal static string top_up_e_date {
+            get {
+                return ResourceManager.GetString("top_up_e_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to รายงานการเติมเงิน.
         /// </summary>
         internal static string top_up_report {
             get {
                 return ResourceManager.GetString("top_up_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ตั้งแต่วันที่.
+        /// </summary>
+        internal static string top_up_s_date {
+            get {
+                return ResourceManager.GetString("top_up_s_date", resourceCulture);
             }
         }
         
@@ -2217,6 +2280,15 @@ namespace ICMS_Server.Res.language {
         internal static string wait_pls {
             get {
                 return ResourceManager.GetString("wait_pls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to รายได้รายปี.
+        /// </summary>
+        internal static string years {
+            get {
+                return ResourceManager.GetString("years", resourceCulture);
             }
         }
     }

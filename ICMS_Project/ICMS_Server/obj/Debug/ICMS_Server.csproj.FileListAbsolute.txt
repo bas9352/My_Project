@@ -325,8 +325,6 @@ C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportSource.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.Shared.dll
-C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.DataDefModel.dll
-C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.ClientDoc.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.ReportDefModel.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.Controllers.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.CommLayer.dll
@@ -336,7 +334,6 @@ C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.CubeDefModel.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.ObjectFactory.dll
-C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.ReportAppServer.CommonControls.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\stdole.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\AxShockwaveFlashObjects.dll
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\bin\Debug\CrystalDecisions.Windows.Forms.dll

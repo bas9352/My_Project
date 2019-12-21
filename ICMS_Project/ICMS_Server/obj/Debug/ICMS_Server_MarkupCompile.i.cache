@@ -12,9 +12,9 @@ DEBUG;TRACE
 C:\Users\ธรณ์ธันย์\Desktop\My_Project\ICMS_Project\ICMS_Server\App.xaml
 451870575455
 
-109-1565857476
-200-1994441932
+1121854383599
+202205178710
 MainWindow.xaml;Styles\Fonts.xaml;Styles\ScrollBars.xaml;Views\Popups\AddEditCouponView.xaml;Views\Popups\AddEditOptionCouponView.xaml;Views\Popups\DebtView.xaml;Views\Popups\AddEditMemberView.xaml;Views\MemberView.xaml;Views\Popups\OptionCouponView.xaml;Views\Popups\AddEditBonusView.xaml;Views\Popups\AddEditGroupView.xaml;Views\Popups\AddEditPromotionView.xaml;Views\Popups\AddEditStaffView.xaml;Views\Options\AdminView.xaml;Views\ControlView.xaml;Views\CouponView.xaml;Views\Options\DatabaseView.xaml;Views\IncomeView.xaml;Views\LogHistoryView.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\MemberCouponView.xaml;Views\Options\DelCouponView.xaml;Views\Options\DelMemberView.xaml;Views\Options\OptionView.xaml;Views\Options\PromotionView.xaml;Views\Popups\ConfirmView.xaml;Views\Popups\FreeTopUpView.xaml;Views\Popups\GenerateCouponView.xaml;Views\Popups\LendView.xaml;Views\Popups\PayDebtView.xaml;Views\Popups\ProgessBarView.xaml;Views\Popups\TopUpView.xaml;Views\Popups\UserHistoryView.xaml;Views\Popups\UserTopUpHistoryView.xaml;Views\Popups\WarningView.xaml;Views\Reports\CouponReportView.xaml;Views\Reports\IncomeReportView.xaml;Views\Reports\MemberReportView.xaml;Views\Reports\OnlineHistoryReportView.xaml;Views\Reports\ReportViewer.xaml;Views\Reports\TopUpReportView.xaml;Views\ReportView.xaml;Views\Options\StaffView.xaml;Views\Options\UserGroupView.xaml;
 
-False
+True
 
