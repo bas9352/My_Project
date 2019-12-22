@@ -339,6 +339,12 @@
   <data name="database" xml:space="preserve">
     <value>ฐานข้อมูล</value>
   </data>
+  <data name="date_end" xml:space="preserve">
+    <value>ถึงวันที่</value>
+  </data>
+  <data name="date_start" xml:space="preserve">
+    <value>ตั้งแต่วันที่</value>
+  </data>
   <data name="date_time" xml:space="preserve">
     <value>Hide Date and Time</value>
   </data>

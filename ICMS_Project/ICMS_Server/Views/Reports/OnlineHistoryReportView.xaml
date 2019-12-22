@@ -26,46 +26,25 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Margin="0,0,5,0">
-                        <ComboBox x:Name="item_income" 
-                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                  VerticalAlignment="Stretch"
-                                  Width="auto"
-                                  Height="40"
-                                  materialDesign:HintAssist.Hint="{lex:Loc Key=choice}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                    <i:InvokeCommandAction Command="{Binding item_income}"
-                                               CommandParameter="{Binding ElementName=item_income}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger  EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding item_income_changed}"
-                                               CommandParameter="{Binding ElementName=item_income}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ComboBox>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1" Margin="0,0,5,0">
                         <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                         Language="th-TH"
-                                    Text="{Binding txt_s_create_date, Mode=TwoWay}"
-                                    materialDesign:HintAssist.Hint="{lex:Loc Key=s_create_date}"
+                                    Text="{Binding txt_s_date, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=date_start}"
                                     Width="auto"
                                     Height="auto">
                         </DatePicker>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="2">
+                    <StackPanel Grid.Column="1">
                         <DatePicker Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                     VerticalAlignment="Stretch"
                                         Language="th-TH"
-                                    Text="{Binding txt_e_create_date, Mode=TwoWay}"
-                                    materialDesign:HintAssist.Hint="{lex:Loc Key=e_create_date}"
+                                    Text="{Binding txt_e_date, Mode=TwoWay}"
+                                    materialDesign:HintAssist.Hint="{lex:Loc Key=date_end}"
                                     Width="auto"
                                     Height="auto">
                         </DatePicker>

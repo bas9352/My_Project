@@ -29,61 +29,43 @@ namespace ICMS_Server
     {
         #region Properties
         Database Sconn = new Database();
-        public string txt_s_create_date { get; set; } = DateTime.Now.Date.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
-        public string txt_e_create_date { get; set; } = DateTime.Now.Date.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
-        public ComboBox income_data { get; set; }
+        public string txt_s_date { get; set; } = DateTime.Now.Date.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
+        public string txt_e_date { get; set; } = DateTime.Now.Date.ToString("dd/MM/yyyy", new CultureInfo("us-US", false));
+        public ComboBox type_data { get; set; }
         public ObservableCollection<KeyValuePair<string, string>> cmb_data { get; set; }
-        public string income_item { get; set; }
-        public List<CouponReportClass> coupon_report_class = new List<CouponReportClass>();
+        public string type_item { get; set; }
+        public List<OnlineHistoryReportClass> online_history_report_class = new List<OnlineHistoryReportClass>();
         #endregion
 
         #region Commands
-        public ICommand item_income { get; set; }
-        public ICommand item_income_changed { get; set; }
+        public ICommand item_type { get; set; }
+        public ICommand item_type_changed { get; set; }
         public ICommand btn_open_report { get; set; }
         #endregion
 
         #region Constructor
         public OnlineHistoryReportViewModel()
         {
-            item_income = new RelayCommand(p => GoItemIncome(p));
-            item_income_changed = new RelayCommand(p => GoItemIncomeChanged(p));
+            item_type = new RelayCommand(p => GoItemIncome(p));
+            item_type_changed = new RelayCommand(p => GoItemIncomeChanged(p));
             btn_open_report = new RelayCommand(p =>
             {
                 string query = null;
-                string s_create_date = null;
-                string e_create_date = null;
-                if (string.IsNullOrEmpty(txt_s_create_date) == false)
+                string s_date = null;
+                string e_date = null;
+                if (string.IsNullOrEmpty(txt_s_date) == false)
                 {
-                    s_create_date = DateTime.Parse(txt_s_create_date).ToString("yyyy-MM-dd");
+                    s_date = DateTime.Parse(txt_s_date).ToString("yyyy-MM-dd");
                 }
-                if (string.IsNullOrEmpty(txt_e_create_date) == false)
+                if (string.IsNullOrEmpty(txt_e_date) == false)
                 {
-                    e_create_date = DateTime.Parse(txt_e_create_date).ToString("yyyy-MM-dd");
+                    e_date = DateTime.Parse(txt_e_date).ToString("yyyy-MM-dd");
                 }
-                if (income_item == "all")
-                {
-                    query = $"select * " +
-                            $"from r_coupon " +
-                            $"where if('{txt_s_create_date}' = '{""}', r_coupon_c_date = r_coupon_c_date, r_coupon_c_date between '{s_create_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
-                                    $"if('{txt_e_create_date}' = '{""}', r_coupon_c_date = r_coupon_c_date, r_coupon_c_date between '1999-01-01%' and '{e_create_date}%')";
-                }
-                else if (income_item == "admin")
-                {
-                    query = $"select * " +
-                            $"from r_coupon " +
-                            $"where if('{txt_s_create_date}' = '{""}', r_coupon_c_date = r_coupon_c_date, r_coupon_c_date between '{s_create_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
-                                    $"if('{txt_e_create_date}' = '{""}', r_coupon_c_date = r_coupon_c_date, r_coupon_c_date between '1999-01-01%' and '{e_create_date}%') and " +
-                                    $"r_type_name = 'admin'";
-                }
-                else if (income_item == "staff")
-                {
-                    query = $"select * " +
-                            $"from r_coupon " +
-                            $"where if('{txt_s_create_date}' = '{""}', r_coupon_c_date = r_coupon_c_date, r_coupon_c_date between '{s_create_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
-                                    $"if('{txt_e_create_date}' = '{""}', r_coupon_c_date = r_coupon_c_date, r_coupon_c_date between '1999-01-01%' and '{e_create_date}%') and " +
-                                    $"r_type_name = 'staff'";
-                }
+
+                query = $"select * " +
+                        $"from r_online_history " +
+                        $"where if('{txt_s_date}' = '{""}', r_online_s_date = r_online_s_date, r_online_s_date between '{s_date} %' and '{DateTime.Now.Date.ToString("yyyy-MM-dd", new CultureInfo("us-US", false))}%') and " +
+                        $"if('{txt_e_date}' = '{""}', r_online_s_date = r_online_s_date, r_online_s_date between '1999-01-01%' and '{e_date}%')";
 
                 try
                 {
@@ -94,21 +76,24 @@ namespace ICMS_Server
                     DataTable dt = new DataTable();
                     adp.Fill(dt);
                     Sconn.conn.Close();
-                    coupon_report_class = (from row in dt.AsEnumerable()
-                                           select new CouponReportClass
+                    online_history_report_class = (from row in dt.AsEnumerable()
+                                           select new OnlineHistoryReportClass
                                            {
-                                               r_coupon_id = row.Field<int>("r_coupon_id"),
-                                               r_coupon_username = row.Field<string>("r_coupon_username"),
-                                               r_coupon_c_date = row.Field<string>("r_coupon_c_date"),
-                                               r_coupon_total_real_amount = row.Field<double>("r_coupon_total_real_amount"),
-                                               r_coupon_total_free_amount = row.Field<double>("r_coupon_total_free_amount"),
-                                               r_coupon_remaining_amount = row.Field<double>("r_coupon_remaining_amount"),
-                                               r_coupon_create_by = row.Field<int>("r_coupon_create_by"),
-                                               r_staff_username = row.Field<string>("r_staff_username"),
-                                               r_group_id = row.Field<int>("r_group_id"),
-                                               r_group_name = row.Field<string>("r_group_name"),
-                                               r_type_id = row.Field<int>("r_type_id"),
-                                               r_type_name = row.Field<string>("r_type_name")
+                                               r_online_id = row.Field<int?>("r_online_id").ToString(),
+                                               r_member_id = row.Field<int?>("r_member_id").ToString(),
+                                               r_coupon_id = row.Field<int?>("r_coupon_id").ToString(),
+                                               r_all_username = row.Field<string>("r_all_username"),
+                                               r_online_pc_id = row.Field<int?>("r_online_pc_id").ToString(),
+                                               r_online_pc_name = row.Field<string>("r_online_pc_name"),
+                                               r_online_status = row.Field<string>("r_online_status"),
+                                               r_online_ordinal = row.Field<int?>("r_online_ordinal").ToString(),
+                                               r_online_s_date = row.Field<string>("r_online_s_date"),
+                                               r_online_s_time = row.Field<string>("r_online_s_time"),
+                                               r_online_e_date = row.Field<string>("r_online_e_date"),
+                                               r_online_e_time = row.Field<string>("r_online_e_time"),
+                                               r_online_total_use_amount = row.Field<double?>("r_online_total_use_amount").ToString(),
+                                               r_all_online_hr = row.Field<double?>("r_all_online_hr").ToString(),
+                                               r_all_online_mn = row.Field<double?>("r_all_online_mn").ToString()
                                            }).ToList();
 
                     //dt.Columns.Add("new_v_all_remaining_amount", typeof(string));
@@ -118,11 +103,12 @@ namespace ICMS_Server
                     //}
 
                     IoC.ReportViewer.rpt = new ReportDocument();
-                    IoC.ReportViewer.rpt.Load("C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ViewModels\\Reports\\CrystalReports\\CouponReport.rpt");
+                    IoC.ReportViewer.rpt.ReportClientDocument.LocaleID = CrystalDecisions.ReportAppServer.DataDefModel.CeLocale.ceLocaleEnglishUS;
+                    IoC.ReportViewer.rpt.Load("C:\\Users\\ธรณ์ธันย์\\Desktop\\My_Project\\ICMS_Project\\ICMS_Server\\ViewModels\\Reports\\CrystalReports\\OnlineHistoryReport.rpt");
 
                     IoC.ReportViewer.rpt.SetDataSource(dt);
-                    IoC.ReportViewer.rpt.SetParameterValue("create_s_date", txt_s_create_date);
-                    IoC.ReportViewer.rpt.SetParameterValue("create_e_date", txt_e_create_date);
+                    IoC.ReportViewer.rpt.SetParameterValue("s_date", txt_s_date);
+                    IoC.ReportViewer.rpt.SetParameterValue("e_date", txt_e_date);
                     //มีปัญหาไม่ล้างค่า
                     IoC.ReportViewer.report_viewer = new ReportViewer();
                     IoC.ReportViewer.report_viewer.item_report.ViewerCore.ReportSource = IoC.ReportViewer.rpt;
@@ -154,32 +140,32 @@ namespace ICMS_Server
         #region Other method
         private void GoItemIncome(object p)
         {
-            income_data = p as ComboBox;
+            type_data = p as ComboBox;
 
             cmb_data = new ObservableCollection<KeyValuePair<string, string>>()
             {
                     new KeyValuePair < string , string > (GetLocalizedValue<string>("all"), "all"),
-                    new KeyValuePair < string , string > (GetLocalizedValue<string>("days"), "days"),
+                    new KeyValuePair < string , string > (GetLocalizedValue<string>("member"), "member"),
                     new KeyValuePair < string , string > (GetLocalizedValue<string>("months"), "months"),
                     new KeyValuePair < string , string > (GetLocalizedValue<string>("years"), "years")
             };
 
-            income_data.ItemsSource = cmb_data;
-            income_data.SelectedValuePath = "Value";
-            income_data.DisplayMemberPath = "Key";
-            income_data.SelectedIndex = 0;
-            if (income_item == null)
+            type_data.ItemsSource = cmb_data;
+            type_data.SelectedValuePath = "Value";
+            type_data.DisplayMemberPath = "Key";
+            type_data.SelectedIndex = 0;
+            if (type_item == null)
             {
-                income_item = ((KeyValuePair<string, string>)income_data.SelectedItem).Value;
+                type_item = ((KeyValuePair<string, string>)type_data.SelectedItem).Value;
             }
         }
 
         private void GoItemIncomeChanged(object p)
         {
-            income_data = p as ComboBox;
-            if (income_data.ItemsSource != null)
+            type_data = p as ComboBox;
+            if (type_data.ItemsSource != null)
             {
-                income_item = ((KeyValuePair<string, string>)income_data.SelectedItem).Value;
+                type_item = ((KeyValuePair<string, string>)type_data.SelectedItem).Value;
             }
         }
 

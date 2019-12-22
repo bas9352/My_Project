@@ -123,6 +123,7 @@
     <Compile Include="ViewModels\Reports\Class\CouponClass.cs" />
     <Compile Include="ViewModels\Reports\Class\CouponReportClass.cs" />
     <Compile Include="ViewModels\Reports\Class\MemberReportClass.cs" />
+    <Compile Include="ViewModels\Reports\Class\OnlineHistoryReportClass.cs" />
     <Compile Include="ViewModels\Reports\Class\TopUpReportClass.cs" />
     <Compile Include="ViewModels\Reports\CouponReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\CrystalReports\CouponReport.cs">
@@ -135,6 +136,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MemberReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Reports\CrystalReports\OnlineHistoryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OnlineHistoryReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\Reports\CrystalReports\ReportCoupon.cs">
@@ -514,6 +521,10 @@
     <EmbeddedResource Include="ViewModels\Reports\CrystalReports\MemberReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>MemberReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewModels\Reports\CrystalReports\OnlineHistoryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>OnlineHistoryReport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewModels\Reports\CrystalReports\ReportCoupon.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

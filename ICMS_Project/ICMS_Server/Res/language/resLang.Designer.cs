@@ -736,6 +736,24 @@ namespace ICMS_Server.Res.language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ถึงวันที่.
+        /// </summary>
+        internal static string date_end {
+            get {
+                return ResourceManager.GetString("date_end", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ตั้งแต่วันที่.
+        /// </summary>
+        internal static string date_start {
+            get {
+                return ResourceManager.GetString("date_start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide Date and Time.
         /// </summary>
         internal static string date_time {
